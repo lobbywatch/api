@@ -67,61 +67,6 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
     }
 }
 
-function _lobbywatch_data_not_found($type, $table, $json = true) {
-    $message = '';
-    try {
-        $message .= "Data interface call to $type/$table does not exist";
-    } catch(Exception $e) {
-        $message .= _lobbywatch_data_add_exeption($e);
-    } finally {
-        $response = array(
-            'success' => false,
-            'count' => 0,
-            'message' => $message,
-            'sql' => '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => null,
-        );
-
-        if ($json) {
-            drupal_add_http_header('Status', '404 Not Found');
-            lobbywatch_json_output($response);
-            exit(2);
-        } else {
-            return $response;
-        }
-    }
-}
-
-function _lobbywatch_data_not_allowd($type, $table, $json = true) {
-    $message = '';
-
-    try {
-        $message .= "Data interface call to $type/$table not allowed";
-    } catch(Exception $e) {
-        $message .= _lobbywatch_data_add_exeption($e);
-    } finally {
-        $response = array(
-            'success' => false,
-            'count' => 0,
-            'message' => $message,
-            'sql' => '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => null,
-        );
-
-        if ($json) {
-            drupal_add_http_header('Status', '403 Forbidden');
-            lobbywatch_json_output($response);
-            exit(2);
-        } else {
-            return $response;
-        }
-    }
-}
-
 function lobbywatch_json_output($response = null, $cors = true) {
     global $no_cors; // Global scope is only within one request
     if ($cors && empty($no_cors)) { // Should we disable cors?
@@ -131,12 +76,6 @@ function lobbywatch_json_output($response = null, $cors = true) {
     //   drupal_add_http_header('Status', '404 Not Found');
     // }
     drupal_json_output($response);
-}
-
-function _lobbywatch_data_check_allowd_table($table) {
-    if (!array_key_exists($table, Constants::$workflow_tables)) {
-        throw new Exception("Table not allowed: $table");
-    }
 }
 
 function _lobbywatch_data_add_exeption($e) {
@@ -1352,73 +1291,6 @@ order by count(*) desc, $table.partei asc "
         } else {
             return $response;
         }
-    }
-}
-
-function _lobbywatch_data_parlamentarier_relations_count($id) {
-    // TODO implement filter
-    // TODO Must be fixed, it must use wirksamkeit instead of counts
-    return _lobbywatch_data_db_query(
-        "select sum(anzahlTotal) as anzahlTotal, sum(anzahlExecutive) as anzahlExecutive, sum(anzahlTotal)-sum(anzahlExecutive) as anzahlSimple
-from
-(
-select count(*) as anzahlTotal, 0 as anzahlExecutive
-from interessenbindung ib
-where ib.parlamentarier_id = :id" .
-        _lobbywatch_data_filter_unpublished_SQL('ib') . "
-union
-select 0 as anzahlTotal, count(*) as anzahlExecutive
-from interessenbindung ib
-where ib.parlamentarier_id = :id
-and ib.art in ('vorstand', 'geschaeftsfuehrend') " .
-        _lobbywatch_data_filter_unpublished_SQL('ib') . "
-) t", array('id' => $id))['0'];
-}
-
-function _lobbywatch_data_parlamentarier_gast_relations_count($id) {
-    // TODO implement filter
-    // TODO counts are not following lobbywatch.ch rules
-    // TODO Must be fixed, it must use wirksamkeit instead of counts
-    return _lobbywatch_data_db_query(
-        "select sum(anzahlTotal) as anzahlTotal, sum(anzahlExecutive) as anzahlExecutive, sum(anzahlTotal)-sum(anzahlExecutive) as anzahlSimple
-from
-(
-select count(*) as anzahlTotal, 0 as anzahlExecutive
-from v_zutrittsberechtigung zb
-inner join v_mandat ma on ma.person_id = zb.person_id
-where zb.parlamentarier_id = :id " .
-        _lobbywatch_data_filter_unpublished_SQL('zb') . "
-union
-select 0 as anzahlTotal, count(*) as anzahlExecutive
-from v_zutrittsberechtigung zb
-inner join v_mandat ma on ma.person_id = zb.person_id
-where zb.parlamentarier_id = :id
-and ma.art in ('vorstand', 'geschaeftsfuehrend')
-" . _lobbywatch_data_filter_unpublished_SQL('zb') . "
-) t", array('id' => $id))['0'];
-}
-
-function _lobbywatch_data_db_query($sql, $params = []) {
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
-
-    try {
-        $result = db_query($sql, $params);
-
-//     dpm($sql, '$sql');
-//     dpm($params, '$params');
-
-        $items = _lobbywatch_data_clean_records($result);
-
-//     dpm($items);
-
-        $count = count($items);
-        return $items;
-    } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
     }
 }
 
