@@ -802,8 +802,8 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
             $zwischen_organisationen_conditions = array_map(function ($con) {
                 return "organisation.id = " . $con['zwischen_organisation_id'];
             }, array_filter($aggregated['connections'], function ($con) {
-                    return !empty($con['zwischen_organisation_id']);
-                }));
+                return !empty($con['zwischen_organisation_id']);
+            }));
             $zwischen_organisationen_conditions = !empty($zwischen_organisationen_conditions) ? $zwischen_organisationen_conditions : ['1=0'];
 
             $zwischen_organisationen = _lobbywatch_data_table_flat_list('organisation', "(" . implode(" OR ", $zwischen_organisationen_conditions) . ")", false);
@@ -815,8 +815,8 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
             $zutrittsberechtigte_conditions = array_map(function ($con) {
                 return "zutrittsberechtigung.person_id = " . $con['person_id'];
             }, array_filter($aggregated['connections'], function ($con) {
-                    return !empty($con['person_id']);
-                }));
+                return !empty($con['person_id']);
+            }));
             $zutrittsberechtigte_conditions = !empty($zutrittsberechtigte_conditions) ? $zutrittsberechtigte_conditions : ['1=0'];
 
             $zutrittsberechtigte = _lobbywatch_data_table_flat_list('zutrittsberechtigung', "(" . implode(" OR ", $zutrittsberechtigte_conditions) . ")", false);
