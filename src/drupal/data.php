@@ -11,24 +11,20 @@ $show_stacktrace = true;
 
 const SUPPORTED_DB_CHARS = '-a-zA-Z0-9_.äöüÄÖÜéèàÉÈâ%;,"\'';
 
-function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
+function _lobbywatch_data_table_flat_id($table, $id, $json = true)
+{
     global $show_sql;
     $success = true;
     $count = 0;
     $items = null;
     $message = '';
 
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
 
     try {
         $sql = "
       SELECT " . _lobbywatch_data_select_fields_SQL($table) . "
       FROM v_$table $table
-      WHERE $table.id=:id" .
-            (in_array($table, array('parlamentarier', 'zutrittsberechtigung')) ? '' : _lobbywatch_data_filter_unpublished_SQL($table)) .
-            _lobbywatch_data_filter_fields_SQL($table);
+      WHERE $table.id=:id" . (in_array($table, array('parlamentarier', 'zutrittsberechtigung')) ? '' : _lobbywatch_data_filter_unpublished_SQL($table)) . _lobbywatch_data_filter_fields_SQL($table);
 
         $result = db_query($sql, array(':id' => $id));
 
@@ -39,23 +35,11 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
         $count = count($items);
         $success = $count == 1;
         $message .= count($items) . " record(s) found";
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $success ? $items[0] : null,
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $success ? $items[0] : null,);
 
         if ($json) {
             lobbywatch_json_output($response);
@@ -66,7 +50,8 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
     }
 }
 
-function lobbywatch_json_output($response = null, $cors = true) {
+function lobbywatch_json_output($response = null, $cors = true)
+{
     global $no_cors; // Global scope is only within one request
     if ($cors && empty($no_cors)) { // Should we disable cors?
         drupal_add_http_header('Access-Control-Allow-Origin', '*');
@@ -74,21 +59,25 @@ function lobbywatch_json_output($response = null, $cors = true) {
     drupal_json_output($response);
 }
 
-function _lobbywatch_data_add_exeption($e) {
+function _lobbywatch_data_add_exeption($e)
+{
     global $show_stacktrace;
     return $show_stacktrace ? $e->getMessage() . "\n------\n" . $e->getTraceAsString() : $e->getMessage();
 }
 
 /** Filters out unpublished data if not privileged or includeUnpublished == 0 */
-function _lobbywatch_data_filter_unpublished_SQL($table) {
+function _lobbywatch_data_filter_unpublished_SQL($table)
+{
     return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) || !user_access('access lobbywatch data unpublished content') ? " AND $table.freigabe_datum < NOW()" : '');
 }
 
-function _lobbywatch_data_clean_DB_value($value) {
+function _lobbywatch_data_clean_DB_value($value)
+{
     return preg_replace('/[^' . SUPPORTED_DB_CHARS . ']/', '', $value);
 }
 
-function _lobbywatch_data_filter_field_SQL($table, $field) {
+function _lobbywatch_data_filter_field_SQL($table, $field)
+{
     $paramSingle = "filter_{$field}";
     $paramList = "filter_{$field}_list";
     $paramLike = "filter_{$field}_like";
@@ -106,11 +95,12 @@ function _lobbywatch_data_filter_field_SQL($table, $field) {
     }
 }
 
-function _lobbywatch_data_filter_fields_SQL($table) {
+function _lobbywatch_data_filter_fields_SQL($table)
+{
     $sql = '';
     $prefix = "filter_";
     // TODO filter fields not allowed
-    foreach($_GET as $key => $value) {
+    foreach ($_GET as $key => $value) {
         $matches = [];
         if (preg_match('/^filter_([a-z0-9_]+?)(_list|_like)?$/', $key, $matches) && !_lobbywatch_data_check_intern_field($matches[1])) {
             $sql .= _lobbywatch_data_filter_field_SQL($table, $matches[1]);
@@ -119,24 +109,27 @@ function _lobbywatch_data_filter_fields_SQL($table) {
     return $sql;
 }
 
-function _lobbywatch_data_filter_limit_SQL() {
+function _lobbywatch_data_filter_limit_SQL()
+{
     if (isset($_GET['limit']) && $_GET['limit'] == 'none') {
         return '';
     } else {
-        return  " LIMIT " . (isset($_GET['limit']) && is_int($limit = $_GET['limit'] + 0) && $limit > 0 ? $limit : 10) . " ";
+        return " LIMIT " . (isset($_GET['limit']) && is_int($limit = $_GET['limit'] + 0) && $limit > 0 ? $limit : 10) . " ";
     }
 }
 
-function _lobbywatch_data_select_fields_SQL($table) {
+function _lobbywatch_data_select_fields_SQL($table)
+{
     $matches = [];
     if (isset($_GET['select_fields']) && $_GET['select_fields'] != '*' && preg_match_all('/([A-Za-z0-9_.,*\-]+)/', $_GET['select_fields'], $matches)) {
-        return  " $table.id, " . implode(', ', explode(', ', $matches[1][0])) . " ";
+        return " $table.id, " . implode(', ', explode(', ', $matches[1][0])) . " ";
     } else {
         return "$table.*";
     }
 }
 
-function _lobbywatch_data_get_lang() {
+function _lobbywatch_data_get_lang()
+{
     if (isset($_GET['lang']) && $_GET['lang'] == 'fr') {
         return 'fr';
     } else {
@@ -157,22 +150,20 @@ function _lobbywatch_data_get_lang() {
  * @param unknown $items
  * @return either
  */
-function _lobbywatch_data_handle_lang_fields(&$items) {
+function _lobbywatch_data_handle_lang_fields(&$items)
+{
     $lang = get_lang();
     $fr_suffix = '_fr';
     $de_suffix = '_de';
 
     $fields = [];
 
-    foreach($items as &$fields) {
-        foreach($fields as $key => $value) {
+    foreach ($items as &$fields) {
+        foreach ($fields as $key => $value) {
             $matches = [];
             if (preg_match('/^(.+)_fr$/i', $key, $matches)) {
                 $base_field_name = $matches[1];
-                if (
-                    isset($fields["{$base_field_name}_de"]) ||
-                    (array_key_exists("{$base_field_name}_de", $fields) && !array_key_exists($base_field_name, $fields))
-                ) {
+                if (isset($fields["{$base_field_name}_de"]) || (array_key_exists("{$base_field_name}_de", $fields) && !array_key_exists($base_field_name, $fields))) {
                     $de_field_name = "{$base_field_name}_de";
                 } else {
                     $de_field_name = $base_field_name;
@@ -188,19 +179,14 @@ function _lobbywatch_data_handle_lang_fields(&$items) {
     return $fields;
 }
 
-function _lobbywatch_data_clean_records($result) {
+function _lobbywatch_data_clean_records($result)
+{
     $items = [];
     $includeHistorised = isset($_GET['includeInactive']) && $_GET['includeInactive'] == 1 && user_access('access lobbywatch unpublished content');
 
     // TODO test exclusion of historised records
-    while($record = $result->fetchAssoc()) {
-        if ((
-                (!array_key_exists('bis_unix', $record) || (is_null($record['bis_unix']) || $record['bis_unix'] > time()))
-                && (!array_key_exists('im_rat_bis_unix', $record) || (is_null($record['im_rat_bis_unix']) || $record['im_rat_bis_unix'] > time()))
-                && (!array_key_exists('zutrittsberechtigung_bis_unix', $record) || (is_null($record['zutrittsberechtigung_bis_unix']) || $record['zutrittsberechtigung_bis_unix'] > time()))
-            )
-            || $includeHistorised
-        ) {
+    while ($record = $result->fetchAssoc()) {
+        if (((!array_key_exists('bis_unix', $record) || (is_null($record['bis_unix']) || $record['bis_unix'] > time())) && (!array_key_exists('im_rat_bis_unix', $record) || (is_null($record['im_rat_bis_unix']) || $record['im_rat_bis_unix'] > time())) && (!array_key_exists('zutrittsberechtigung_bis_unix', $record) || (is_null($record['zutrittsberechtigung_bis_unix']) || $record['zutrittsberechtigung_bis_unix'] > time()))) || $includeHistorised) {
             $fields = _lobbywatch_data_clean_fields($record);
             _lobbywatch_data_enrich_fields($fields);
             $items[] = $fields;
@@ -212,7 +198,8 @@ function _lobbywatch_data_clean_records($result) {
     return $items;
 }
 
-function _lobbywatch_data_enrich_fields(array &$items) {
+function _lobbywatch_data_enrich_fields(array &$items)
+{
     if (!empty($items['wikidata_qid'])) {
         $items['wikidata_item_url'] = "https://www.wikidata.org/wiki/" . $items['wikidata_qid'];
     }
@@ -234,7 +221,8 @@ function _lobbywatch_data_enrich_fields(array &$items) {
     }
 }
 
-function _lobbywatch_data_clean_fields($input_record) {
+function _lobbywatch_data_clean_fields($input_record)
+{
 
     $record = $input_record;
 
@@ -294,27 +282,21 @@ function _lobbywatch_data_clean_fields($input_record) {
     return $record;
 }
 
-function _lobbywatch_data_check_intern_field($field) {
+function _lobbywatch_data_check_intern_field($field)
+{
     return !user_access('access lobbywatch data confidential content') && in_array($field, Constants::$intern_fields);
 }
 
-function _lobbywatch_data_transformation($table, &$items) {
+function _lobbywatch_data_transformation($table, &$items)
+{
     if (in_array($table, ['organisation', 'interessenbindung_liste'], true)) {
         $lang = get_lang();
 
-        $pg_prefix = [
-            'de' => 'Parlamentarische Gruppe ',
-            'fr' => 'Intergroupe parlementaire ',
-            'it' => 'Intergruppo parlamentare ',
-        ];
-        $fpg_prefix = [
-            'de' => 'Parlamentarische Freundschaftsgruppe ',
-            'fr' => 'Intergroupe parlementaire ',
-            'it' => 'Intergruppo parlamentare ',
-        ];
+        $pg_prefix = ['de' => 'Parlamentarische Gruppe ', 'fr' => 'Intergroupe parlementaire ', 'it' => 'Intergruppo parlamentare ',];
+        $fpg_prefix = ['de' => 'Parlamentarische Freundschaftsgruppe ', 'fr' => 'Intergroupe parlementaire ', 'it' => 'Intergruppo parlamentare ',];
 
-        foreach($items as $item_key => $fields) {
-            foreach($fields as $key => $value) {
+        foreach ($items as $item_key => $fields) {
+            foreach ($fields as $key => $value) {
                 if (in_array($key, ['name', 'organisation_name'], true) && $fields['rechtsform'] === 'Parlamentarische Gruppe') {
                     $items[$item_key][$key] = $pg_prefix[$lang] . ($lang === 'de' ? $items[$item_key][$key] : lcfirst($items[$item_key][$key]));
                 } else if (in_array($key, ['name', 'organisation_name'], true) && $fields['rechtsform'] === 'Parlamentarische Freundschaftsgruppe') {
@@ -325,8 +307,8 @@ function _lobbywatch_data_transformation($table, &$items) {
     } else if (in_array($table, ['parlamentarier', 'organisation_parlamentarier'], true)) { // quick and dirty hack to replace M with Mitte
         $lang = get_lang();
 
-        foreach($items as $item_key => $fields) {
-            foreach($fields as $key => $value) {
+        foreach ($items as $item_key => $fields) {
+            foreach ($fields as $key => $value) {
                 if (in_array($key, ['partei'], true) && $fields['partei'] === 'M') {
                     $items[$item_key][$key] = 'Mitte';
                 } else if (in_array($key, ['partei'], true) && $fields['partei'] === 'C') {
@@ -337,15 +319,14 @@ function _lobbywatch_data_transformation($table, &$items) {
     }
 }
 
-function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true, $order_by = '', $join = '', $join_select = '') {
+function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true, $order_by = '', $join = '', $join_select = '')
+{
     global $show_sql;
     $success = true;
     $message = '';
     $count = 0;
     $items = null;
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
 
     try {
         // TXTTODO _lobbywatch_data_table_flat_list nothing todo
@@ -354,12 +335,7 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
     $join_select
     FROM v_$table $table
     $join
-    WHERE $condition " .
-            _lobbywatch_data_filter_unpublished_SQL($table) .
-            _lobbywatch_data_filter_fields_SQL($table) .
-            " $order_by" .
-            _lobbywatch_data_filter_limit_SQL() .
-            ';';
+    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table) . " $order_by" . _lobbywatch_data_filter_limit_SQL() . ';';
 
         $result = db_query($sql, []);
 
@@ -370,22 +346,11 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
         $count = count($items);
         $success = $count > 0;
         $message = $count . " record(s) found";
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $items
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
 
         if ($json) {
             lobbywatch_json_output($response);
@@ -396,25 +361,20 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
     }
 }
 
-function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = true) {
+function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = true)
+{
     global $show_sql;
     $success = true;
     $message = '';
     $count = 0;
     $items = null;
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
 
     try {
         $sql = "
     SELECT " . _lobbywatch_data_select_fields_SQL($table) . "
     FROM v_$table $table
-    WHERE $condition " .
-            _lobbywatch_data_filter_unpublished_SQL($table) .
-            _lobbywatch_data_filter_fields_SQL($table) .
-            _lobbywatch_data_filter_limit_SQL() .
-            ';';
+    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table) . _lobbywatch_data_filter_limit_SQL() . ';';
 
         $result = db_query($sql, []);
 
@@ -423,22 +383,11 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
         $count = count($items);
         $success = $count > 0;
         $message = $count . " record(s) found";
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $items
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
 
         if ($json) {
             lobbywatch_json_output($response);
@@ -450,7 +399,8 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
 }
 
 // Duplicated from lobbywatch_autocomplete_json.php
-function _lobbywatch_search_keyword_processing($str) {
+function _lobbywatch_search_keyword_processing($str)
+{
     $search_str = preg_replace('!\*+!', '%', $str);
     //     $search_str = '%' . db_like($keys) . '%'
     if (!preg_match('/[%_]/', $search_str)) {
@@ -460,15 +410,14 @@ function _lobbywatch_search_keyword_processing($str) {
 }
 
 // Adapted from lobbywatch_autocomplete_json.php
-function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished = true) {
+function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished = true)
+{
     global $show_sql;
     $success = true;
     $count = 0;
     $items = null;
     $message = '';
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
     $table = 'search_table';
 
     try {
@@ -476,28 +425,18 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
 
         $has_query = mb_strlen($search_str) > 0;
 
-        $conditions = array_filter([
-            isset($_GET['tables'])
-                ? 'table_name IN (' . implode(',', array_map(
-                    function ($table) { return "'" . db_escape_table($table) . "'"; },
-                    explode(',', $_GET['tables'])
-                )) . ')'
-                : '',
-            $has_query ? "search_keywords$lang_suffix LIKE :str": '',
-            $filter_unpublished ? '(table_name=\'parlamentarier\' OR table_name=\'zutrittsberechtigung\' OR freigabe_datum <= NOW())' : '',
-        ]);
+        $conditions = array_filter([isset($_GET['tables']) ? 'table_name IN (' . implode(',', array_map(function ($table) {
+                return "'" . db_escape_table($table) . "'";
+            }, explode(',', $_GET['tables']))) . ')' : '', $has_query ? "search_keywords$lang_suffix LIKE :str" : '', $filter_unpublished ? '(table_name=\'parlamentarier\' OR table_name=\'zutrittsberechtigung\' OR freigabe_datum <= NOW())' : '',]);
 
         // Show all parlamentarier in search, even if not freigegeben, RKU 22.01.2015
         $sql = "
     SELECT id, page, table_name, name_de, name_fr, table_weight, weight
     -- , freigabe_datum, bis
     FROM v_search_table
-    WHERE " .
-            implode($conditions, ' AND ') .
-            "ORDER BY table_weight, weight";
+    WHERE " . implode($conditions, ' AND ') . "ORDER BY table_weight, weight";
 
-        $sql .=  _lobbywatch_data_filter_limit_SQL() .
-            ';';
+        $sql .= _lobbywatch_data_filter_limit_SQL() . ';';
 
         $result = db_query($sql, array(':str' => _lobbywatch_search_keyword_processing($search_str)));
 
@@ -506,22 +445,11 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
         $count = count($items);
         $success = $count > 0;
         $message .= count($items) . " record(s) found ";
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $items
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
         if ($json) {
             lobbywatch_json_output($response);
             drupal_exit();
@@ -531,57 +459,38 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
     }
 }
 
-function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = true) {
+function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = true)
+{
     global $show_sql;
     $success = true;
     $count = 0;
     $items = null;
     $message = '';
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
 
     try {
         if ($table === 'parlamentarier') {
             //TODO test check permissions
-            $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && user_access('access lobbywatch unpublished content')) ? ' AND (im_rat_bis IS NULL OR im_rat_bis > NOW())' : '')
-                . _lobbywatch_data_filter_unpublished_SQL($table) .
-                _lobbywatch_data_filter_fields_SQL($table);
+            $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && user_access('access lobbywatch unpublished content')) ? ' AND (im_rat_bis IS NULL OR im_rat_bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table);
         } else if ($table === 'zutrittsberechtigung') {
-            $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && !user_access('access lobbywatch unpublished content')) ? ' AND (bis IS NULL OR bis > NOW())' : '')
-                . _lobbywatch_data_filter_unpublished_SQL($table) .
-                _lobbywatch_data_filter_fields_SQL($table);
+            $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && !user_access('access lobbywatch unpublished content')) ? ' AND (bis IS NULL OR bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table);
         } else if (in_array($table, Constants::$entities_web)) {
-            $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str"
-                . _lobbywatch_data_filter_unpublished_SQL($table) .
-                _lobbywatch_data_filter_fields_SQL($table);
+            $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table);
         } else {
             throw new Exception("Table $table does not exist");
         }
-        $sql .=  _lobbywatch_data_filter_limit_SQL() .
-            ';';
+        $sql .= _lobbywatch_data_filter_limit_SQL() . ';';
         $result = db_query($sql, array(':str' => "%$search_str%"));
 
         $items = _lobbywatch_data_clean_records($result);
         $count = count($items);
         $success = $count > 0;
         $message .= count($items) . " record(s) found";
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $items
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
         if ($json) {
             lobbywatch_json_output($response);
             drupal_exit();
@@ -591,16 +500,15 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
     }
 }
 
-function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = true) {
+function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = true)
+{
     global $show_sql;
     $success = true;
     $count = 0;
     $message = '';
     $sql = '';
     $table = 'zutrittsberechtigung';
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
     try {
         $zutrittsberechtigung = _lobbywatch_data_table_flat_id('zutrittsberechtigung', $id, false);
         $aggregated = $zutrittsberechtigung['data'];
@@ -649,23 +557,11 @@ function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = t
         }
 
         $count = $zutrittsberechtigung['count'];
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $aggregated
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
         if ($json) {
             lobbywatch_json_output($response);
             drupal_exit();
@@ -676,7 +572,8 @@ function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = t
 
 }
 
-function _add_verguetungen(&$arr, $verguetungen, $ib_von, $im_rat_seit = null) {
+function _add_verguetungen(&$arr, $verguetungen, $ib_von, $im_rat_seit = null)
+{
     $arr['verguetungen_einzeln'] = $verguetungen['data'];
     $verguetungen_jahr = [];
     foreach ($verguetungen['data'] as $jkey => $jval) {
@@ -699,7 +596,8 @@ function _add_verguetungen(&$arr, $verguetungen, $ib_von, $im_rat_seit = null) {
     }
 }
 
-function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) {
+function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true)
+{
     global $show_sql;
     global $env;
     $success = true;
@@ -708,9 +606,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
     $sql = '';
     $table = 'parlamentarier';
 
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
     try {
         $message .= "$env";
         $parlamentarier = _lobbywatch_data_table_flat_id('parlamentarier', $id, false);
@@ -724,7 +620,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
 
         // load aggregated data only if main object is there
         if ($success) {
-            $in_kommissionen =  _lobbywatch_data_table_flat_list('in_kommission_liste', "in_kommission_liste.parlamentarier_id = $id", false);
+            $in_kommissionen = _lobbywatch_data_table_flat_list('in_kommission_liste', "in_kommission_liste.parlamentarier_id = $id", false);
             $aggregated['in_kommission'] = $in_kommissionen['data'];
             $message .= ' | ' . $in_kommissionen['message'];
             $sql .= ' | ' . $in_kommissionen['sql'];
@@ -773,23 +669,11 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
         }
 
         $count = $parlamentarier['count'];
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $aggregated
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
         if ($json) {
             lobbywatch_json_output($response);
             drupal_exit();
@@ -799,16 +683,15 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
     }
 }
 
-function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
+function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true)
+{
     global $show_sql;
     $success = true;
     $count = 0;
     $message = '';
     $sql = '';
     $table = 'organisation';
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
     try {
         $organsation = _lobbywatch_data_table_flat_id('organisation', $id, false);
         $aggregated = $organsation['data'];
@@ -818,23 +701,14 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
 
         // load aggregated data only if main object is there
         if ($success) {
-            $beziehungen = _lobbywatch_data_table_flat_list(
-                'organisation_beziehung',
-                "organisation_beziehung.organisation_id = $id OR organisation_beziehung.ziel_organisation_id = $id",
-                false
-            );
+            $beziehungen = _lobbywatch_data_table_flat_list('organisation_beziehung', "organisation_beziehung.organisation_id = $id OR organisation_beziehung.ziel_organisation_id = $id", false);
 
             $aggregated['beziehungen'] = $beziehungen['data'];
             $message .= ' | ' . $beziehungen['message'];
             $sql .= ' | ' . $beziehungen['sql'];
 
-            $reverse_art = array(
-                'arbeitet fuer' => 'auftraggeber fuer',
-                'mitglied von' => 'mitglieder',
-                'tochtergesellschaft von' => 'tochtergesellschaften',
-                'partner von' => 'partner von', // not directional
-                'beteiligt an' => 'beteiligungen von',
-            );
+            $reverse_art = array('arbeitet fuer' => 'auftraggeber fuer', 'mitglied von' => 'mitglieder', 'tochtergesellschaft von' => 'tochtergesellschaften', 'partner von' => 'partner von', // not directional
+                'beteiligt an' => 'beteiligungen von',);
             foreach ($aggregated['beziehungen'] as $key => $value) {
                 if ($value['ziel_organisation_id'] === $aggregated['id']) {
                     $aggregated['beziehungen'][$key]['art'] = $reverse_art[$value['art']];
@@ -845,7 +719,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
                 }
             }
 
-            $parlamentarier =  _lobbywatch_data_table_flat_list('organisation_parlamentarier', "organisation_parlamentarier.organisation_id = $id", false);
+            $parlamentarier = _lobbywatch_data_table_flat_list('organisation_parlamentarier', "organisation_parlamentarier.organisation_id = $id", false);
             $aggregated['parlamentarier'] = $parlamentarier['data'];
             $message .= ' | ' . $parlamentarier['message'];
             $sql .= ' | ' . $parlamentarier['sql'];
@@ -857,7 +731,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
                 _add_verguetungen($aggregated['parlamentarier'][$key], $verguetungen, $value['von'], $parlamentarier['data']['im_rat_seit']);
             }
 
-            $zutrittsberechtigung =  _lobbywatch_data_table_flat_list('organisation_zutrittsberechtigung', "organisation_zutrittsberechtigung.organisation_id = $id", false);
+            $zutrittsberechtigung = _lobbywatch_data_table_flat_list('organisation_zutrittsberechtigung', "organisation_zutrittsberechtigung.organisation_id = $id", false);
             $aggregated['zutrittsberechtigte'] = $zutrittsberechtigung['data'];
             $message .= ' | ' . $zutrittsberechtigung['message'];
             $sql .= ' | ' . $zutrittsberechtigung['sql'];
@@ -873,23 +747,11 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
         }
 
         $count = $organsation['count'];
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $aggregated
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
         if ($json) {
             lobbywatch_json_output($response);
             drupal_exit();
@@ -901,24 +763,24 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
 }
 
 /** Add knowledge_articles of current language. The Drupal 7 translation system is used. */
-function _lobbywatch_add_wissensartikel($source_table, $id, &$aggregated, &$message, &$sql) {
+function _lobbywatch_add_wissensartikel($source_table, $id, &$aggregated, &$message, &$sql)
+{
     $lang = get_lang();
-    $knowledge_articles =  _lobbywatch_data_table_flat_list('wissensartikel_link', "wissensartikel_link.target_id = $id AND wissensartikel_link.target_table_name = '$source_table'", false, '', 'JOIN v_d7_node node ON node.tnid_nid = (SELECT tnid_nid FROM v_d7_node WHERE nid=wissensartikel_link.node_id) AND node.status=1' . ($lang ? " AND node.language = '$lang'" : ''), ', node.tnid_nid, node.language article_language, node.type article_type, node.status article_status, node.nid article_nid, node.title as article_title');
+    $knowledge_articles = _lobbywatch_data_table_flat_list('wissensartikel_link', "wissensartikel_link.target_id = $id AND wissensartikel_link.target_table_name = '$source_table'", false, '', 'JOIN v_d7_node node ON node.tnid_nid = (SELECT tnid_nid FROM v_d7_node WHERE nid=wissensartikel_link.node_id) AND node.status=1' . ($lang ? " AND node.language = '$lang'" : ''), ', node.tnid_nid, node.language article_language, node.type article_type, node.status article_status, node.nid article_nid, node.title as article_title');
     $aggregated['knowledge_articles'] = $knowledge_articles['data'];
     $message .= ' | ' . $knowledge_articles['message'];
     $sql .= ' | ' . $knowledge_articles['sql'];
 }
 
-function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true) {
+function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true)
+{
     global $show_sql;
     $success = true;
     $count = 0;
     $message = '';
     $sql = '';
     $table = 'interessengruppe';
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
     try {
         $interessengruppe = _lobbywatch_data_table_flat_id($table, $id, false);
         $aggregated = $interessengruppe['data'];
@@ -928,11 +790,7 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
 
         // load aggregated data only if main object is there
         if ($success) {
-            $organisationen = _lobbywatch_data_table_flat_list(
-                'organisation',
-                "organisation.interessengruppe_id = $id OR organisation.interessengruppe2_id = $id OR organisation.interessengruppe3_id = $id",
-                false
-            );
+            $organisationen = _lobbywatch_data_table_flat_list('organisation', "organisation.interessengruppe_id = $id OR organisation.interessengruppe2_id = $id OR organisation.interessengruppe3_id = $id", false);
 
             $aggregated['organisationen'] = $organisationen['data'];
             $message .= ' | ' . $organisationen['message'];
@@ -941,39 +799,27 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
             $aggregated_parlamentarier = _lobbywatch_data_get_parlamentarier_from_organisation($organisationen['data']);
             $aggregated = array_merge($aggregated, $aggregated_parlamentarier);
 
-            $zwischen_organisationen_conditions = array_map(
-                function($con) { return "organisation.id = " . $con['zwischen_organisation_id']; },
-                array_filter(
-                    $aggregated['connections'],
-                    function($con) { return !empty($con['zwischen_organisation_id']); }
-                )
-            );
+            $zwischen_organisationen_conditions = array_map(function ($con) {
+                return "organisation.id = " . $con['zwischen_organisation_id'];
+            }, array_filter($aggregated['connections'], function ($con) {
+                    return !empty($con['zwischen_organisation_id']);
+                }));
             $zwischen_organisationen_conditions = !empty($zwischen_organisationen_conditions) ? $zwischen_organisationen_conditions : ['1=0'];
 
-            $zwischen_organisationen = _lobbywatch_data_table_flat_list(
-                'organisation',
-                "(" . implode(" OR ", $zwischen_organisationen_conditions) . ")",
-                false
-            );
+            $zwischen_organisationen = _lobbywatch_data_table_flat_list('organisation', "(" . implode(" OR ", $zwischen_organisationen_conditions) . ")", false);
 
             $aggregated['zwischen_organisationen'] = $zwischen_organisationen['data'];
             $message .= ' | ' . $zwischen_organisationen['message'];
             $sql .= ' | ' . $zwischen_organisationen['sql'];
 
-            $zutrittsberechtigte_conditions = array_map(
-                function($con) { return "zutrittsberechtigung.person_id = " . $con['person_id']; },
-                array_filter(
-                    $aggregated['connections'],
-                    function($con) { return !empty($con['person_id']); }
-                )
-            );
+            $zutrittsberechtigte_conditions = array_map(function ($con) {
+                return "zutrittsberechtigung.person_id = " . $con['person_id'];
+            }, array_filter($aggregated['connections'], function ($con) {
+                    return !empty($con['person_id']);
+                }));
             $zutrittsberechtigte_conditions = !empty($zutrittsberechtigte_conditions) ? $zutrittsberechtigte_conditions : ['1=0'];
 
-            $zutrittsberechtigte = _lobbywatch_data_table_flat_list(
-                'zutrittsberechtigung',
-                "(" . implode(" OR ", $zutrittsberechtigte_conditions) . ")",
-                false
-            );
+            $zutrittsberechtigte = _lobbywatch_data_table_flat_list('zutrittsberechtigung', "(" . implode(" OR ", $zutrittsberechtigte_conditions) . ")", false);
 
             $aggregated['zutrittsberechtigte'] = $zutrittsberechtigte['data'];
             $message .= ' | ' . $zutrittsberechtigte['message'];
@@ -983,23 +829,11 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
         }
 
         $count = $organsation['count'];
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $aggregated
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
         if ($json) {
             lobbywatch_json_output($response);
             drupal_exit();
@@ -1012,35 +846,26 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
 /**
  * @param $orgs array of organisation having 'id'
  */
-function _lobbywatch_data_get_parlamentarier_from_organisation($orgs) {
+function _lobbywatch_data_get_parlamentarier_from_organisation($orgs)
+{
 
     $aggregated = [];
 
-    $org_conditions = array_map(
-        function($org) { return "organisation_parlamentarier_beide_indirekt.connector_organisation_id = " . $org['id']; },
-        $orgs
-    );
+    $org_conditions = array_map(function ($org) {
+        return "organisation_parlamentarier_beide_indirekt.connector_organisation_id = " . $org['id'];
+    }, $orgs);
 
-    $connections = _lobbywatch_data_table_flat_list(
-        'organisation_parlamentarier_beide_indirekt',
-        "(" . implode(" OR ", $org_conditions) . ")",
-        false
-    );
+    $connections = _lobbywatch_data_table_flat_list('organisation_parlamentarier_beide_indirekt', "(" . implode(" OR ", $org_conditions) . ")", false);
 
     $aggregated['connections'] = $connections['data'];
     $message .= ' | ' . $connections['message'];
     $sql .= ' | ' . $connections['sql'];
 
-    $parlamentarier_conditions = array_map(
-        function($con) { return "parlamentarier.id = " . $con['parlamentarier_id']; },
-        $connections['data']
-    );
+    $parlamentarier_conditions = array_map(function ($con) {
+        return "parlamentarier.id = " . $con['parlamentarier_id'];
+    }, $connections['data']);
 
-    $parlamentarier = _lobbywatch_data_table_flat_list(
-        'parlamentarier',
-        "(" . implode(" OR ", $parlamentarier_conditions) . ")",
-        false
-    );
+    $parlamentarier = _lobbywatch_data_table_flat_list('parlamentarier', "(" . implode(" OR ", $parlamentarier_conditions) . ")", false);
 
     $aggregated['parlamentarier'] = $parlamentarier['data'];
     $message .= ' | ' . $parlamentarier['message'];
@@ -1049,16 +874,15 @@ function _lobbywatch_data_get_parlamentarier_from_organisation($orgs) {
     return $aggregated;
 }
 
-function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
+function _lobbywatch_data_table_branche_aggregated_id($id, $json = true)
+{
     global $show_sql;
     $success = true;
     $count = 0;
     $message = '';
     $sql = '';
     $table = 'branche';
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
     try {
         $branche = _lobbywatch_data_table_flat_id($table, $id, false);
         $aggregated = $branche['data'];
@@ -1069,11 +893,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
         // load aggregated data only if main object is there
         if ($success) {
             // interessengruppe
-            $interessengruppe = _lobbywatch_data_table_flat_list(
-                'interessengruppe',
-                "interessengruppe.branche_id = $id",
-                false
-            );
+            $interessengruppe = _lobbywatch_data_table_flat_list('interessengruppe', "interessengruppe.branche_id = $id", false);
 
             $aggregated['interessengruppe'] = $interessengruppe['data'];
             $message .= ' | ' . $interessengruppe['message'];
@@ -1081,11 +901,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
             $success = $success && $interessengruppe['success'];
 
             // organisations
-            $organisationen = _lobbywatch_data_table_flat_list(
-                'organisation',
-                "organisation.interessengruppe_branche_id = $id OR organisation.interessengruppe2_branche_id = $id OR organisation.interessengruppe3_branche_id = $id",
-                false
-            );
+            $organisationen = _lobbywatch_data_table_flat_list('organisation', "organisation.interessengruppe_branche_id = $id OR organisation.interessengruppe2_branche_id = $id OR organisation.interessengruppe3_branche_id = $id", false);
 
             $aggregated['organisationen'] = $organisationen['data'];
             $message .= ' | ' . $organisationen['message'];
@@ -1100,23 +916,11 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
         }
 
         $count = $branche['count'];
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $aggregated
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
         if ($json) {
             lobbywatch_json_output($response);
             drupal_exit();
@@ -1126,15 +930,14 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
     }
 }
 
-function _lobbywatch_data_query_parlament_partei_aggregated_list($condition = '1', $json = true) {
+function _lobbywatch_data_query_parlament_partei_aggregated_list($condition = '1', $json = true)
+{
     global $show_sql;
     $success = true;
     $message = '';
     $count = 0;
     $items = null;
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
+
 
     try {
         $lang_suffix = get_lang_suffix();
@@ -1145,11 +948,9 @@ select count(*) as anzahl, partei.id, $table.partei$lang_suffix as partei_short,
 from v_parlamentarier $table
 inner join v_partei partei
 on partei.id = $table.partei_id
-WHERE $condition " .
-            _lobbywatch_data_filter_fields_SQL($table) . "
+WHERE $condition " . _lobbywatch_data_filter_fields_SQL($table) . "
 group by $table.partei
-order by count(*) desc, $table.partei asc "
-        ;
+order by count(*) desc, $table.partei asc ";
 
         $result = db_query($sql, []);
 
@@ -1161,29 +962,18 @@ order by count(*) desc, $table.partei asc "
         $success = $count > 0;
 
         foreach ($items['parteien'] as &$record) {
-            $parlamentarier =  _lobbywatch_data_table_flat_list('parlamentarier', "parlamentarier.partei_id = {$record['id']}", false);
+            $parlamentarier = _lobbywatch_data_table_flat_list('parlamentarier', "parlamentarier.partei_id = {$record['id']}", false);
             $record['members'] = $parlamentarier['data'];
             $message .= ' | ' . $parlamentarier['message'];
             $sql .= ' | ' . $parlamentarier['sql'];
             $success = $success && ($parlamentarier['success'] || (!$parlamentarier['success'] && $parlamentarier['data']['members'] == 0));
         }
 
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql ? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $items
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
 
         if ($json) {
             lobbywatch_json_output($response);
@@ -1194,7 +984,8 @@ order by count(*) desc, $table.partei asc "
     }
 }
 
-function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $respone_object = '', $parameter = '', $json_output = false) {
+function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $respone_object = '', $parameter = '', $json_output = false)
+{
     if ($version !== 'v1' || $data_type !== 'json') {
         _lobbywatch_data_json_404();
     }
@@ -1207,35 +998,21 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
         return _lobbywatch_data_table_flat_list_search($object, $parameter, false);
     } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list') {
         return _lobbywatch_data_table_flat_list($object, 1, false);
-    } else if ($call_type === 'ws' && (in_array($object, ['uid','zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $respone_object === 'uid' && $parameter) {
+    } else if ($call_type === 'ws' && (in_array($object, ['uid', 'zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $respone_object === 'uid' && $parameter) {
         return _lobbywatch_data_ws_uid($object, $parameter, false);
-    }
-
-    else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $respone_object === 'list') {
+    } else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $respone_object === 'list') {
         return _lobbywatch_data_relation_flat_list($object, 1, false);
-    }
-
-    else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+    } else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
         return _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($parameter, false);
-    }
-
-    else if ($call_type === 'table' && $object === 'parlamentarier' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+    } else if ($call_type === 'table' && $object === 'parlamentarier' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
         return _lobbywatch_data_table_parlamentarier_aggregated_id($parameter, false);
-    }
-
-    else if ($call_type === 'table' && $object === 'organisation' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+    } else if ($call_type === 'table' && $object === 'organisation' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
         return _lobbywatch_data_table_organisation_aggregated_id($parameter, false);
-    }
-
-    else if ($call_type === 'table' && $object === 'interessengruppe' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+    } else if ($call_type === 'table' && $object === 'interessengruppe' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
         return _lobbywatch_data_table_interessengruppe_aggregated_id($parameter, false);
-    }
-
-    else if ($call_type === 'table' && $object === 'branche' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+    } else if ($call_type === 'table' && $object === 'branche' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
         return _lobbywatch_data_table_branche_aggregated_id($parameter, false);
-    }
-
-    else if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $respone_object === 'list') {
+    } else if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $respone_object === 'list') {
         return _lobbywatch_data_query_parlament_partei_aggregated_list(1, false);
     } else if ($call_type === 'search' && $object === 'default' /*&& $response_type === 'aggregated' && $respone_object === 'list'*/ /*&& $parameter*/) {
         return _lobbywatch_data_search($response_type, false);
@@ -1244,37 +1021,24 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
     _lobbywatch_data_json_404();
 }
 
-function _lobbywatch_data_json_404() {
+function _lobbywatch_data_json_404()
+{
     drupal_add_http_header('Status', '404 Not Found');
-    $response = array(
-        'success' => false,
-        'count' => 0,
-        'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.',
-        'sql' => '',
-        'source' => '',
-        'build secs' => '' . _lobbywatch_page_build_secs(),
-        'data' => null,
-    );
+    $response = array('success' => false, 'count' => 0, 'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.', 'sql' => '', 'source' => '', 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => null,);
     print lobbywatch_json_output($response);
     exit;
 }
 
-function _lobbywatch_data_json_403() {
+function _lobbywatch_data_json_403()
+{
     drupal_add_http_header('Status', '403 Forbidden');
-    $response = array(
-        'success' => false,
-        'count' => 0,
-        'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.',
-        'sql' => '',
-        'source' => '',
-        'build secs' => '' . _lobbywatch_page_build_secs(),
-        'data' => null,
-    );
+    $response = array('success' => false, 'count' => 0, 'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.', 'sql' => '', 'source' => '', 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => null,);
     print lobbywatch_json_output($response);
     exit;
 }
 
-function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
+function _lobbywatch_data_ws_uid($table, $uid, $json = true)
+{
     global $show_sql;
     global $no_cors;
     global $zefix_ws_login;
@@ -1292,9 +1056,6 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
         _lobbywatch_data_json_403();
     }
 
-    // Use the database we set up earlier
-    // Ref: https://drupal.org/node/18429
-    db_set_active('lobbywatch');
 
     try {
         if ($table == 'uid-bfs') {
@@ -1322,23 +1083,11 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
         $success = $items['success'];
         $message .= $items['message'];
         $sql .= $items['sql'];
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        // Go back to the default database,
-        // otherwise Drupal will not be able to access it's own data later on.
-        db_set_active();
-
-        $response = array(
-            'success' => $success,
-            'count' => $count,
-            'message' => $message,
-            'sql' => $show_sql? $sql : '',
-            'source' => $table,
-            'build secs' => '' . _lobbywatch_page_build_secs(),
-            'data' => $success ? $items['data'] : null,
-        );
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $success ? $items['data'] : null,);
 
         if ($json) {
             lobbywatch_json_output($response, !$no_cors);
