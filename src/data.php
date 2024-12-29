@@ -186,7 +186,7 @@ function _lobbywatch_data_clean_fields($input_record) {
   if (!isset($_GET['includeConfidentialData']) || $_GET['includeConfidentialData'] != 1 /* || !user_access('access lobbywatch data confidential content') */) {
     foreach ($record as $key => $value) {
       // Clean intern fields
-      if (in_array($key, Constants::$intern_fields)) {
+      if (is_internal_field($key)) {
         unset($record[$key]);
       }
       if (in_array($key, Constants::$meta_fields) && !in_array($key, $updated_fields)) {

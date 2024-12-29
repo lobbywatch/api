@@ -73,14 +73,14 @@ function _lobbywatch_data_filter_fields_SQL($table) {
   // TODO filter fields not allowed
   foreach ($_GET as $key => $value) {
     $matches = [];
-    if (preg_match('/^filter_([a-z0-9_]+?)(_list|_like)?$/', $key, $matches) && !_lobbywatch_data_check_intern_field($matches[1])) {
+    if (preg_match('/^filter_([a-z0-9_]+?)(_list|_like)?$/', $key, $matches) && !is_internal_field($matches[1])) {
       $sql .= _lobbywatch_data_filter_field_SQL($table, $matches[1]);
     }
   }
   return $sql;
 }
 
-function _lobbywatch_data_check_intern_field($field) {
+function is_internal_field(string $field): bool {
 //    return !user_access('access lobbywatch data confidential content') && in_array($field, Constants::$intern_fields);
-  return in_array($field, Constants::$intern_fields);
+  return in_array($field, Constants::$internal_fields);
 }
