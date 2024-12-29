@@ -43,7 +43,15 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $success ? $items[0] : null,);
+    $response = array(
+      'success' => $success,
+      'count' => $count,
+      'message' => $message,
+      'sql' => $show_sql ? $sql : '',
+      'source' => $table,
+      'build secs' => '' . _lobbywatch_page_build_secs(),
+      'data' => $success ? $items[0] : null,
+    );
 
     if ($json) {
       json_response($response);
