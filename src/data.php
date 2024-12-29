@@ -3,7 +3,6 @@
 require "utils.php";
 
 use App\Constants;
-use function App\Drupal\{drupal_add_http_header};
 use function App\Lib\Http\{json_response};
 use function App\Lib\String\{clean_str};
 use function App\Store\db_query;
@@ -916,13 +915,13 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
 }
 
 function _lobbywatch_data_json_404() {
-  drupal_add_http_header('Status', '404 Not Found');
+  header('Status: 404 Not Found');
   $response = array('success' => false, 'count' => 0, 'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.', 'sql' => '', 'source' => '', 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => null,);
   json_response($response);
 }
 
 function _lobbywatch_data_json_403() {
-  drupal_add_http_header('Status', '403 Forbidden');
+  header('Status: 403 Forbidden');
   $response = array('success' => false, 'count' => 0, 'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.', 'sql' => '', 'source' => '', 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => null,);
   json_response($response);
 }
