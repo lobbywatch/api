@@ -221,8 +221,6 @@ function _lobbywatch_data_clean_fields($input_record) {
 
   }
 
-
-  global $public_files_dir_abs;
   global $rel_files_url;
   global $base_root;
   if (isset($record['symbol_klein_rel'])) {

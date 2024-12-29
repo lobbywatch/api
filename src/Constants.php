@@ -2,10 +2,9 @@
 
 namespace App;
 
-// @todo alias für namensänderungen machen
 class Constants {
-
-  /** Data tables containing the workflow fields.
+  /**
+   * Data tables containing the workflow fields.
    */
   // i18n use getter for access and translate
   public static $workflow_tables = array(
@@ -82,17 +81,6 @@ class Constants {
     'organisation_beziehung_tochtergesellschaften' => 'Tochtergesellschaften',
   );
 
-  /**
-   * Meta tables such as attachments or settings.
-   */
-  public static $meta_tables = array(
-    'parlamentarier_anhang' => 'Parlamentarieranhang',
-    'organisation_anhang' => 'Organisationsanhang',
-    'zutrittsberechtigung_anhang' => 'Zutrittsberechtigunganhang',
-    'settings' => 'Einstellungen',
-    'settings_category' => 'Einstellungskategorien',
-  );
-
   /** Internal fields that are confidential. */
   public static $intern_fields = array('notizen', 'updated_visa', 'created_visa', 'autorisiert_visa', 'freigabe_visa', 'eingabe_abgeschlossen_visa', 'kontrolliert_visa', 'symbol_abs', 'photo', 'ALT_kommission', 'ALT_parlam_verbindung', 'parlament_interessenbindungen');
 
@@ -105,33 +93,7 @@ class Constants {
   // public static $entities_web = array('branche' => 'branche', 'interessengruppe' => 'lobbygruppe', 'kommission' => 'kommission', 'organisation' => 'organisation', 'partei' => 'partei',);
   public static $entities_web = array('branche' => 'branche', 'interessengruppe' => 'lobbygruppe', 'organisation' => 'organisation',);
 
-  public static $entities_web_old = array('kommission' => 'kommission', 'partei' => 'partei',);
-
-  /** Parlamentarier, Zutrittsberechtigung
-   * table name => website alias */
-// TODO check zutrittsberechtigung or person
-  public static $entities_special_web = array('parlamentarier' => 'parlamentarier', 'zutrittsberechtigung' => 'zutrittsberechtigter',);
-  /**
-   * Modification date for significant webpage changes, e.g if new information is shown.
-   * This string will be parsed to a UNIX date with strtotime().
-   * Structure: tableName => date string in YYYY-MM-DD or null
-   */
-  public static $page_changes_of_table = array('branche' => null, 'interessengruppe' => '2015-05-17', 'kommission' => null, 'organisation' => '2015-05-17', 'partei' => null, 'parlamentarier' => null, 'zutrittsberechtigung' => null,);
-
-  public static function getAllEntities() {
-    return array_merge(Constants::$entities_web, Constants::$entities_special_web);
-  }
-
   public static function getAllEnrichedRelations() {
     return array_merge(Constants::$enriched_relations_kommission, Constants::$enriched_relations_parlamentarier, Constants::$enriched_relations_zutrittsberechtigung, Constants::$enriched_relations_organisation, Constants::$enriched_relations_organisation_inverse);
   }
-
-  public static function getPublicTables() {
-    return array_merge($workflow_tables, getAllEnrichedRelations());
-  }
-
-  public static function getAllTables() {
-    return array_merge(getPublicTables(), $meta_tables);
-  }
-
 }
