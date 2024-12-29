@@ -4,7 +4,9 @@ require "utils.php";
 
 use App\Constants;
 use function App\Drupal\{drupal_add_http_header, drupal_exit};
+use function App\Lib\String\{clean_db_value, clean_str};
 use function App\Store\db_query;
+use const App\Lib\String\{SUPPORTED_DB_CHARS};
 
 /**
  * This is the original Drupal 7 module that was used for providing the data API.
@@ -14,8 +16,6 @@ use function App\Store\db_query;
 global $show_sql, $show_stacktrace;
 $show_sql = true;
 $show_stacktrace = true;
-
-const SUPPORTED_DB_CHARS = '-a-zA-Z0-9_.äöüÄÖÜéèàÉÈâ%;,"\'';
 
 function _lobbywatch_data_table_flat_id($table, $id, $json = true)
 {
@@ -72,10 +72,6 @@ function _lobbywatch_data_add_exeption($e)
     return $show_stacktrace ? $e->getMessage() . "\n------\n" . $e->getTraceAsString() : $e->getMessage();
 }
 
-function _lobbywatch_data_clean_DB_value($value)
-{
-    return preg_replace('/[^' . SUPPORTED_DB_CHARS . ']/', '', $value);
-}
 
 function _lobbywatch_data_filter_field_SQL($table, $field)
 {
@@ -86,11 +82,11 @@ function _lobbywatch_data_filter_field_SQL($table, $field)
     if (isset($_GET[$paramSingle]) && is_numeric($_GET[$paramSingle])) {
         return " AND $table.{$field} = " . intval($_GET[$paramSingle]);
     } else if (isset($_GET[$paramSingle])) {
-        return " AND $table.{$field} = '" . _lobbywatch_data_clean_DB_value($_GET[$paramSingle]) . "'";
+        return " AND $table.{$field} = '" . clean_db_value($_GET[$paramSingle]) . "'";
     } else if (isset($_GET[$paramList]) && preg_match_all('/([' . SUPPORTED_DB_CHARS . ']+)/', $_GET[$paramList], $matches)) {
         return " AND $table.{$field} IN ( " . implode(',', $matches[1]) . ')';
     } else if (isset($_GET[$paramLike])) {
-        return " AND $table.{$field} LIKE '" . _lobbywatch_data_clean_DB_value($_GET[$paramLike]) . "'";
+        return " AND $table.{$field} LIKE '" . clean_db_value($_GET[$paramLike]) . "'";
     } else {
         return '';
     }
