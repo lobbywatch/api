@@ -4,6 +4,7 @@ require "utils.php";
 
 use App\Constants;
 use function App\Lib\Http\{base_root, check_plain, json_response, request_uri};
+use function App\Lib\Localization\{get_current_lang, get_lang, lobbywatch_set_lang, translate_record_field};
 use function App\Lib\Metrics\{page_build_secs};
 use function App\Lib\String\{clean_str};
 use function App\Store\db_query;
@@ -25,10 +26,10 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
   $message = '';
 
   try {
-    $fields = _lobbywatch_data_select_fields_SQL($table);
+    $fields = select_fields_SQL($table);
     $filter_unpublished = (in_array($table, array('parlamentarier', 'zutrittsberechtigung'))
       ? ''
-      : _lobbywatch_data_filter_unpublished_SQL($table));
+      : filter_unpublished_SQL($table));
     $filter_fields = filter_fields_SQL($table);
 
     $sql = <<<SQL
@@ -96,7 +97,7 @@ function _lobbywatch_data_filter_limit_SQL() {
  * @return either
  */
 function _lobbywatch_data_handle_lang_fields(&$items) {
-  $lang = get_lang();
+  $lang = get_current_lang();
   $fr_suffix = '_fr';
   $de_suffix = '_de';
 
@@ -223,7 +224,7 @@ function _lobbywatch_data_clean_fields($input_record) {
 
 function _lobbywatch_data_transformation($table, &$items) {
   if (in_array($table, ['organisation', 'interessenbindung_liste'], true)) {
-    $lang = get_lang();
+    $lang = get_current_lang();
 
     $pg_prefix = ['de' => 'Parlamentarische Gruppe ', 'fr' => 'Intergroupe parlementaire ', 'it' => 'Intergruppo parlamentare ',];
     $fpg_prefix = ['de' => 'Parlamentarische Freundschaftsgruppe ', 'fr' => 'Intergroupe parlementaire ', 'it' => 'Intergruppo parlamentare ',];
@@ -238,7 +239,7 @@ function _lobbywatch_data_transformation($table, &$items) {
       }
     }
   } else if (in_array($table, ['parlamentarier', 'organisation_parlamentarier'], true)) { // quick and dirty hack to replace M with Mitte
-    $lang = get_lang();
+    $lang = get_current_lang();
 
     foreach ($items as $item_key => $fields) {
       foreach ($fields as $key => $value) {
@@ -263,11 +264,11 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
   try {
     // TXTTODO _lobbywatch_data_table_flat_list nothing todo
     $sql = "
-    SELECT " . _lobbywatch_data_select_fields_SQL($table) . "
+    SELECT " . select_fields_SQL($table) . "
     $join_select
     FROM v_$table $table
     $join
-    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table) . " $order_by" . _lobbywatch_data_filter_limit_SQL() . ';';
+    WHERE $condition " . filter_unpublished_SQL($table) . filter_fields_SQL($table) . " $order_by" . _lobbywatch_data_filter_limit_SQL() . ';';
 
     $result = db_query($sql, []);
 
@@ -302,9 +303,9 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
 
   try {
     $sql = "
-    SELECT " . _lobbywatch_data_select_fields_SQL($table) . "
+    SELECT " . select_fields_SQL($table) . "
     FROM v_$table $table
-    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table) . _lobbywatch_data_filter_limit_SQL() . ';';
+    WHERE $condition " . filter_unpublished_SQL($table) . filter_fields_SQL($table) . _lobbywatch_data_filter_limit_SQL() . ';';
 
     $result = db_query($sql, []);
 
@@ -396,11 +397,11 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
   try {
     if ($table === 'parlamentarier') {
       //TODO test check permissions
-      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && user_access('access lobbywatch unpublished content')) ? ' AND (im_rat_bis IS NULL OR im_rat_bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table);
+      $sql = "SELECT " . select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && user_access('access lobbywatch unpublished content')) ? ' AND (im_rat_bis IS NULL OR im_rat_bis > NOW())' : '') . filter_unpublished_SQL($table) . filter_fields_SQL($table);
     } else if ($table === 'zutrittsberechtigung') {
-      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && !user_access('access lobbywatch unpublished content')) ? ' AND (bis IS NULL OR bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table);
+      $sql = "SELECT " . select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && !user_access('access lobbywatch unpublished content')) ? ' AND (bis IS NULL OR bis > NOW())' : '') . filter_unpublished_SQL($table) . filter_fields_SQL($table);
     } else if (in_array($table, Constants::$entities_web)) {
-      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table);
+      $sql = "SELECT " . select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . filter_unpublished_SQL($table) . filter_fields_SQL($table);
     } else {
       throw new Exception("Table $table does not exist");
     }
@@ -681,7 +682,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
 
 /** Add knowledge_articles of current language. The Drupal 7 translation system is used. */
 function _lobbywatch_add_wissensartikel($source_table, $id, &$aggregated, &$message, &$sql) {
-  $lang = get_lang();
+  $lang = get_current_lang();
   $knowledge_articles = _lobbywatch_data_table_flat_list('wissensartikel_link', "wissensartikel_link.target_id = $id AND wissensartikel_link.target_table_name = '$source_table'", false, '', 'JOIN v_d7_node node ON node.tnid_nid = (SELECT tnid_nid FROM v_d7_node WHERE nid=wissensartikel_link.node_id) AND node.status=1' . ($lang ? " AND node.language = '$lang'" : ''), ', node.tnid_nid, node.language article_language, node.type article_type, node.status article_status, node.nid article_nid, node.title as article_title');
   $aggregated['knowledge_articles'] = $knowledge_articles['data'];
   $message .= ' | ' . $knowledge_articles['message'];
@@ -898,7 +899,7 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
     json_not_found();
   }
 
-  lobbywatch_set_lang(_lobbywatch_data_get_lang());
+  lobbywatch_set_lang(get_lang());
 
   if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'id' && $parameter) {
     return _lobbywatch_data_table_flat_id($object, $parameter, false);
