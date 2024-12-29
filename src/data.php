@@ -23,13 +23,21 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
   $count = 0;
   $items = null;
   $message = '';
-
-
+  
   try {
-    $sql = "
-      SELECT " . _lobbywatch_data_select_fields_SQL($table) . "
+    $fields = _lobbywatch_data_select_fields_SQL($table);
+    $filter_unpublished = (in_array($table, array('parlamentarier', 'zutrittsberechtigung'))
+      ? ''
+      : _lobbywatch_data_filter_unpublished_SQL($table));
+    $filter_fields = filter_fields_SQL($table);
+
+    $sql = <<<SQL
+      SELECT $fields
       FROM v_$table $table
-      WHERE $table.id=:id" . (in_array($table, array('parlamentarier', 'zutrittsberechtigung')) ? '' : _lobbywatch_data_filter_unpublished_SQL($table)) . filter_fields_SQL($table);
+      WHERE $table.id=:id
+      $filter_unpublished
+      $filter_fields
+      SQL;
 
     $result = db_query($sql, array(':id' => $id));
 
@@ -47,7 +55,7 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
       'success' => $success,
       'count' => $count,
       'message' => $message,
-      'sql' => $show_sql ? $sql : '',
+      'sql' => $show_sql ? preg_replace('/\s+/', ' ', $sql) : '',
       'source' => $table,
       'build secs' => page_build_secs(),
       'data' => $success ? $items[0] : null,
