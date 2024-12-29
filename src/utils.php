@@ -1,5 +1,7 @@
 <?php
 
+use App\Constants;
+
 function clean_str(?string $str): ?string
 {
     // MUST NOT BE empty($str) due to usage in forms
@@ -42,30 +44,6 @@ function translate_record_field($record, $basefield_name, $hide_german = false, 
 //        return !empty($record[$locale_field_name]) ? $record[$locale_field_name] : ($hide_german && isset($record[$basefield_name]) ? $replacement_text : ($try_lt_if_empty && isset($record[$basefield_name]) ? lt($record[$basefield_name]) : $record[$basefield_name]));
 //    }
     return $record[$basefield_name];
-}
-
-//function db_query($sql, $args = array())
-//{
-//    global $db;
-//    $statement = $db->prepare($sql);
-//    $statement->execute($args);
-//    return $statement->fetchAll(PDO::FETCH_ASSOC);
-//}
-
-function drupal_add_http_header($key, $value)
-{
-    header("$key: $value");
-}
-
-function drupal_json_output($data)
-{
-    header("Content-Type: application/json; charset=UTF-8");
-    echo json_encode($data);
-}
-
-function drupal_exit()
-{
-    // https://api.drupal.org/api/drupal/includes%21common.inc/function/drupal_exit/7.x
 }
 
 function _lobbywatch_page_build_secs()

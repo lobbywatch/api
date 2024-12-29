@@ -4,6 +4,7 @@
       "App\\": "src/"
     },
     "files": [
+      "src/drupal/functions.php",
       "src/store/maria_db.php"
     ]
   },

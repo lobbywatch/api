@@ -3,6 +3,7 @@
 require "utils.php";
 
 use App\Constants;
+use function App\Drupal\{drupal_add_http_header, drupal_exit};
 use function App\Store\db_query;
 
 /**
@@ -61,7 +62,8 @@ function lobbywatch_json_output($response = null, $cors = true)
     if ($cors && empty($no_cors)) { // Should we disable cors?
         drupal_add_http_header('Access-Control-Allow-Origin', '*');
     }
-    drupal_json_output($response);
+    header("Content-Type: application/json; charset=UTF-8");
+    echo json_encode($response);
 }
 
 function _lobbywatch_data_add_exeption($e)

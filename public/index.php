@@ -1,6 +1,6 @@
 <?php
 require "../bootstrap.php";
-require "../src/drupal/data.php";
+require "../src/data.php";
 
 header("Access-Control-Allow-Origin: *");
 
