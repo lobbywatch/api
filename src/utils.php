@@ -1,6 +1,8 @@
 <?php
 
 use App\Constants;
+use function App\Lib\String\{clean_db_value};
+use const App\Lib\String\{SUPPORTED_DB_CHARS};
 
 function get_lang() {
 //    global $language;
@@ -67,17 +69,34 @@ function _lobbywatch_data_filter_unpublished_SQL($table) {
   return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) ? " AND $table.freigabe_datum < NOW()" : '');
 }
 
-function _lobbywatch_data_filter_fields_SQL($table) {
+function filter_fields_SQL(string $table): string {
   $sql = '';
-  $prefix = "filter_";
   // TODO filter fields not allowed
   foreach ($_GET as $key => $value) {
     $matches = [];
     if (preg_match('/^filter_([a-z0-9_]+?)(_list|_like)?$/', $key, $matches) && !is_internal_field($matches[1])) {
-      $sql .= _lobbywatch_data_filter_field_SQL($table, $matches[1]);
+      $sql .= filter_field_SQL($table, $matches[1]);
     }
   }
   return $sql;
+}
+
+function filter_field_SQL(string $table, string $field): string {
+  $paramSingle = "filter_{$field}";
+  $paramList = "filter_{$field}_list";
+  $paramLike = "filter_{$field}_like";
+  $matches = [];
+  if (isset($_GET[$paramSingle]) && is_numeric($_GET[$paramSingle])) {
+    return " AND $table.{$field} = " . intval($_GET[$paramSingle]);
+  } else if (isset($_GET[$paramSingle])) {
+    return " AND $table.{$field} = '" . clean_db_value($_GET[$paramSingle]) . "'";
+  } else if (isset($_GET[$paramList]) && preg_match_all('/([' . SUPPORTED_DB_CHARS . ']+)/', $_GET[$paramList], $matches)) {
+    return " AND $table.{$field} IN ( " . implode(',', $matches[1]) . ')';
+  } else if (isset($_GET[$paramLike])) {
+    return " AND $table.{$field} LIKE '" . clean_db_value($_GET[$paramLike]) . "'";
+  } else {
+    return '';
+  }
 }
 
 function is_internal_field(string $field): bool {

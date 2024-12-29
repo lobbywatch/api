@@ -4,9 +4,8 @@ require "utils.php";
 
 use App\Constants;
 use function App\Drupal\{drupal_add_http_header, drupal_exit};
-use function App\Lib\String\{clean_db_value, clean_str};
+use function App\Lib\String\{clean_str};
 use function App\Store\db_query;
-use const App\Lib\String\{SUPPORTED_DB_CHARS};
 
 /**
  * This is the original Drupal 7 module that was used for providing the data API.
@@ -29,7 +28,7 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
     $sql = "
       SELECT " . _lobbywatch_data_select_fields_SQL($table) . "
       FROM v_$table $table
-      WHERE $table.id=:id" . (in_array($table, array('parlamentarier', 'zutrittsberechtigung')) ? '' : _lobbywatch_data_filter_unpublished_SQL($table)) . _lobbywatch_data_filter_fields_SQL($table);
+      WHERE $table.id=:id" . (in_array($table, array('parlamentarier', 'zutrittsberechtigung')) ? '' : _lobbywatch_data_filter_unpublished_SQL($table)) . filter_fields_SQL($table);
 
     $result = db_query($sql, array(':id' => $id));
 
@@ -67,25 +66,6 @@ function lobbywatch_json_output($response = null, $cors = true) {
 function _lobbywatch_data_add_exeption($e) {
   global $show_stacktrace;
   return $show_stacktrace ? $e->getMessage() . "\n------\n" . $e->getTraceAsString() : $e->getMessage();
-}
-
-
-function _lobbywatch_data_filter_field_SQL($table, $field) {
-  $paramSingle = "filter_{$field}";
-  $paramList = "filter_{$field}_list";
-  $paramLike = "filter_{$field}_like";
-  $matches = [];
-  if (isset($_GET[$paramSingle]) && is_numeric($_GET[$paramSingle])) {
-    return " AND $table.{$field} = " . intval($_GET[$paramSingle]);
-  } else if (isset($_GET[$paramSingle])) {
-    return " AND $table.{$field} = '" . clean_db_value($_GET[$paramSingle]) . "'";
-  } else if (isset($_GET[$paramList]) && preg_match_all('/([' . SUPPORTED_DB_CHARS . ']+)/', $_GET[$paramList], $matches)) {
-    return " AND $table.{$field} IN ( " . implode(',', $matches[1]) . ')';
-  } else if (isset($_GET[$paramLike])) {
-    return " AND $table.{$field} LIKE '" . clean_db_value($_GET[$paramLike]) . "'";
-  } else {
-    return '';
-  }
 }
 
 function _lobbywatch_data_filter_limit_SQL() {
@@ -282,7 +262,7 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
     $join_select
     FROM v_$table $table
     $join
-    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table) . " $order_by" . _lobbywatch_data_filter_limit_SQL() . ';';
+    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table) . " $order_by" . _lobbywatch_data_filter_limit_SQL() . ';';
 
     $result = db_query($sql, []);
 
@@ -320,7 +300,7 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
     $sql = "
     SELECT " . _lobbywatch_data_select_fields_SQL($table) . "
     FROM v_$table $table
-    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table) . _lobbywatch_data_filter_limit_SQL() . ';';
+    WHERE $condition " . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table) . _lobbywatch_data_filter_limit_SQL() . ';';
 
     $result = db_query($sql, []);
 
@@ -414,11 +394,11 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
   try {
     if ($table === 'parlamentarier') {
       //TODO test check permissions
-      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && user_access('access lobbywatch unpublished content')) ? ' AND (im_rat_bis IS NULL OR im_rat_bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table);
+      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && user_access('access lobbywatch unpublished content')) ? ' AND (im_rat_bis IS NULL OR im_rat_bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table);
     } else if ($table === 'zutrittsberechtigung') {
-      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && !user_access('access lobbywatch unpublished content')) ? ' AND (bis IS NULL OR bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table);
+      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && !user_access('access lobbywatch unpublished content')) ? ' AND (bis IS NULL OR bis > NOW())' : '') . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table);
     } else if (in_array($table, Constants::$entities_web)) {
-      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . _lobbywatch_data_filter_unpublished_SQL($table) . _lobbywatch_data_filter_fields_SQL($table);
+      $sql = "SELECT " . _lobbywatch_data_select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . _lobbywatch_data_filter_unpublished_SQL($table) . filter_fields_SQL($table);
     } else {
       throw new Exception("Table $table does not exist");
     }
@@ -882,7 +862,7 @@ select count(*) as anzahl, partei.id, $table.partei$lang_suffix as partei_short,
 from v_parlamentarier $table
 inner join v_partei partei
 on partei.id = $table.partei_id
-WHERE $condition " . _lobbywatch_data_filter_fields_SQL($table) . "
+WHERE $condition " . filter_fields_SQL($table) . "
 group by $table.partei
 order by count(*) desc, $table.partei asc ";
 
