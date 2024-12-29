@@ -1,7 +1,7 @@
 <?php
 
 use App\Constants;
-use function App\Lib\Http\{base_root, check_plain, json_response, request_uri};
+use function App\Lib\Http\{add_exception, base_root, check_plain, json_response, request_uri};
 use function App\Lib\Localization\{get_current_lang, get_lang, lobbywatch_set_lang, translate_record_field};
 use function App\Lib\Metrics\{page_build_secs};
 use function App\Lib\String\{clean_str};
@@ -18,7 +18,7 @@ $show_sql = true;
 $show_stacktrace = true;
 
 function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = false;
   $count = 0;
   $items = null;
@@ -49,7 +49,7 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
     $success = $count == 1;
     $message .= count($items) . " record(s) found";
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
   } finally {
     $response = array(
       'success' => $success,
@@ -67,11 +67,6 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
       return $response;
     }
   }
-}
-
-function _lobbywatch_data_add_exeption($e) {
-  global $show_stacktrace;
-  return $show_stacktrace ? $e->getMessage() . "\n------\n" . $e->getTraceAsString() : $e->getMessage();
 }
 
 function _lobbywatch_data_filter_limit_SQL() {
@@ -253,7 +248,7 @@ function _lobbywatch_data_transformation($table, &$items) {
 }
 
 function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true, $order_by = '', $join = '', $join_select = '') {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $message = '';
   $count = 0;
@@ -279,7 +274,7 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
     $success = $count > 0;
     $message = $count . " record(s) found";
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
@@ -293,7 +288,7 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
 }
 
 function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $message = '';
   $count = 0;
@@ -314,7 +309,7 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
     $success = $count > 0;
     $message = $count . " record(s) found";
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
@@ -339,7 +334,7 @@ function _lobbywatch_search_keyword_processing($str) {
 
 // Adapted from lobbywatch_autocomplete_json.php
 function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;
   $items = null;
@@ -373,7 +368,7 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
     $success = $count > 0;
     $message .= count($items) . " record(s) found ";
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
@@ -386,7 +381,7 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
 }
 
 function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;
   $items = null;
@@ -412,7 +407,7 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
     $success = $count > 0;
     $message .= count($items) . " record(s) found";
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
@@ -425,7 +420,7 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
 }
 
 function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;
   $message = '';
@@ -481,7 +476,7 @@ function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = t
 
     $count = $zutrittsberechtigung['count'];
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
@@ -518,7 +513,7 @@ function _add_verguetungen(&$arr, $verguetungen, $ib_von, $im_rat_seit = null) {
 }
 
 function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   global $env;
   $success = true;
   $count = 0;
@@ -590,7 +585,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
 
     $count = $parlamentarier['count'];
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
@@ -603,7 +598,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
 }
 
 function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;
   $message = '';
@@ -666,7 +661,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
 
     $count = $organsation['count'];
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
@@ -689,7 +684,7 @@ function _lobbywatch_add_wissensartikel($source_table, $id, &$aggregated, &$mess
 }
 
 function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;
   $message = '';
@@ -745,7 +740,7 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
 
     $count = $organsation['count'];
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
@@ -788,7 +783,7 @@ function _lobbywatch_data_get_parlamentarier_from_organisation($orgs) {
 }
 
 function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;
   $message = '';
@@ -829,7 +824,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
 
     $count = $branche['count'];
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
@@ -842,7 +837,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
 }
 
 function _lobbywatch_data_query_parlament_partei_aggregated_list($condition = '1', $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   $success = true;
   $message = '';
   $count = 0;
@@ -880,7 +875,7 @@ order by count(*) desc, $table.partei asc ";
     }
 
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
@@ -930,7 +925,7 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
 }
 
 function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
-  global $show_sql;
+  global $show_sql, $show_stacktrace;
   global $no_cors;
   global $zefix_ws_login;
   global $allowed_uid_access_keys;
@@ -975,7 +970,7 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
     $message .= $items['message'];
     $sql .= $items['sql'];
   } catch (Exception $e) {
-    $message .= _lobbywatch_data_add_exeption($e);
+    $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $success ? $items['data'] : null,);

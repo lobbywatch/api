@@ -58,3 +58,7 @@ function json_response(mixed $response = null, int $response_code = 200, bool $c
   echo json_encode($response);
   exit();
 }
+
+function add_exception($e, $show_stacktrace = false) {
+  return $show_stacktrace ? $e->getMessage() . "\n------\n" . $e->getTraceAsString() : $e->getMessage();
+}
