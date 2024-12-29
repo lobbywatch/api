@@ -1,7 +1,8 @@
 <?php
+
 require "../bootstrap.php";
 require "../src/data.php";
 
-header("Access-Control-Allow-Origin: *");
+use function App\Routes\route_table_flat_id;
 
-echo _lobbywatch_data_table_flat_id('branche', $_GET['id']);
+route_table_flat_id('branche', $_GET['id']);

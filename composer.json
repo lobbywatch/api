@@ -4,10 +4,12 @@
       "App\\": "src/"
     },
     "files": [
+      "src/application/table_by_id.php",
       "src/lib/http.php",
       "src/lib/localization.php",
       "src/lib/metrics.php",
       "src/lib/string.php",
+      "src/routes/table_flat_id.php",
       "src/sql.php",
       "src/store/maria_db.php"
     ]

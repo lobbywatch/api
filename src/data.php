@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants;
+use function App\Application\table_by_id;
 use function App\Lib\Http\{add_exception, check_plain, json_response, request_uri};
 use function App\Lib\Localization\{get_current_lang, get_lang, lobbywatch_set_lang, translate_record_field};
 use function App\Lib\Metrics\{page_build_secs};
@@ -15,58 +16,6 @@ use function App\Store\{db_query};
 global $show_sql, $show_stacktrace;
 $show_sql = true;
 $show_stacktrace = true;
-
-function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
-  global $show_sql, $show_stacktrace;
-  $success = false;
-  $count = 0;
-  $items = null;
-  $message = '';
-
-  try {
-    $fields = select_fields_SQL($table);
-    $filter_unpublished = (in_array($table, array('parlamentarier', 'zutrittsberechtigung'))
-      ? ''
-      : filter_unpublished_SQL($table));
-    $filter_fields = filter_fields_SQL($table);
-
-    $sql = <<<SQL
-      SELECT $fields
-      FROM v_$table $table
-      WHERE $table.id=:id
-      $filter_unpublished
-      $filter_fields
-      SQL;
-
-    $result = db_query($sql, array(':id' => $id));
-
-    $items = clean_records($result);
-
-    data_transformation($table, $items);
-
-    $count = count($items);
-    $success = $count == 1;
-    $message .= count($items) . " record(s) found";
-  } catch (Exception $e) {
-    $message .= add_exception($e, $show_stacktrace);
-  } finally {
-    $response = array(
-      'success' => $success,
-      'count' => $count,
-      'message' => $message,
-      'sql' => $show_sql ? preg_replace('/\s+/', ' ', $sql) : '',
-      'source' => $table,
-      'build secs' => page_build_secs(),
-      'data' => $success ? $items[0] : null,
-    );
-
-    if ($json) {
-      json_response($response);
-    } else {
-      return $response;
-    }
-  }
-}
 
 function _lobbywatch_data_filter_limit_SQL() {
   if (isset($_GET['limit']) && $_GET['limit'] == 'none') {
@@ -298,7 +247,7 @@ function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = t
   $table = 'zutrittsberechtigung';
 
   try {
-    $zutrittsberechtigung = _lobbywatch_data_table_flat_id('zutrittsberechtigung', $id, false);
+    $zutrittsberechtigung = table_by_id('zutrittsberechtigung', $id);
     $aggregated = $zutrittsberechtigung['data'];
     $message .= ' | ' . $zutrittsberechtigung['message'];
     $sql .= ' | ' . $zutrittsberechtigung['sql'];
@@ -394,7 +343,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
 
   try {
     $message .= "$env";
-    $parlamentarier = _lobbywatch_data_table_flat_id('parlamentarier', $id, false);
+    $parlamentarier = table_by_id('parlamentarier', $id);
     $aggregated = $parlamentarier['data'];
     $message .= ' | ' . $parlamentarier['message'];
     $sql .= ' | ' . $parlamentarier['sql'];
@@ -476,7 +425,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
   $table = 'organisation';
 
   try {
-    $organsation = _lobbywatch_data_table_flat_id('organisation', $id, false);
+    $organsation = table_by_id('organisation', $id);
     $aggregated = $organsation['data'];
     $message .= ' | ' . $organsation['message'];
     $sql .= ' | ' . $organsation['sql'];
@@ -520,7 +469,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
       $sql .= ' | ' . $zutrittsberechtigung['sql'];
 
       foreach ($aggregated['zutrittsberechtigte'] as $key => $value) {
-        $parlamentarier = _lobbywatch_data_table_flat_id('parlamentarier', $value['parlamentarier_id'], false);
+        $parlamentarier = table_by_id('parlamentarier', $value['parlamentarier_id']);
         $aggregated['zutrittsberechtigte'][$key]['parlamentarier'] = $parlamentarier['data'];
         $message .= ' | ' . $parlamentarier['message'];
         $sql .= ' | ' . $parlamentarier['sql'];
@@ -562,7 +511,7 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
   $table = 'interessengruppe';
 
   try {
-    $interessengruppe = _lobbywatch_data_table_flat_id($table, $id, false);
+    $interessengruppe = table_by_id($table, $id);
     $aggregated = $interessengruppe['data'];
     $message .= ' | ' . $interessengruppe['message'];
     $sql .= ' | ' . $interessengruppe['sql'];
@@ -661,7 +610,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
   $table = 'branche';
 
   try {
-    $branche = _lobbywatch_data_table_flat_id($table, $id, false);
+    $branche = table_by_id($table, $id);
     $aggregated = $branche['data'];
     $message .= ' | ' . $branche['message'];
     $sql .= ' | ' . $branche['sql'];
@@ -766,7 +715,7 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
   lobbywatch_set_lang(get_lang());
 
   if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'id' && $parameter) {
-    return _lobbywatch_data_table_flat_id($object, $parameter, false);
+    return table_by_id($object, $parameter);
   } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list' && $parameter) {
     return _lobbywatch_data_table_flat_list_search($object, $parameter, false);
   } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list') {
