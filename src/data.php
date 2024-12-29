@@ -1,13 +1,12 @@
 <?php
 
-require "utils.php";
-
 use App\Constants;
 use function App\Lib\Http\{base_root, check_plain, json_response, request_uri};
 use function App\Lib\Localization\{get_current_lang, get_lang, lobbywatch_set_lang, translate_record_field};
 use function App\Lib\Metrics\{page_build_secs};
 use function App\Lib\String\{clean_str};
-use function App\Store\db_query;
+use function App\Sql\{filter_fields_SQL, filter_unpublished_SQL, is_internal_field, select_fields_SQL};
+use function App\Store\{db_query};
 
 /**
  * This is the original Drupal 7 module that was used for providing the data API.

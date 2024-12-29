@@ -1,10 +1,12 @@
 <?php
 
+namespace App\Sql;
+
 use App\Constants;
 use function App\Lib\String\{clean_db_value};
 use const App\Lib\String\{SUPPORTED_DB_CHARS};
 
-function select_fields_SQL($table) {
+function select_fields_SQL(string $table): string {
   $matches = [];
   if (isset($_GET['select_fields']) && $_GET['select_fields'] != '*' && preg_match_all('/([A-Za-z0-9_.,*\-]+)/', $_GET['select_fields'], $matches)) {
     return " $table.id, " . implode(', ', explode(', ', $matches[1][0])) . " ";
@@ -14,7 +16,7 @@ function select_fields_SQL($table) {
 }
 
 /** Filters out unpublished data if not privileged or includeUnpublished == 0 */
-function filter_unpublished_SQL($table) {
+function filter_unpublished_SQL(string $table): string {
 //    return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) || !user_access('access lobbywatch data unpublished content') ? " AND $table.freigabe_datum < NOW()" : '');
   return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) ? " AND $table.freigabe_datum < NOW()" : '');
 }
