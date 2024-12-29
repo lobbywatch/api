@@ -3,7 +3,7 @@
 require "utils.php";
 
 use App\Constants;
-use function App\Lib\Http\{base_root, json_response};
+use function App\Lib\Http\{base_root, check_plain, json_response, request_uri};
 use function App\Lib\Metrics\{page_build_secs};
 use function App\Lib\String\{clean_str};
 use function App\Store\db_query;
@@ -23,7 +23,7 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
   $count = 0;
   $items = null;
   $message = '';
-  
+
   try {
     $fields = _lobbywatch_data_select_fields_SQL($table);
     $filter_unpublished = (in_array($table, array('parlamentarier', 'zutrittsberechtigung'))
@@ -895,7 +895,7 @@ order by count(*) desc, $table.partei asc ";
 
 function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $respone_object = '', $parameter = '', $json_output = false) {
   if ($version !== 'v1' || $data_type !== 'json') {
-    _lobbywatch_data_json_404();
+    json_not_found();
   }
 
   lobbywatch_set_lang(_lobbywatch_data_get_lang());
@@ -926,19 +926,7 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
     return _lobbywatch_data_search($response_type, false);
   }
 
-  _lobbywatch_data_json_404();
-}
-
-function _lobbywatch_data_json_404() {
-  header('Status: 404 Not Found');
-  $response = array('success' => false, 'count' => 0, 'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.', 'sql' => '', 'source' => '', 'build secs' => '' . page_build_secs(), 'data' => null,);
-  json_response($response);
-}
-
-function _lobbywatch_data_json_403() {
-  header('Status: 403 Forbidden');
-  $response = array('success' => false, 'count' => 0, 'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.', 'sql' => '', 'source' => '', 'build secs' => '' . page_build_secs(), 'data' => null,);
-  json_response($response);
+  json_not_found();
 }
 
 function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
@@ -954,9 +942,9 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
 
   // Protect Zefix WS, either with key or from cyon.ch server or localhost
   if (in_array($table, ['uid', 'zefix-rest', 'uid-bfs']) && (empty($_GET['access_key']) || !in_array($_GET['access_key'], $allowed_uid_access_keys, true)) && $_SERVER['REMOTE_ADDR'] !== '91.206.24.232' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
-    _lobbywatch_data_json_403();
+    json_forbidden();
   } else if (in_array($table, ['zefix-soap']) && (empty($_GET['access_key']) || !in_array($_GET['access_key'], $zefix_ws_login['keys'], true)) && $_SERVER['REMOTE_ADDR'] !== '91.206.24.232' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
-    _lobbywatch_data_json_403();
+    json_forbidden();
   }
 
 
@@ -993,9 +981,34 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
     $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $success ? $items['data'] : null,);
 
     if ($json) {
-      json_response($response, !$no_cors);
+      json_response($response, cors: !$no_cors);
     } else {
       return $response;
     }
   }
+}
+
+function json_not_found(): never {
+  $response = array(
+    'success' => false,
+    'count' => 0,
+    'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.',
+    'sql' => '',
+    'source' => '',
+    'build secs' => page_build_secs(),
+    'data' => null,
+  );
+  json_response($response, 404);
+}
+
+function json_forbidden(): never {
+  $response = array('success' => false,
+    'count' => 0,
+    'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.',
+    'sql' => '',
+    'source' => '',
+    'build secs' => page_build_secs(),
+    'data' => null,
+  );
+  json_response($response, 403);
 }
