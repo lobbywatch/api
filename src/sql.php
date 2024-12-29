@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Sql;
 
 use App\Constants;
-use function App\Lib\String\{clean_db_value};
+use function App\Lib\Http\base_root;
+use function App\Lib\Localization\get_current_lang;
+use function App\Lib\String\{clean_db_value, clean_str};
 use const App\Lib\String\{SUPPORTED_DB_CHARS};
 
 function select_fields_SQL(string $table): string {
@@ -55,4 +57,133 @@ function filter_field_SQL(string $table, string $field): string {
 function is_internal_field(string $field): bool {
 //    return !user_access('access lobbywatch data confidential content') && in_array($field, Constants::$intern_fields);
   return in_array($field, Constants::$internal_fields);
+}
+
+function clean_records($result) {
+  $items = [];
+//    $includeHistorised = isset($_GET['includeInactive']) && $_GET['includeInactive'] == 1 && user_access('access lobbywatch unpublished content');
+  $includeHistorised = false;
+
+  // TODO test exclusion of historised records
+  foreach ($result as $record) {
+    if (((!array_key_exists('bis_unix', $record) || (is_null($record['bis_unix']) || $record['bis_unix'] > time())) && (!array_key_exists('im_rat_bis_unix', $record) || (is_null($record['im_rat_bis_unix']) || $record['im_rat_bis_unix'] > time())) && (!array_key_exists('zutrittsberechtigung_bis_unix', $record) || (is_null($record['zutrittsberechtigung_bis_unix']) || $record['zutrittsberechtigung_bis_unix'] > time()))) || $includeHistorised) {
+      $fields = data_clean_fields($record);
+      enrich_fields($fields);
+      $items[] = $fields;
+    }
+  }
+
+  _lobbywatch_data_handle_lang_fields($items);
+
+  return $items;
+}
+
+function enrich_fields(array &$items) {
+  if (!empty($items['wikidata_qid'])) {
+    $items['wikidata_item_url'] = "https://www.wikidata.org/wiki/" . $items['wikidata_qid'];
+  }
+
+  if (!empty($items['parlament_biografie_id'])) {
+    $items['parlament_biografie_url'] = "https://www.parlament.ch/de/biografie/name/" . $items['parlament_biografie_id'];
+  }
+
+  if (!empty($items['twitter_name'])) {
+    $items['twitter_url'] = "https://twitter.com/" . $items['twitter_name'];
+  }
+
+  if (!empty($items['facebook_name'])) {
+    $items['facebook_url'] = "https://www.facebook.com/" . $items['facebook_name'];
+  }
+
+  if (!empty($items['isicv4'])) {
+    $items['isicv4_list'] = explode(" ", $items['isicv4']);
+  }
+}
+
+function data_clean_fields($input_record) {
+
+  $record = $input_record;
+
+  $updated_fields = array('updated_date', 'updated_date_unix', 'refreshed_date');
+  if (!isset($_GET['includeConfidentialData']) || $_GET['includeConfidentialData'] != 1 /* || !user_access('access lobbywatch data confidential content') */) {
+    foreach ($record as $key => $value) {
+      // Clean intern fields
+      if (is_internal_field($key)) {
+        unset($record[$key]);
+      }
+      if (in_array($key, Constants::$meta_fields) && !in_array($key, $updated_fields)) {
+        unset($record[$key]);
+      }
+    }
+  }
+
+  if (!isset($_GET['includeMetaData']) || $_GET['includeMetaData'] != 1) {
+    foreach ($record as $key => $value) {
+      // Clean intern fields
+      if (in_array($key, $updated_fields)) {
+        unset($record[$key]);
+      }
+    }
+  }
+
+  foreach ($record as $key => $value) {
+    // Clean intern fields
+    if (preg_match('/_(BAD|OLD|ALT)$/i', $key)) {
+      unset($record[$key]);
+    } else if (preg_match('/_json$/i', $key)) {
+      $record[$key] = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+    } else if (is_string($value)) {
+      $clean = clean_str($value);
+      // TODO move list of strip_tags exception to general location
+      if (!in_array($key, ['parlament_interessenbindungen'], true)) {
+        $clean = strip_tags($clean);
+      }
+      $record[$key] = $clean;
+    }
+
+  }
+
+  global $rel_files_url;
+  if (isset($record['symbol_klein_rel'])) {
+    $record['symbol_path'] = $rel_files_url . '/' . $record['symbol_klein_rel'];
+    $record['symbol_url'] = base_root() . $record['symbol_path'];
+  }
+
+  if (isset($record['kleinbild'])) {
+    $record['kleinbild_path'] = $rel_files_url . '/../files/parlamentarier_photos/klein/' . $record['kleinbild'];
+    $record['kleinbild_url'] = base_root() . $record['kleinbild_path'];
+  }
+
+  return $record;
+}
+
+function data_transformation($table, &$items) {
+  if (in_array($table, ['organisation', 'interessenbindung_liste'], true)) {
+    $lang = get_current_lang();
+
+    $pg_prefix = ['de' => 'Parlamentarische Gruppe ', 'fr' => 'Intergroupe parlementaire ', 'it' => 'Intergruppo parlamentare ',];
+    $fpg_prefix = ['de' => 'Parlamentarische Freundschaftsgruppe ', 'fr' => 'Intergroupe parlementaire ', 'it' => 'Intergruppo parlamentare ',];
+
+    foreach ($items as $item_key => $fields) {
+      foreach ($fields as $key => $value) {
+        if (in_array($key, ['name', 'organisation_name'], true) && $fields['rechtsform'] === 'Parlamentarische Gruppe') {
+          $items[$item_key][$key] = $pg_prefix[$lang] . ($lang === 'de' ? $items[$item_key][$key] : lcfirst($items[$item_key][$key]));
+        } else if (in_array($key, ['name', 'organisation_name'], true) && $fields['rechtsform'] === 'Parlamentarische Freundschaftsgruppe') {
+          $items[$item_key][$key] = $fpg_prefix[$lang] . ($lang === 'de' ? $items[$item_key][$key] : lcfirst($items[$item_key][$key]));
+        }
+      }
+    }
+  } else if (in_array($table, ['parlamentarier', 'organisation_parlamentarier'], true)) { // quick and dirty hack to replace M with Mitte
+    $lang = get_current_lang();
+
+    foreach ($items as $item_key => $fields) {
+      foreach ($fields as $key => $value) {
+        if (in_array($key, ['partei'], true) && $fields['partei'] === 'M') {
+          $items[$item_key][$key] = 'Mitte';
+        } else if (in_array($key, ['partei'], true) && $fields['partei'] === 'C') {
+          $items[$item_key][$key] = 'Centre';
+        }
+      }
+    }
+  }
 }
