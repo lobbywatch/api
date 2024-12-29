@@ -6,5 +6,5 @@ install:
 	composer install
 
 .PHONY: dev
-dev:
+dev: install
 	php -S 127.0.0.1:8000 -t public
