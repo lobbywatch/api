@@ -1,5 +1,10 @@
 <?php
 
+require "utils.php";
+
+use App\Constants;
+use function App\Store\db_query;
+
 /**
  * This is the original Drupal 7 module that was used for providing the data API.
  * We copy it into this repo to gradually transform into Drupal-free code.
@@ -14,7 +19,7 @@ const SUPPORTED_DB_CHARS = '-a-zA-Z0-9_.äöüÄÖÜéèàÉÈâ%;,"\'';
 function _lobbywatch_data_table_flat_id($table, $id, $json = true)
 {
     global $show_sql;
-    $success = true;
+    $success = false;
     $count = 0;
     $items = null;
     $message = '';
@@ -39,7 +44,7 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true)
         $message .= _lobbywatch_data_add_exeption($e);
         $success = false;
     } finally {
-        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $success ? $items[0] : null,);
+        $response = array('success' => $success, 'count' => $count, 'message' => $message, 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $success ? $items[0] : null,);
 
         if ($json) {
             lobbywatch_json_output($response);
@@ -63,12 +68,6 @@ function _lobbywatch_data_add_exeption($e)
 {
     global $show_stacktrace;
     return $show_stacktrace ? $e->getMessage() . "\n------\n" . $e->getTraceAsString() : $e->getMessage();
-}
-
-/** Filters out unpublished data if not privileged or includeUnpublished == 0 */
-function _lobbywatch_data_filter_unpublished_SQL($table)
-{
-    return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) || !user_access('access lobbywatch data unpublished content') ? " AND $table.freigabe_datum < NOW()" : '');
 }
 
 function _lobbywatch_data_clean_DB_value($value)
@@ -95,45 +94,12 @@ function _lobbywatch_data_filter_field_SQL($table, $field)
     }
 }
 
-function _lobbywatch_data_filter_fields_SQL($table)
-{
-    $sql = '';
-    $prefix = "filter_";
-    // TODO filter fields not allowed
-    foreach ($_GET as $key => $value) {
-        $matches = [];
-        if (preg_match('/^filter_([a-z0-9_]+?)(_list|_like)?$/', $key, $matches) && !_lobbywatch_data_check_intern_field($matches[1])) {
-            $sql .= _lobbywatch_data_filter_field_SQL($table, $matches[1]);
-        }
-    }
-    return $sql;
-}
-
 function _lobbywatch_data_filter_limit_SQL()
 {
     if (isset($_GET['limit']) && $_GET['limit'] == 'none') {
         return '';
     } else {
         return " LIMIT " . (isset($_GET['limit']) && is_int($limit = $_GET['limit'] + 0) && $limit > 0 ? $limit : 10) . " ";
-    }
-}
-
-function _lobbywatch_data_select_fields_SQL($table)
-{
-    $matches = [];
-    if (isset($_GET['select_fields']) && $_GET['select_fields'] != '*' && preg_match_all('/([A-Za-z0-9_.,*\-]+)/', $_GET['select_fields'], $matches)) {
-        return " $table.id, " . implode(', ', explode(', ', $matches[1][0])) . " ";
-    } else {
-        return "$table.*";
-    }
-}
-
-function _lobbywatch_data_get_lang()
-{
-    if (isset($_GET['lang']) && $_GET['lang'] == 'fr') {
-        return 'fr';
-    } else {
-        return 'de';
     }
 }
 
@@ -182,10 +148,11 @@ function _lobbywatch_data_handle_lang_fields(&$items)
 function _lobbywatch_data_clean_records($result)
 {
     $items = [];
-    $includeHistorised = isset($_GET['includeInactive']) && $_GET['includeInactive'] == 1 && user_access('access lobbywatch unpublished content');
+//    $includeHistorised = isset($_GET['includeInactive']) && $_GET['includeInactive'] == 1 && user_access('access lobbywatch unpublished content');
+    $includeHistorised = false;
 
     // TODO test exclusion of historised records
-    while ($record = $result->fetchAssoc()) {
+    foreach ($result as $record) {
         if (((!array_key_exists('bis_unix', $record) || (is_null($record['bis_unix']) || $record['bis_unix'] > time())) && (!array_key_exists('im_rat_bis_unix', $record) || (is_null($record['im_rat_bis_unix']) || $record['im_rat_bis_unix'] > time())) && (!array_key_exists('zutrittsberechtigung_bis_unix', $record) || (is_null($record['zutrittsberechtigung_bis_unix']) || $record['zutrittsberechtigung_bis_unix'] > time()))) || $includeHistorised) {
             $fields = _lobbywatch_data_clean_fields($record);
             _lobbywatch_data_enrich_fields($fields);
@@ -227,7 +194,7 @@ function _lobbywatch_data_clean_fields($input_record)
     $record = $input_record;
 
     $updated_fields = array('updated_date', 'updated_date_unix', 'refreshed_date');
-    if (!isset($_GET['includeConfidentialData']) || $_GET['includeConfidentialData'] != 1 || !user_access('access lobbywatch data confidential content')) {
+    if (!isset($_GET['includeConfidentialData']) || $_GET['includeConfidentialData'] != 1 /* || !user_access('access lobbywatch data confidential content') */) {
         foreach ($record as $key => $value) {
             // Clean intern fields
             if (in_array($key, Constants::$intern_fields)) {
@@ -253,7 +220,7 @@ function _lobbywatch_data_clean_fields($input_record)
         if (preg_match('/_(BAD|OLD|ALT)$/i', $key)) {
             unset($record[$key]);
         } else if (preg_match('/_json$/i', $key)) {
-            $record[$key] = decodeJson($value, true, 512, JSON_THROW_ON_ERROR);
+            $record[$key] = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
         } else if (is_string($value)) {
             $clean = clean_str($value);
             // TODO move list of strip_tags exception to general location
@@ -280,11 +247,6 @@ function _lobbywatch_data_clean_fields($input_record)
     }
 
     return $record;
-}
-
-function _lobbywatch_data_check_intern_field($field)
-{
-    return !user_access('access lobbywatch data confidential content') && in_array($field, Constants::$intern_fields);
 }
 
 function _lobbywatch_data_transformation($table, &$items)

@@ -1,11 +1,15 @@
 {
   "autoload": {
     "psr-4": {
-      "Src\\": "src/"
-    }
+      "App\\": "src/"
+    },
+    "files": [
+      "src/store/maria_db.php"
+    ]
   },
   "require": {
-    "phpdevcommunity/php-dotenv": "^3.0"
+    "phpdevcommunity/php-dotenv": "^3.0",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "3.11.2"

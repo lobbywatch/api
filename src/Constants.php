@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 // @todo alias für namensänderungen machen
 class Constants
 {

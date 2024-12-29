@@ -13,3 +13,9 @@ make install
 ```shell
 make dev
 ```
+
+# TODOs
+
+## Mappings
+
+* [ ] https://cms.lobbywatch.ch/data/interface/v1/json/table/branche/flat/id/1

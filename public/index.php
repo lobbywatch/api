@@ -1,7 +1,7 @@
 <?php
 require "../bootstrap.php";
+require "../src/drupal/data.php";
 
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
 
-echo json_encode(array(["a" => 1, "b" => 2, "c" => 3]));
+echo _lobbywatch_data_table_flat_id('branche', $_GET['id']);
