@@ -5,6 +5,7 @@
     },
     "files": [
       "src/drupal/functions.php",
+      "src/lib/http.php",
       "src/lib/string.php",
       "src/store/maria_db.php"
     ]
