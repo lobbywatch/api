@@ -33,11 +33,6 @@ function translate_record_field($record, $basefield_name, $hide_german = false, 
   return $record[$basefield_name];
 }
 
-function _lobbywatch_page_build_secs() {
-//  return round(timer_read('page')/1000, 2);
-  return 0;
-}
-
 function _lobbywatch_data_get_lang() {
   if (isset($_GET['lang']) && $_GET['lang'] == 'fr') {
     return 'fr';

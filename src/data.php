@@ -4,6 +4,7 @@ require "utils.php";
 
 use App\Constants;
 use function App\Lib\Http\{base_root, json_response};
+use function App\Lib\Metrics\{page_build_secs};
 use function App\Lib\String\{clean_str};
 use function App\Store\db_query;
 
@@ -41,7 +42,6 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
     $message .= count($items) . " record(s) found";
   } catch (Exception $e) {
     $message .= _lobbywatch_data_add_exeption($e);
-    $success = false;
   } finally {
     $response = array(
       'success' => $success,
@@ -49,7 +49,7 @@ function _lobbywatch_data_table_flat_id($table, $id, $json = true) {
       'message' => $message,
       'sql' => $show_sql ? $sql : '',
       'source' => $table,
-      'build secs' => '' . _lobbywatch_page_build_secs(),
+      'build secs' => page_build_secs(),
       'data' => $success ? $items[0] : null,
     );
 
@@ -274,7 +274,7 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
 
     if ($json) {
       json_response($response);
@@ -309,7 +309,7 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
 
     if ($json) {
       json_response($response);
@@ -368,7 +368,7 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
     if ($json) {
       json_response($response);
     } else {
@@ -407,7 +407,7 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
     if ($json) {
       json_response($response);
     } else {
@@ -476,7 +476,7 @@ function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = t
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -585,7 +585,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -661,7 +661,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -740,7 +740,7 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -824,7 +824,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $aggregated);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -875,7 +875,7 @@ order by count(*) desc, $table.partei asc ";
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $items);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
 
     if ($json) {
       json_response($response);
@@ -923,13 +923,13 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
 
 function _lobbywatch_data_json_404() {
   header('Status: 404 Not Found');
-  $response = array('success' => false, 'count' => 0, 'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.', 'sql' => '', 'source' => '', 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => null,);
+  $response = array('success' => false, 'count' => 0, 'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.', 'sql' => '', 'source' => '', 'build secs' => '' . page_build_secs(), 'data' => null,);
   json_response($response);
 }
 
 function _lobbywatch_data_json_403() {
   header('Status: 403 Forbidden');
-  $response = array('success' => false, 'count' => 0, 'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.', 'sql' => '', 'source' => '', 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => null,);
+  $response = array('success' => false, 'count' => 0, 'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.', 'sql' => '', 'source' => '', 'build secs' => '' . page_build_secs(), 'data' => null,);
   json_response($response);
 }
 
@@ -982,7 +982,7 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
     $message .= _lobbywatch_data_add_exeption($e);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . _lobbywatch_page_build_secs(), 'data' => $success ? $items['data'] : null,);
+    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $success ? $items['data'] : null,);
 
     if ($json) {
       json_response($response, !$no_cors);
