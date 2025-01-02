@@ -6,6 +6,7 @@
     "files": [
       "src/application/table_by_id.php",
       "src/application/table_list.php",
+      "src/application/zutrittsberechtigte_aggregated_by_id.php",
       "src/domain/ApiResponse.php",
       "src/lib/array.php",
       "src/lib/http.php",
@@ -15,6 +16,7 @@
       "src/routes/table_flat_id.php",
       "src/routes/table_flat_list.php",
       "src/routes/table_flat_list_search.php",
+      "src/routes/table_zutrittsberechtigte_aggregated.php",
       "src/routes/relation_flat_list.php",
       "src/settings.php",
       "src/sql.php",

@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace App\Sql;
 
 use App\Constants;
+use function App\Domain\IdentityAccess\user_access;
 use function App\Lib\Http\base_root;
 use function App\Lib\Localization\get_current_lang;
 use function App\Lib\String\{clean_db_value, clean_str};
+use function App\Settings\getRechercheJahrFromSettings;
 use const App\Lib\String\{SUPPORTED_DB_CHARS};
 
 function select_fields_SQL(string $table): string {
@@ -69,12 +71,17 @@ function is_internal_field(string $field): bool {
 
 function clean_records($result) {
     $items = [];
-//    $includeHistorised = isset($_GET['includeInactive']) && $_GET['includeInactive'] == 1 && user_access('access lobbywatch unpublished content');
-    $includeHistorised = false;
+    $includeHistorised = isset($_GET['includeInactive']) && $_GET['includeInactive'] == 1 && user_access('access lobbywatch unpublished content');
 
     // TODO test exclusion of historised records
     foreach ($result as $record) {
-        if (((!array_key_exists('bis_unix', $record) || (is_null($record['bis_unix']) || $record['bis_unix'] > time())) && (!array_key_exists('im_rat_bis_unix', $record) || (is_null($record['im_rat_bis_unix']) || $record['im_rat_bis_unix'] > time())) && (!array_key_exists('zutrittsberechtigung_bis_unix', $record) || (is_null($record['zutrittsberechtigung_bis_unix']) || $record['zutrittsberechtigung_bis_unix'] > time()))) || $includeHistorised) {
+        if ((
+                (!array_key_exists('bis_unix', $record) || (is_null($record['bis_unix']) || $record['bis_unix'] > time()))
+                && (!array_key_exists('im_rat_bis_unix', $record) || (is_null($record['im_rat_bis_unix']) || $record['im_rat_bis_unix'] > time()))
+                && (!array_key_exists('zutrittsberechtigung_bis_unix', $record) || (is_null($record['zutrittsberechtigung_bis_unix']) || $record['zutrittsberechtigung_bis_unix'] > time()))
+            )
+            || $includeHistorised
+        ) {
             $fields = data_clean_fields($record);
             enrich_fields($fields);
             $items[] = $fields;
@@ -193,5 +200,28 @@ function data_transformation($table, &$items) {
                 }
             }
         }
+    }
+}
+
+function add_verguetungen(&$arr, $verguetungen, $ib_von, $im_rat_seit = null) {
+    $arr['verguetungen_einzeln'] = $verguetungen['data'];
+    $verguetungen_jahr = [];
+    foreach ($verguetungen['data'] as $jkey => $jval) {
+        $verguetungen_jahr[$jval['jahr']] = $jval;
+    }
+
+    $this_year = getRechercheJahrFromSettings();
+    $start_years = [$this_year - 5];
+    if ($ib_von) {
+        $start_years[] = date_parse($ib_von)['year'];
+    }
+    if ($im_rat_seit) {
+        $start_years[] = date_parse($im_rat_seit)['year'];
+    }
+    $start_year = max($start_years);
+    for ($year = $start_year; $year <= $this_year; $year++) {
+        $message .= " +$year+";
+        $arr['verguetungen_jahr'][$year] = $verguetungen_jahr[$year] ?? null;
+        $arr['verguetungen_pro_jahr'][] = $verguetungen_jahr[$year] ?? ['jahr' => "$year"];
     }
 }

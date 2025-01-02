@@ -36,7 +36,7 @@ if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tab
 } else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $response_object === 'list') {
   route_relation_flat_list($object);
 } else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
-  
+  route_zutrittsberechtigte_aggregated($parameter);
 }
 
 json_response(not_found_response());
