@@ -7,6 +7,7 @@
       "src/application/table_by_id.php",
       "src/application/table_list.php",
       "src/domain/ApiResponse.php",
+      "src/lib/array.php",
       "src/lib/http.php",
       "src/lib/localization.php",
       "src/lib/metrics.php",
