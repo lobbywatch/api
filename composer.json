@@ -15,6 +15,7 @@
       "src/lib/string.php",
       "src/routes/query_parlament_partei_aggregated_list.php",
       "src/routes/relation_flat_list.php",
+      "src/routes/search.php",
       "src/routes/table_branche_aggregated_id.php",
       "src/routes/table_flat_id.php",
       "src/routes/table_flat_list.php",
