@@ -3,7 +3,7 @@
 use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
-use function App\Lib\Localization\{get_current_lang, get_lang_suffix};
+use function App\Lib\Localization\{get_lang_suffix};
 use function App\Sql\{clean_records, filter_limit_SQL};
 use function App\Store\{db_query};
 
@@ -72,15 +72,6 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
       return $response;
     }
   }
-}
-
-/** Add knowledge_articles of current language. The Drupal 7 translation system is used. */
-function _lobbywatch_add_wissensartikel($source_table, $id, &$aggregated, &$message, &$sql) {
-  $lang = get_current_lang();
-  $knowledge_articles = table_list('wissensartikel_link', "wissensartikel_link.target_id = $id AND wissensartikel_link.target_table_name = '$source_table'", '', 'JOIN v_d7_node node ON node.tnid_nid = (SELECT tnid_nid FROM v_d7_node WHERE nid=wissensartikel_link.node_id) AND node.status=1' . ($lang ? " AND node.language = '$lang'" : ''), ', node.tnid_nid, node.language article_language, node.type article_type, node.status article_status, node.nid article_nid, node.title as article_title');
-  $aggregated['knowledge_articles'] = $knowledge_articles['data'];
-  $message .= ' | ' . $knowledge_articles['message'];
-  $sql .= ' | ' . $knowledge_articles['sql'];
 }
 
 /**

@@ -70,7 +70,7 @@ function route_data_table_organisation_aggregated_id(string $id): never {
         $sql .= ' | ' . $parlamentarier['sql'];
       }
 
-      _lobbywatch_add_wissensartikel($table, $id, $aggregated, $message, $sql);
+//      _lobbywatch_add_wissensartikel($table, $id, $aggregated, $message, $sql);
     }
 
     $count = $organsation['count'];

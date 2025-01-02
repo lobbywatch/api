@@ -70,7 +70,7 @@ function route_table_parlamentarier_aggregated_id(string $id): array {
         $sql .= ' | ' . $mandate['sql'];
       }
 
-      _lobbywatch_add_wissensartikel($table, $id, $aggregated, $message, $sql);
+//      _lobbywatch_add_wissensartikel($table, $id, $aggregated, $message, $sql);
 
       if (!empty($last_modified_date)) {
         $aggregated['last_modified_date'] = $last_modified_date;
