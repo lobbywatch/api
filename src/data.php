@@ -4,7 +4,7 @@ use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
 use function App\Lib\Localization\{get_current_lang, get_lang_suffix, translate_record_field};
-use function App\Sql\{clean_records, filter_fields_SQL, filter_limit_SQL};
+use function App\Sql\{clean_records, filter_limit_SQL};
 use function App\Store\{db_query};
 
 /**
@@ -155,62 +155,9 @@ function _lobbywatch_data_get_parlamentarier_from_organisation($orgs) {
   return $aggregated;
 }
 
-function _lobbywatch_data_query_parlament_partei_aggregated_list($condition = '1', $json = true) {
-  global $show_sql, $show_stacktrace;
-  $success = true;
-  $message = '';
-  $count = 0;
-  $items = null;
-
-
-  try {
-    $lang_suffix = get_lang_suffix();
-
-    $table = 'parlamentarier';
-    $sql = "
-select count(*) as anzahl, partei.id, $table.partei$lang_suffix as partei_short, partei.anzeige_name$lang_suffix as partei_name, $table.fraktion
-from v_parlamentarier $table
-inner join v_partei partei
-on partei.id = $table.partei_id
-WHERE $condition " . filter_fields_SQL($table) . "
-group by $table.partei
-order by count(*) desc, $table.partei asc ";
-
-    $result = db_query($sql, []);
-
-    $items['totalMembers'] = 246;
-    $items['parteien'] = clean_records($result);
-
-    $count = count($items['parteien']);
-    $message .= $count . " record(s) found";
-    $success = $count > 0;
-
-    foreach ($items['parteien'] as &$record) {
-      $parlamentarier = table_list('parlamentarier', "parlamentarier.partei_id = {$record['id']}");
-      $record['members'] = $parlamentarier['data'];
-      $message .= ' | ' . $parlamentarier['message'];
-      $sql .= ' | ' . $parlamentarier['sql'];
-      $success = $success && ($parlamentarier['success'] || (!$parlamentarier['success'] && $parlamentarier['data']['members'] == 0));
-    }
-
-  } catch (Exception $e) {
-    $message .= add_exception($e, $show_stacktrace);
-    $success = false;
-  } finally {
-    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
-
-    if ($json) {
-      json_response($response);
-    } else {
-      return $response;
-    }
-  }
-}
 
 function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $response_object = '', $parameter = '', $json_output = false) {
-  if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $response_object === 'list') {
-    return _lobbywatch_data_query_parlament_partei_aggregated_list(1, false);
-  } else if ($call_type === 'search' && $object === 'default' /*&& $response_type === 'aggregated' && $respone_object === 'list'*/ /*&& $parameter*/) {
+  if ($call_type === 'search' && $object === 'default' /*&& $response_type === 'aggregated' && $respone_object === 'list'*/ /*&& $parameter*/) {
     return _lobbywatch_data_search($response_type, false);
   }
 }

@@ -9,6 +9,7 @@ use function App\Lib\Http\json_response;
 use function App\Lib\Localization\get_lang;
 use function App\Lib\Localization\lobbywatch_set_lang;
 use function App\Routes\{route_data_table_organisation_aggregated_id,
+  route_query_parlament_partei_aggregated_list,
   route_relation_flat_list,
   route_table_branche_aggregated_id,
   route_table_flat_id,
@@ -49,7 +50,9 @@ if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tab
 } else if ($call_type === 'table' && $object === 'interessengruppe' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
   route_table_interessengruppe_aggregated_id($parameter);
 } else if ($call_type === 'table' && $object === 'branche' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
-  return route_table_branche_aggregated_id($parameter);
+  route_table_branche_aggregated_id($parameter);
+} else if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $response_object === 'list') {
+  route_query_parlament_partei_aggregated_list(1);
 }
 
 json_response(not_found_response());

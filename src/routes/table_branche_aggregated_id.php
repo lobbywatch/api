@@ -10,7 +10,7 @@ use function App\domain\ApiResponse\api_response;
 use function App\Lib\Http\add_exception;
 use function App\Lib\Http\json_response;
 
-function route_table_branche_aggregated_id(string $id): array {
+function route_table_branche_aggregated_id(string $id): never {
   global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;

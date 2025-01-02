@@ -13,6 +13,8 @@
       "src/lib/localization.php",
       "src/lib/metrics.php",
       "src/lib/string.php",
+      "src/routes/query_parlament_partei_aggregated_list.php",
+      "src/routes/relation_flat_list.php",
       "src/routes/table_branche_aggregated_id.php",
       "src/routes/table_flat_id.php",
       "src/routes/table_flat_list.php",
@@ -21,7 +23,6 @@
       "src/routes/table_organisation_aggregated_id.php",
       "src/routes/table_parlamentarier_aggregated_id.php",
       "src/routes/table_zutrittsberechtigte_aggregated.php",
-      "src/routes/relation_flat_list.php",
       "src/settings.php",
       "src/sql.php",
       "src/store/maria_db.php"
