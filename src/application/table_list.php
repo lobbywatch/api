@@ -6,7 +6,12 @@ namespace App\Application;
 use Exception;
 use function App\domain\ApiResponse\api_response;
 use function App\Lib\Http\add_exception;
-use function App\Sql\{clean_records, data_transformation, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
+use function App\Sql\{clean_records,
+  data_transformation,
+  filter_fields_SQL,
+  filter_limit_SQL,
+  filter_unpublished_SQL,
+  select_fields_SQL};
 use function App\Store\db_query;
 
 function table_list(string $table, string $condition = '1', string $order_by = '', string $join = '', string $join_select = ''): array {
@@ -22,7 +27,7 @@ function table_list(string $table, string $condition = '1', string $order_by = '
     $join_select
     FROM v_$table $table
     $join
-    WHERE $condition " . filter_unpublished_SQL($table) . filter_fields_SQL($table) . " $order_by" . _lobbywatch_data_filter_limit_SQL() . ';';
+    WHERE $condition " . filter_unpublished_SQL($table) . filter_fields_SQL($table) . " $order_by" . filter_limit_SQL() . ';';
 
     $result = db_query($sql, []);
 

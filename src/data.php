@@ -5,7 +5,7 @@ use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
 use function App\Lib\Localization\{get_current_lang, translate_record_field};
-use function App\Sql\{clean_records, filter_fields_SQL};
+use function App\Sql\{clean_records, filter_fields_SQL, filter_limit_SQL};
 use function App\Store\{db_query};
 
 /**
@@ -17,13 +17,6 @@ global $show_sql, $show_stacktrace;
 $show_sql = true;
 $show_stacktrace = true;
 
-function _lobbywatch_data_filter_limit_SQL() {
-  if (isset($_GET['limit']) && $_GET['limit'] == 'none') {
-    return '';
-  } else {
-    return " LIMIT " . (isset($_GET['limit']) && is_int($limit = $_GET['limit'] + 0) && $limit > 0 ? $limit : 10) . " ";
-  }
-}
 
 /**
  * Filter fields and keep only one language and set it in the base field name.
@@ -102,7 +95,7 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
     FROM v_search_table
     WHERE " . implode($conditions, ' AND ') . "ORDER BY table_weight, weight";
 
-    $sql .= _lobbywatch_data_filter_limit_SQL() . ';';
+    $sql .= filter_limit_SQL() . ';';
 
     $result = db_query($sql, array(':str' => _lobbywatch_search_keyword_processing($search_str)));
 

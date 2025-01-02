@@ -8,7 +8,7 @@ use Exception;
 use function App\domain\ApiResponse\api_response;
 use function App\Domain\IdentityAccess\user_access;
 use function App\Lib\Http\{add_exception, json_response};
-use function App\Sql\{clean_records, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
+use function App\Sql\{clean_records, filter_fields_SQL, filter_limit_SQL, filter_unpublished_SQL, select_fields_SQL};
 use function App\Store\db_query;
 
 function route_table_flat_list_search(string $table, string $search_str): never {
@@ -30,7 +30,7 @@ function route_table_flat_list_search(string $table, string $search_str): never 
     } else {
       throw new Exception("Table $table does not exist");
     }
-    $sql .= _lobbywatch_data_filter_limit_SQL() . ';';
+    $sql .= filter_limit_SQL() . ';';
     $result = db_query($sql, array(':str' => "%$search_str%"));
 
     $items = clean_records($result);
