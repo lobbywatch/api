@@ -5,6 +5,7 @@
     },
     "files": [
       "src/application/table_by_id.php",
+      "src/domain/ApiResponse.php",
       "src/lib/http.php",
       "src/lib/localization.php",
       "src/lib/metrics.php",

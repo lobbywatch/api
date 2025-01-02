@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Application;
 
 use Exception;
+use function App\domain\ApiResponse\mkApiResponse;
 use function App\Lib\Http\{add_exception};
-use function App\Lib\Metrics\{page_build_secs};
 use function App\Sql\{clean_records, data_transformation, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
 use function App\Store\{db_query};
 
@@ -42,16 +42,13 @@ function table_by_id($table, $id, $show_sql = false, $show_stacktrace = false) {
   } catch (Exception $e) {
     $message .= add_exception($e, $show_stacktrace);
   } finally {
-    $response = array(
-      'success' => $success,
-      'count' => $count,
-      'message' => $message,
-      'sql' => $show_sql ? preg_replace('/\s+/', ' ', $sql) : '',
-      'source' => $table,
-      'build secs' => page_build_secs(),
-      'data' => $success ? $items[0] : null,
+    return mkApiResponse(
+      $success,
+      $count,
+      $message,
+      $show_sql ? preg_replace('/\s+/', ' ', $sql) : '',
+      $table,
+      $success ? $items[0] : null,
     );
-
-    return $response;
   }
 }

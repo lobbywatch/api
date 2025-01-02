@@ -2,9 +2,10 @@
 
 use App\Constants;
 use function App\Application\table_by_id;
+use function App\domain\ApiResponse\mkApiResponse;
+use function App\domain\ApiResponse\mkFailedApiResponse;
 use function App\Lib\Http\{add_exception, check_plain, json_response, request_uri};
 use function App\Lib\Localization\{get_current_lang, get_lang, lobbywatch_set_lang, translate_record_field};
-use function App\Lib\Metrics\{page_build_secs};
 use function App\Sql\{clean_records, data_transformation, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
 use function App\Store\{db_query};
 
@@ -96,7 +97,7 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
 
     if ($json) {
       json_response($response);
@@ -131,7 +132,7 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
 
     if ($json) {
       json_response($response);
@@ -190,7 +191,7 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
     if ($json) {
       json_response($response);
     } else {
@@ -229,7 +230,7 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
     if ($json) {
       json_response($response);
     } else {
@@ -298,7 +299,7 @@ function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = t
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -407,7 +408,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -483,7 +484,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -562,7 +563,7 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -646,7 +647,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $aggregated);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -697,7 +698,7 @@ order by count(*) desc, $table.partei asc ";
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $items);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
 
     if ($json) {
       json_response($response);
@@ -792,7 +793,7 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = array('success' => $success, 'count' => $count, 'message' => $message, 'sql' => $show_sql ? $sql : '', 'source' => $table, 'build secs' => '' . page_build_secs(), 'data' => $success ? $items['data'] : null,);
+    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $success ? $items['data'] : null);
 
     if ($json) {
       json_response($response, cors: !$no_cors);
@@ -803,26 +804,15 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
 }
 
 function json_not_found(): never {
-  $response = array(
-    'success' => false,
-    'count' => 0,
-    'message' => '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.',
-    'sql' => '',
-    'source' => '',
-    'build secs' => page_build_secs(),
-    'data' => null,
+  $response = mkFailedApiResponse(
+    '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.',
   );
   json_response($response, 404);
 }
 
 function json_forbidden(): never {
-  $response = array('success' => false,
-    'count' => 0,
-    'message' => '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.',
-    'sql' => '',
-    'source' => '',
-    'build secs' => page_build_secs(),
-    'data' => null,
+  $response = mkFailedApiResponse(
+    '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.',
   );
   json_response($response, 403);
 }
