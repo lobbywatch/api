@@ -3,6 +3,20 @@ declare(strict_types=1);
 
 namespace App\Lib\Localization;
 
+function get_lang_suffix(string|null $lang = null): string {
+//    if ($lang === null) {
+//        $lang = get_lang();
+//    }
+//
+//    if ($lang == 'fr') {
+//        return '_fr';
+//    } else {
+//        return '_de';
+//    }
+    return '_de';
+}
+
+
 function get_current_lang(): string {
 //    global $language;
 //    $langcode = isset($language->language) ?N $language->language : 'de';

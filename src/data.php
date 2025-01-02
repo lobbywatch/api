@@ -5,7 +5,7 @@ use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Array\max_attribute_in_array;
 use function App\Lib\Http\{add_exception, json_response};
-use function App\Lib\Localization\{get_current_lang, translate_record_field};
+use function App\Lib\Localization\{get_current_lang, get_lang_suffix, translate_record_field};
 use function App\Sql\{clean_records, filter_fields_SQL, filter_limit_SQL};
 use function App\Store\{db_query};
 
