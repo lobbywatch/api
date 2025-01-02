@@ -14,7 +14,8 @@ use function App\Routes\{route_data_table_organisation_aggregated_id,
   route_table_flat_list,
   route_table_flat_list_search,
   route_table_parlamentarier_aggregated_id,
-  route_zutrittsberechtigte_aggregated};
+  route_zutrittsberechtigte_aggregated,
+  table_interessengruppe_aggregated_id};
 
 // Parse the URL in the same way as Drupal v7
 $segments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
@@ -44,6 +45,8 @@ if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tab
   route_table_parlamentarier_aggregated_id($parameter);
 } else if ($call_type === 'table' && $object === 'organisation' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
   route_data_table_organisation_aggregated_id($parameter);
+} else if ($call_type === 'table' && $object === 'interessengruppe' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
+  table_interessengruppe_aggregated_id($parameter);
 }
 
 json_response(not_found_response());

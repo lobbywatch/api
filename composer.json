@@ -16,6 +16,7 @@
       "src/routes/table_flat_id.php",
       "src/routes/table_flat_list.php",
       "src/routes/table_flat_list_search.php",
+      "src/routes/table_interessengruppe_aggregated_id.php",
       "src/routes/table_organisation_aggregated_id.php",
       "src/routes/table_parlamentarier_aggregated_id.php",
       "src/routes/table_zutrittsberechtigte_aggregated.php",
