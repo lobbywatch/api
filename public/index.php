@@ -8,7 +8,10 @@ use function App\domain\ApiResponse\not_found_response;
 use function App\Lib\Http\json_response;
 use function App\Lib\Localization\get_lang;
 use function App\Lib\Localization\lobbywatch_set_lang;
-use function App\Routes\{route_table_flat_id, route_table_flat_list, route_table_flat_list_search};
+use function App\Routes\{route_relation_flat_list,
+  route_table_flat_id,
+  route_table_flat_list,
+  route_table_flat_list_search};
 
 // Parse the URL in the same way as Drupal v7
 $segments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
@@ -27,6 +30,13 @@ if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tab
   route_table_flat_list_search($object, $parameter);
 } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $response_object === 'list') {
   route_table_flat_list($object, 1);
+} else if ($call_type === 'ws' && (in_array($object, ['uid', 'zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $response_object === 'uid' && $parameter) {
+  // TODO
+  // return _lobbywatch_data_ws_uid($object, $parameter, false);
+} else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $response_object === 'list') {
+  route_relation_flat_list($object);
+} else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
+  
 }
 
 json_response(not_found_response());

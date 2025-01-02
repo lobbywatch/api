@@ -1,12 +1,11 @@
 <?php
 
-use App\Constants;
 use function App\Application\table_by_id;
 use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
 use function App\Lib\Localization\{get_current_lang, translate_record_field};
-use function App\Sql\{clean_records, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
+use function App\Sql\{clean_records, filter_fields_SQL};
 use function App\Store\{db_query};
 
 /**
@@ -65,41 +64,6 @@ function _lobbywatch_data_handle_lang_fields(&$items) {
     }
   }
   return $fields;
-}
-
-function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = true) {
-  global $show_sql, $show_stacktrace;
-  $success = true;
-  $message = '';
-  $count = 0;
-  $items = null;
-
-
-  try {
-    $sql = "
-    SELECT " . select_fields_SQL($table) . "
-    FROM v_$table $table
-    WHERE $condition " . filter_unpublished_SQL($table) . filter_fields_SQL($table) . _lobbywatch_data_filter_limit_SQL() . ';';
-
-    $result = db_query($sql, []);
-
-    $items = clean_records($result);
-
-    $count = count($items);
-    $success = $count > 0;
-    $message = $count . " record(s) found";
-  } catch (Exception $e) {
-    $message .= add_exception($e, $show_stacktrace);
-    $success = false;
-  } finally {
-    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
-
-    if ($json) {
-      json_response($response);
-    } else {
-      return $response;
-    }
-  }
 }
 
 // Duplicated from lobbywatch_autocomplete_json.php
@@ -630,11 +594,7 @@ order by count(*) desc, $table.partei asc ";
 }
 
 function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $response_object = '', $parameter = '', $json_output = false) {
-  if ($call_type === 'ws' && (in_array($object, ['uid', 'zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $response_object === 'uid' && $parameter) {
-    return _lobbywatch_data_ws_uid($object, $parameter, false);
-  } else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $response_object === 'list') {
-    return _lobbywatch_data_relation_flat_list($object, 1, false);
-  } else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
+  if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
     return _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($parameter, false);
   } else if ($call_type === 'table' && $object === 'parlamentarier' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
     return _lobbywatch_data_table_parlamentarier_aggregated_id($parameter, false);

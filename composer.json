@@ -14,6 +14,7 @@
       "src/routes/table_flat_id.php",
       "src/routes/table_flat_list.php",
       "src/routes/table_flat_list_search.php",
+      "src/routes/relation_flat_list.php",
       "src/sql.php",
       "src/store/maria_db.php"
     ]
