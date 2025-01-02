@@ -3,7 +3,7 @@
 use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
-use function App\Lib\Localization\{get_current_lang, get_lang_suffix, translate_record_field};
+use function App\Lib\Localization\{get_current_lang, get_lang_suffix};
 use function App\Sql\{clean_records, filter_limit_SQL};
 use function App\Store\{db_query};
 
@@ -15,48 +15,6 @@ use function App\Store\{db_query};
 global $show_sql, $show_stacktrace;
 $show_sql = true;
 $show_stacktrace = true;
-
-
-/**
- * Filter fields and keep only one language and set it in the base field name.
- *
- * Looks for "_fr" since this is consistently used language fields. If found,
- * delete "_fr" and "_de" fields and set value in base field name.
- *
- * E.g
- * If anzeige_name_fr is found, anzeige_name_fr and anzeige_name_de are deleted and the
- * for lang=fr anzeige_name set with the value of anzeige_name_fr.
- *
- * @param unknown $items
- * @return either
- */
-function _lobbywatch_data_handle_lang_fields(&$items) {
-  $lang = get_current_lang();
-  $fr_suffix = '_fr';
-  $de_suffix = '_de';
-
-  $fields = [];
-
-  foreach ($items as &$fields) {
-    foreach ($fields as $key => $value) {
-      $matches = [];
-      if (preg_match('/^(.+)_fr$/i', $key, $matches)) {
-        $base_field_name = $matches[1];
-        if (isset($fields["{$base_field_name}_de"]) || (array_key_exists("{$base_field_name}_de", $fields) && !array_key_exists($base_field_name, $fields))) {
-          $de_field_name = "{$base_field_name}_de";
-        } else {
-          $de_field_name = $base_field_name;
-        }
-        $lang_value = translate_record_field($fields, $de_field_name);
-        unset($fields["{$base_field_name}_fr"]);
-        unset($fields["{$base_field_name}_de"]);
-        unset($fields["{$base_field_name}_it"]);
-        $fields[$base_field_name] = $lang_value;
-      }
-    }
-  }
-  return $fields;
-}
 
 // Duplicated from lobbywatch_autocomplete_json.php
 function _lobbywatch_search_keyword_processing($str) {

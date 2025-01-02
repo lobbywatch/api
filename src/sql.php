@@ -7,6 +7,7 @@ use App\Constants;
 use function App\Domain\IdentityAccess\user_access;
 use function App\Lib\Http\base_root;
 use function App\Lib\Localization\get_current_lang;
+use function App\Lib\Localization\translate_record_field;
 use function App\Lib\String\{clean_db_value, clean_str};
 use function App\Settings\getRechercheJahrFromSettings;
 use const App\Lib\String\{SUPPORTED_DB_CHARS};
@@ -69,6 +70,45 @@ function is_internal_field(string $field): bool {
     return in_array($field, Constants::$internal_fields);
 }
 
+/**
+ * Filter fields and keep only one language and set it in the base field name.
+ *
+ * Looks for "_fr" since this is consistently used language fields. If found,
+ * delete "_fr" and "_de" fields and set value in base field name.
+ *
+ * E.g
+ * If anzeige_name_fr is found, anzeige_name_fr and anzeige_name_de are deleted and the
+ * for lang=fr anzeige_name set with the value of anzeige_name_fr.
+ */
+function handle_lang_fields(&$items) {
+    $lang = get_current_lang();
+    $fr_suffix = '_fr';
+    $de_suffix = '_de';
+
+    $fields = [];
+
+    foreach ($items as &$fields) {
+        foreach ($fields as $key => $value) {
+            $matches = [];
+            if (preg_match('/^(.+)_fr$/i', $key, $matches)) {
+                $base_field_name = $matches[1];
+                if (isset($fields["{$base_field_name}_de"]) || (array_key_exists("{$base_field_name}_de", $fields) && !array_key_exists($base_field_name, $fields))) {
+                    $de_field_name = "{$base_field_name}_de";
+                } else {
+                    $de_field_name = $base_field_name;
+                }
+                $lang_value = translate_record_field($fields, $de_field_name);
+                unset($fields["{$base_field_name}_fr"]);
+                unset($fields["{$base_field_name}_de"]);
+                unset($fields["{$base_field_name}_it"]);
+                $fields[$base_field_name] = $lang_value;
+            }
+        }
+    }
+    return $fields;
+}
+
+
 function clean_records($result) {
     $items = [];
     $includeHistorised = isset($_GET['includeInactive']) && $_GET['includeInactive'] == 1 && user_access('access lobbywatch unpublished content');
@@ -88,7 +128,7 @@ function clean_records($result) {
         }
     }
 
-    _lobbywatch_data_handle_lang_fields($items);
+    handle_lang_fields($items);
 
     return $items;
 }
