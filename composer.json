@@ -11,6 +11,7 @@
       "src/lib/metrics.php",
       "src/lib/string.php",
       "src/routes/table_flat_id.php",
+      "src/routes/table_flat_list_search.php",
       "src/sql.php",
       "src/store/maria_db.php"
     ]

@@ -199,45 +199,6 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
   }
 }
 
-function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = true) {
-  global $show_sql, $show_stacktrace;
-  $success = true;
-  $count = 0;
-  $items = null;
-  $message = '';
-
-
-  try {
-    if ($table === 'parlamentarier') {
-      //TODO test check permissions
-      $sql = "SELECT " . select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && user_access('access lobbywatch unpublished content')) ? ' AND (im_rat_bis IS NULL OR im_rat_bis > NOW())' : '') . filter_unpublished_SQL($table) . filter_fields_SQL($table);
-    } else if ($table === 'zutrittsberechtigung') {
-      $sql = "SELECT " . select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . (!(isset($_GET['includeInactive']) && $_GET['includeInactive'] != 0 && !user_access('access lobbywatch unpublished content')) ? ' AND (bis IS NULL OR bis > NOW())' : '') . filter_unpublished_SQL($table) . filter_fields_SQL($table);
-    } else if (in_array($table, Constants::$entities_web)) {
-      $sql = "SELECT " . select_fields_SQL($table) . " FROM v_$table $table WHERE anzeige_name LIKE :str" . filter_unpublished_SQL($table) . filter_fields_SQL($table);
-    } else {
-      throw new Exception("Table $table does not exist");
-    }
-    $sql .= _lobbywatch_data_filter_limit_SQL() . ';';
-    $result = db_query($sql, array(':str' => "%$search_str%"));
-
-    $items = clean_records($result);
-    $count = count($items);
-    $success = $count > 0;
-    $message .= count($items) . " record(s) found";
-  } catch (Exception $e) {
-    $message .= add_exception($e, $show_stacktrace);
-    $success = false;
-  } finally {
-    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
-    if ($json) {
-      json_response($response);
-    } else {
-      return $response;
-    }
-  }
-}
-
 function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = true) {
   global $show_sql, $show_stacktrace;
   $success = true;
@@ -707,26 +668,24 @@ order by count(*) desc, $table.partei asc ";
   }
 }
 
-function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $respone_object = '', $parameter = '', $json_output = false) {
-  if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list' && $parameter) {
-    return _lobbywatch_data_table_flat_list_search($object, $parameter, false);
-  } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list') {
+function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $response_object = '', $parameter = '', $json_output = false) {
+  if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $response_object === 'list') {
     return _lobbywatch_data_table_flat_list($object, 1, false);
-  } else if ($call_type === 'ws' && (in_array($object, ['uid', 'zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $respone_object === 'uid' && $parameter) {
+  } else if ($call_type === 'ws' && (in_array($object, ['uid', 'zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $response_object === 'uid' && $parameter) {
     return _lobbywatch_data_ws_uid($object, $parameter, false);
-  } else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $respone_object === 'list') {
+  } else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $response_object === 'list') {
     return _lobbywatch_data_relation_flat_list($object, 1, false);
-  } else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+  } else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
     return _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($parameter, false);
-  } else if ($call_type === 'table' && $object === 'parlamentarier' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+  } else if ($call_type === 'table' && $object === 'parlamentarier' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
     return _lobbywatch_data_table_parlamentarier_aggregated_id($parameter, false);
-  } else if ($call_type === 'table' && $object === 'organisation' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+  } else if ($call_type === 'table' && $object === 'organisation' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
     return _lobbywatch_data_table_organisation_aggregated_id($parameter, false);
-  } else if ($call_type === 'table' && $object === 'interessengruppe' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+  } else if ($call_type === 'table' && $object === 'interessengruppe' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
     return _lobbywatch_data_table_interessengruppe_aggregated_id($parameter, false);
-  } else if ($call_type === 'table' && $object === 'branche' && $response_type === 'aggregated' && $respone_object === 'id' && $parameter) {
+  } else if ($call_type === 'table' && $object === 'branche' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
     return _lobbywatch_data_table_branche_aggregated_id($parameter, false);
-  } else if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $respone_object === 'list') {
+  } else if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $response_object === 'list') {
     return _lobbywatch_data_query_parlament_partei_aggregated_list(1, false);
   } else if ($call_type === 'search' && $object === 'default' /*&& $response_type === 'aggregated' && $respone_object === 'list'*/ /*&& $parameter*/) {
     return _lobbywatch_data_search($response_type, false);
