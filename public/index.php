@@ -37,6 +37,8 @@ if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tab
   route_relation_flat_list($object);
 } else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
   route_zutrittsberechtigte_aggregated($parameter);
+} else if ($call_type === 'table' && $object === 'parlamentarier' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
+  route_table_parlamentarier_aggregated_id($parameter);
 }
 
 json_response(not_found_response());
