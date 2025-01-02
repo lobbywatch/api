@@ -1,6 +1,5 @@
 <?php
 
-use function App\Application\table_by_id;
 use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
@@ -156,60 +155,6 @@ function _lobbywatch_data_get_parlamentarier_from_organisation($orgs) {
   return $aggregated;
 }
 
-function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
-  global $show_sql, $show_stacktrace;
-  $success = true;
-  $count = 0;
-  $message = '';
-  $sql = '';
-  $table = 'branche';
-
-  try {
-    $branche = table_by_id($table, $id);
-    $aggregated = $branche['data'];
-    $message .= ' | ' . $branche['message'];
-    $sql .= ' | ' . $branche['sql'];
-    $success = $success && $branche['success'];
-
-    // load aggregated data only if main object is there
-    if ($success) {
-      // interessengruppe
-      $interessengruppe = table_list('interessengruppe', "interessengruppe.branche_id = $id");
-
-      $aggregated['interessengruppe'] = $interessengruppe['data'];
-      $message .= ' | ' . $interessengruppe['message'];
-      $sql .= ' | ' . $interessengruppe['sql'];
-      $success = $success && $interessengruppe['success'];
-
-      // organisations
-      $organisationen = table_list('organisation', "organisation.interessengruppe_branche_id = $id OR organisation.interessengruppe2_branche_id = $id OR organisation.interessengruppe3_branche_id = $id");
-
-      $aggregated['organisationen'] = $organisationen['data'];
-      $message .= ' | ' . $organisationen['message'];
-      $sql .= ' | ' . $organisationen['sql'];
-      $success = $success && $organisationen['success'];
-
-      // parlamentarier
-      $aggregated_parlamentarier = _lobbywatch_data_get_parlamentarier_from_organisation($organisationen['data']);
-      $aggregated = array_merge($aggregated, $aggregated_parlamentarier);
-
-      _lobbywatch_add_wissensartikel($table, $id, $aggregated, $message, $sql);
-    }
-
-    $count = $branche['count'];
-  } catch (Exception $e) {
-    $message .= add_exception($e, $show_stacktrace);
-    $success = false;
-  } finally {
-    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
-    if ($json) {
-      json_response($response);
-    } else {
-      return $response;
-    }
-  }
-}
-
 function _lobbywatch_data_query_parlament_partei_aggregated_list($condition = '1', $json = true) {
   global $show_sql, $show_stacktrace;
   $success = true;
@@ -263,9 +208,7 @@ order by count(*) desc, $table.partei asc ";
 }
 
 function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $response_object = '', $parameter = '', $json_output = false) {
-  if ($call_type === 'table' && $object === 'branche' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
-    return _lobbywatch_data_table_branche_aggregated_id($parameter, false);
-  } else if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $response_object === 'list') {
+  if ($call_type === 'query' && $object === 'parlament-partei' && $response_type === 'aggregated' && $response_object === 'list') {
     return _lobbywatch_data_query_parlament_partei_aggregated_list(1, false);
   } else if ($call_type === 'search' && $object === 'default' /*&& $response_type === 'aggregated' && $respone_object === 'list'*/ /*&& $parameter*/) {
     return _lobbywatch_data_search($response_type, false);

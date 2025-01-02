@@ -13,6 +13,7 @@
       "src/lib/localization.php",
       "src/lib/metrics.php",
       "src/lib/string.php",
+      "src/routes/table_branche_aggregated_id.php",
       "src/routes/table_flat_id.php",
       "src/routes/table_flat_list.php",
       "src/routes/table_flat_list_search.php",

@@ -10,7 +10,7 @@ use function App\domain\ApiResponse\api_response;
 use function App\Lib\Http\add_exception;
 use function App\Lib\Http\json_response;
 
-function table_interessengruppe_aggregated_id($id, $json = true) {
+function route_table_interessengruppe_aggregated_id($id, $json = true) {
   global $show_sql, $show_stacktrace;
   $success = true;
   $count = 0;
