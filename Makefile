@@ -1,5 +1,5 @@
 .PHONY: all
-all: server
+all: dev
 
 .PHONY: install
 install:
