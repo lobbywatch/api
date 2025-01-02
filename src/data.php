@@ -2,9 +2,8 @@
 
 use App\Constants;
 use function App\Application\table_by_id;
-use function App\domain\ApiResponse\mkApiResponse;
-use function App\domain\ApiResponse\mkFailedApiResponse;
-use function App\Lib\Http\{add_exception, check_plain, json_response, request_uri};
+use function App\domain\ApiResponse\{api_response, forbidden_response, not_found_response};
+use function App\Lib\Http\{add_exception, json_response};
 use function App\Lib\Localization\{get_current_lang, get_lang, lobbywatch_set_lang, translate_record_field};
 use function App\Sql\{clean_records, data_transformation, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
 use function App\Store\{db_query};
@@ -97,7 +96,7 @@ function _lobbywatch_data_table_flat_list($table, $condition = '1', $json = true
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
 
     if ($json) {
       json_response($response);
@@ -132,7 +131,7 @@ function _lobbywatch_data_relation_flat_list($table, $condition = '1', $json = t
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
 
     if ($json) {
       json_response($response);
@@ -191,7 +190,7 @@ function _lobbywatch_data_search($search_str, $json = true, $filter_unpublished 
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
     if ($json) {
       json_response($response);
     } else {
@@ -230,7 +229,7 @@ function _lobbywatch_data_table_flat_list_search($table, $search_str, $json = tr
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
     if ($json) {
       json_response($response);
     } else {
@@ -299,7 +298,7 @@ function _lobbywatch_data_table_zutrittsberechtigte_aggregated_id($id, $json = t
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -408,7 +407,7 @@ function _lobbywatch_data_table_parlamentarier_aggregated_id($id, $json = true) 
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -484,7 +483,7 @@ function _lobbywatch_data_table_organisation_aggregated_id($id, $json = true) {
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -563,7 +562,7 @@ function _lobbywatch_data_table_interessengruppe_aggregated_id($id, $json = true
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -647,7 +646,7 @@ function _lobbywatch_data_table_branche_aggregated_id($id, $json = true) {
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $aggregated);
     if ($json) {
       json_response($response);
     } else {
@@ -698,7 +697,7 @@ order by count(*) desc, $table.partei asc ";
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $items);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $items);
 
     if ($json) {
       json_response($response);
@@ -710,7 +709,7 @@ order by count(*) desc, $table.partei asc ";
 
 function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $respone_object = '', $parameter = '', $json_output = false) {
   if ($version !== 'v1' || $data_type !== 'json') {
-    json_not_found();
+    json_response(not_found_response());
   }
 
   lobbywatch_set_lang(get_lang());
@@ -741,7 +740,7 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
     return _lobbywatch_data_search($response_type, false);
   }
 
-  json_not_found();
+  json_response(not_found_response());
 }
 
 function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
@@ -757,9 +756,9 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
 
   // Protect Zefix WS, either with key or from cyon.ch server or localhost
   if (in_array($table, ['uid', 'zefix-rest', 'uid-bfs']) && (empty($_GET['access_key']) || !in_array($_GET['access_key'], $allowed_uid_access_keys, true)) && $_SERVER['REMOTE_ADDR'] !== '91.206.24.232' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
-    json_forbidden();
+    json_response(forbidden_response());
   } else if (in_array($table, ['zefix-soap']) && (empty($_GET['access_key']) || !in_array($_GET['access_key'], $zefix_ws_login['keys'], true)) && $_SERVER['REMOTE_ADDR'] !== '91.206.24.232' && $_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
-    json_forbidden();
+    json_response(forbidden_response());
   }
 
 
@@ -793,7 +792,7 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
     $message .= add_exception($e, $show_stacktrace);
     $success = false;
   } finally {
-    $response = mkApiResponse($success, $count, $message, $show_sql ? $sql : '', $table, $success ? $items['data'] : null);
+    $response = api_response($success, $count, $message, $show_sql ? $sql : '', $table, $success ? $items['data'] : null);
 
     if ($json) {
       json_response($response, cors: !$no_cors);
@@ -803,16 +802,3 @@ function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
   }
 }
 
-function json_not_found(): never {
-  $response = mkFailedApiResponse(
-    '404 Not Found. The requested URL "' . check_plain(request_uri()) . '" was not found on this server.',
-  );
-  json_response($response, 404);
-}
-
-function json_forbidden(): never {
-  $response = mkFailedApiResponse(
-    '403 Forbidden. The requested URL "' . check_plain(request_uri()) . '" is protected.',
-  );
-  json_response($response, 403);
-}

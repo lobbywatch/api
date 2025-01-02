@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Application;
 
 use Exception;
-use function App\domain\ApiResponse\mkApiResponse;
+use function App\domain\ApiResponse\api_response;
 use function App\Lib\Http\{add_exception};
 use function App\Sql\{clean_records, data_transformation, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
 use function App\Store\{db_query};
@@ -42,7 +42,7 @@ function table_by_id($table, $id, $show_sql = false, $show_stacktrace = false) {
   } catch (Exception $e) {
     $message .= add_exception($e, $show_stacktrace);
   } finally {
-    return mkApiResponse(
+    return api_response(
       $success,
       $count,
       $message,
