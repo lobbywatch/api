@@ -2,9 +2,9 @@
 
 use App\Constants;
 use function App\Application\table_by_id;
-use function App\domain\ApiResponse\{api_response, forbidden_response, not_found_response};
+use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
-use function App\Lib\Localization\{get_current_lang, get_lang, lobbywatch_set_lang, translate_record_field};
+use function App\Lib\Localization\{get_current_lang, translate_record_field};
 use function App\Sql\{clean_records, data_transformation, filter_fields_SQL, filter_unpublished_SQL, select_fields_SQL};
 use function App\Store\{db_query};
 
@@ -708,15 +708,7 @@ order by count(*) desc, $table.partei asc ";
 }
 
 function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $call_type = '', $object = '', $response_type = '', $respone_object = '', $parameter = '', $json_output = false) {
-  if ($version !== 'v1' || $data_type !== 'json') {
-    json_response(not_found_response());
-  }
-
-  lobbywatch_set_lang(get_lang());
-
-  if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'id' && $parameter) {
-    return table_by_id($object, $parameter);
-  } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list' && $parameter) {
+  if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list' && $parameter) {
     return _lobbywatch_data_table_flat_list_search($object, $parameter, false);
   } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $respone_object === 'list') {
     return _lobbywatch_data_table_flat_list($object, 1, false);
@@ -739,8 +731,6 @@ function _lobbywatch_data_router($path = '', $version = '', $data_type = '', $ca
   } else if ($call_type === 'search' && $object === 'default' /*&& $response_type === 'aggregated' && $respone_object === 'list'*/ /*&& $parameter*/) {
     return _lobbywatch_data_search($response_type, false);
   }
-
-  json_response(not_found_response());
 }
 
 function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
