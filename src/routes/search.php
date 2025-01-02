@@ -27,7 +27,7 @@ function route_search(string $search_str, bool $filter_unpublished = true): neve
     $has_query = mb_strlen($search_str) > 0;
 
     $conditions = array_filter([isset($_GET['tables']) ? 'table_name IN (' . implode(',', array_map(function ($table) {
-        return "'" . db_escape_table($table) . "'";
+        return "'" . preg_replace('/[^A-Za-z0-9_.]+/', '', $table) . "'";
       }, explode(',', $_GET['tables']))) . ')' : '', $has_query ? "search_keywords$lang_suffix LIKE :str" : '', $filter_unpublished ? '(table_name=\'parlamentarier\' OR table_name=\'zutrittsberechtigung\' OR freigabe_datum <= NOW())' : '',]);
 
     // Show all parlamentarier in search, even if not freigegeben, RKU 22.01.2015
