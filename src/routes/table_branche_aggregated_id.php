@@ -4,6 +4,7 @@ declare (strict_types=1);
 namespace App\Routes;
 
 use Exception;
+use function App\Application\get_parlamentarier_from_organisation;
 use function App\Application\table_by_id;
 use function App\Application\table_list;
 use function App\domain\ApiResponse\api_response;
@@ -44,7 +45,7 @@ function route_table_branche_aggregated_id(string $id): never {
       $success = $success && $organisationen['success'];
 
       // parlamentarier
-      $aggregated_parlamentarier = _lobbywatch_data_get_parlamentarier_from_organisation($organisationen['data']);
+      $aggregated_parlamentarier = get_parlamentarier_from_organisation($organisationen['data']);
       $aggregated = array_merge($aggregated, $aggregated_parlamentarier);
 
 //      _lobbywatch_add_wissensartikel($table, $id, $aggregated, $message, $sql);

@@ -4,6 +4,7 @@
       "App\\": "src/"
     },
     "files": [
+      "src/application/parlamentarier_from_organisation.php",
       "src/application/table_by_id.php",
       "src/application/table_list.php",
       "src/application/zutrittsberechtigte_aggregated_by_id.php",

@@ -1,6 +1,5 @@
 <?php
 
-use function App\Application\table_list;
 use function App\domain\ApiResponse\{api_response, forbidden_response};
 use function App\Lib\Http\{add_exception, json_response};
 
@@ -12,36 +11,6 @@ use function App\Lib\Http\{add_exception, json_response};
 global $show_sql, $show_stacktrace;
 $show_sql = true;
 $show_stacktrace = true;
-
-/**
- * @param $orgs array of organisation having 'id'
- */
-function _lobbywatch_data_get_parlamentarier_from_organisation($orgs) {
-
-  $aggregated = [];
-
-  $org_conditions = array_map(function ($org) {
-    return "organisation_parlamentarier_beide_indirekt.connector_organisation_id = " . $org['id'];
-  }, $orgs);
-
-  $connections = table_list('organisation_parlamentarier_beide_indirekt', "(" . implode(" OR ", $org_conditions) . ")");
-
-  $aggregated['connections'] = $connections['data'];
-  $message .= ' | ' . $connections['message'];
-  $sql .= ' | ' . $connections['sql'];
-
-  $parlamentarier_conditions = array_map(function ($con) {
-    return "parlamentarier.id = " . $con['parlamentarier_id'];
-  }, $connections['data']);
-
-  $parlamentarier = table_list('parlamentarier', "(" . implode(" OR ", $parlamentarier_conditions) . ")");
-
-  $aggregated['parlamentarier'] = $parlamentarier['data'];
-  $message .= ' | ' . $parlamentarier['message'];
-  $sql .= ' | ' . $parlamentarier['sql'];
-
-  return $aggregated;
-}
 
 function _lobbywatch_data_ws_uid($table, $uid, $json = true) {
   global $show_sql, $show_stacktrace;
