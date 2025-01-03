@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace App\Routes;
 
 use Exception;
-use PDO;
-use PDOException;
 use SoapClient;
 use SoapFault;
 use function App\domain\ApiResponse\api_response;
@@ -707,86 +705,14 @@ function _lobbywatch_ws_get_land_id($iso2) {
       FROM v_$table $table
       WHERE $table.`iso2`=:iso2";
 
-    if (is_lobbywatch_forms()) {
-      $result = lobbywatch_forms_db_query($sql, array(':iso2' => $iso2));
-    } else {
-      $result = db_query($sql, array(':iso2' => $iso2));
-    }
+    $result = db_query($sql, array(':iso2' => $iso2));
 
-    $items = $result->fetchColumn(0);
+    $items = $result[0];
     $ret = $items;
   } catch (Exception $e) {
     $ret = null;
   }
   return $ret;
-}
-
-function is_lobbywatch_forms() {
-  global $lobbywatch_is_forms;
-  return isset($lobbywatch_is_forms) && $lobbywatch_is_forms === true;
-}
-
-function lobbywatch_forms_db_query($query, array $args = [], array $options = []) {
-
-  $con_factory = MyPDOConnectionFactory::getInstance();
-  $con_options = function_exists('GetConnectionOptions') ? GetConnectionOptions() : custom_GetConnectionOptions();
-
-  $eng_con = $con_factory->CreateConnection($con_options);
-  try {
-    $eng_con->Connect();
-    $con = $eng_con->GetConnectionHandle();
-    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-    $cmd = $con_factory->CreateEngCommandImp();
-
-    if (function_exists('set_db_session_parameters')) {
-      set_db_session_parameters($con);
-    } else {
-      utils_set_db_session_parameters($con);
-    }
-
-    // Use default values if not already set.
-    $options += lobbywatch_PDO_defaultOptions();
-
-    lobbywatch_DB_expandArguments($query, $args);
-    $query = lobbywatch_prefixTables($query);
-    $stmt = $con->prepare($query);
-
-    if (isset($options['fetch'])) {
-      if (is_string($options['fetch'])) {
-        // Default to an object. Note: db fields will be added to the object
-        // before the constructor is run. If you need to assign fields after
-        // the constructor is run, see http://drupal.org/node/315092.
-        $stmt->setFetchMode(PDO::FETCH_CLASS, $options['fetch']);
-      } else {
-        $stmt->setFetchMode($options['fetch']);
-      }
-    }
-
-    $stmt->execute($args);
-
-    // Depending on the type of query we may need to return a different value.
-    // See DatabaseConnection::defaultOptions() for a description of each
-    // value.
-    switch ($options['return']) {
-      case LW_DB_RETURN_STATEMENT:
-        return $stmt;
-      case LW_DB_RETURN_AFFECTED:
-        return $stmt->rowCount();
-      case LW_DB_RETURN_INSERT_ID:
-        return;
-      case LW_DB_RETURN_NULL:
-        return;
-      default:
-        throw new PDOException('Invalid return directive: ' . $options['return']);
-    }
-  } catch (PDOException $e) {
-    if ($options['throw_exception']) {
-      $e->query_string = $query;
-      $e->args = $args;
-      throw $e;
-    }
-    return NULL;
-  }
 }
 
 function _lobbywatch_ws_get_rechtsform($rechtsform_handelsregister) {
