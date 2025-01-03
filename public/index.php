@@ -1,7 +1,6 @@
 <?php
 
 require "../bootstrap.php";
-require "../src/data.php";
 
 use App\Constants;
 use function App\domain\ApiResponse\not_found_response;
