@@ -25,6 +25,7 @@
       "src/routes/table_organisation_aggregated_id.php",
       "src/routes/table_parlamentarier_aggregated_id.php",
       "src/routes/table_zutrittsberechtigte_aggregated.php",
+      "src/routes/ws_uid.php",
       "src/settings.php",
       "src/sql.php",
       "src/store/maria_db.php"

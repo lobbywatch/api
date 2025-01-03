@@ -18,6 +18,7 @@ use function App\Routes\{route_data_table_organisation_aggregated_id,
   route_table_flat_list_search,
   route_table_interessengruppe_aggregated_id,
   route_table_parlamentarier_aggregated_id,
+  route_ws_uid,
   route_zutrittsberechtigte_aggregated};
 
 // Parse the URL in the same way as Drupal v7
@@ -38,8 +39,7 @@ if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tab
 } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $response_object === 'list') {
   route_table_flat_list($object, 1);
 } else if ($call_type === 'ws' && (in_array($object, ['uid', 'zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $response_object === 'uid' && $parameter) {
-  // TODO
-  // return _lobbywatch_data_ws_uid($object, $parameter, false);
+  route_ws_uid($object, $parameter);
 } else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $response_object === 'list') {
   route_relation_flat_list($object);
 } else if ($call_type === 'table' && $object === 'zutrittsberechtigung' && $response_type === 'aggregated' && $response_object === 'id' && $parameter) {
