@@ -15,7 +15,7 @@ class TestCase extends BaseTestCase {
       CURLOPT_RETURNTRANSFER => true
     ]);
     try {
-      $response = json_decode(curl_exec($curl), associative: true, flags: JSON_THROW_ON_ERROR);
+      $response = curl_exec($curl);
       $error = curl_error($curl);
     } catch (Exception $e) {
       $error = $e->getMessage();
@@ -23,6 +23,10 @@ class TestCase extends BaseTestCase {
     } finally {
       curl_close($curl);
     }
-    return $response;
+
+    $result = json_decode($response, associative: true, flags: JSON_THROW_ON_ERROR);
+    // Build secs can differ between requests
+    unset($result['build secs']);
+    return $result;
   }
 }
