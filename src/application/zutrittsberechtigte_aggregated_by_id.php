@@ -25,8 +25,8 @@ function zutrittsberechtigte_aggregated_by_id(string $id): array {
     $success = $success && $zutrittsberechtigung['success'];
 
 
-    $last_modified_date = $aggregated['updated_date'];
-    $last_modified_date_unix = $aggregated['updated_date_unix'];
+    $last_modified_date = $aggregated['updated_date'] ?? 0;
+    $last_modified_date_unix = $aggregated['updated_date_unix'] ?? 0;
 
     if ($success) {
       $person_id = $zutrittsberechtigung['data']['person_id'];

@@ -36,7 +36,7 @@ if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tab
 } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $response_object === 'list' && $parameter) {
   route_table_flat_list_search($object, $parameter);
 } else if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $response_object === 'list') {
-  route_table_flat_list($object, 1);
+  route_table_flat_list($object);
 } else if ($call_type === 'ws' && (in_array($object, ['uid', 'zefix-soap', 'zefix-rest', 'uid-bfs'])) && $response_type === 'flat' && $response_object === 'uid' && $parameter) {
   route_ws_uid($object, $parameter);
 } else if ($call_type === 'relation' && array_key_exists($object, Constants::getAllEnrichedRelations()) && $response_type === 'flat' && $response_object === 'list') {
