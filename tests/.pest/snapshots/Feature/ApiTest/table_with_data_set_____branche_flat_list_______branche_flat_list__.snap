@@ -4,7 +4,6 @@
     "message": "10 record(s) found",
     "sql": "\n    SELECT branche.*\n    \n    FROM v_branche branche\n    \n    WHERE 1   LIMIT 10 ;",
     "source": "branche",
-    "build secs": "0.01",
     "data": [
         {
             "anzeige_name": "Gesundheit",

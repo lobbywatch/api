@@ -12,3 +12,7 @@ dev: install
 .PHONY: test
 test:
 	./vendor/bin/pest
+
+.PHONY: test-rebuild
+test-rebuild:
+	./vendor/bin/pest --update-snapshots
