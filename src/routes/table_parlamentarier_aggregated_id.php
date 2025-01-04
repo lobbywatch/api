@@ -25,8 +25,8 @@ function route_table_parlamentarier_aggregated_id(string $id): array {
     $sql .= ' | ' . $parlamentarier['sql'];
     $success = $success && $parlamentarier['success'];
 
-    $last_modified_date = $aggregated['updated_date'];
-    $last_modified_date_unix = $aggregated['updated_date_unix'];
+    $last_modified_date = $aggregated['updated_date'] ?? 0; // FIXME This is removed in table_by_id, but needed here
+    $last_modified_date_unix = $aggregated['updated_date_unix'] ?? 0; // FIXME This is removed in table_by_id, but needed here
 
     // load aggregated data only if main object is there
     if ($success) {
