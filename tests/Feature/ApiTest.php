@@ -24,10 +24,10 @@ test('table', function (string $path) {
   '/organisation/flat/list?select_fields=uid,name_de,name_fr,rechtsform',
   '/parlamentarier/aggregated/id/6',
   '/parlamentarier/flat/id/6',
-//  '/parlamentarier/flat/list',
-//  '/parlamentarier/flat/list?select_fields=parlament_number,vorname,nachname',
+  '/parlamentarier/flat/list',
+  '/parlamentarier/flat/list?select_fields=parlament_number,vorname,nachname',
   '/zutrittsberechtigung/aggregated/id/1',
-//  '/zutrittsberechtigung/flat/list',
-//  '/zutrittsberechtigung/flat/list?select_fields=id,vorname,nachname',
+  '/zutrittsberechtigung/flat/list',
+  '/zutrittsberechtigung/flat/list?select_fields=id,vorname,nachname',
 ]);
 

@@ -1,0 +1,8 @@
+{
+    "success": false,
+    "count": 0,
+    "message": "0 record(s) found",
+    "sql": "\n    SELECT zutrittsberechtigung.*\n    \n    FROM v_zutrittsberechtigung zutrittsberechtigung\n    \n    WHERE 1   LIMIT 10 ;",
+    "source": "zutrittsberechtigung",
+    "data": []
+}

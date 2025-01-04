@@ -1,0 +1,59 @@
+{
+    "success": true,
+    "count": 10,
+    "message": "10 record(s) found",
+    "sql": "\n    SELECT  zutrittsberechtigung.id, id,vorname,nachname \n    \n    FROM v_zutrittsberechtigung zutrittsberechtigung\n    \n    WHERE 1   LIMIT 10 ;",
+    "source": "zutrittsberechtigung",
+    "data": [
+        {
+            "id": 1,
+            "vorname": "Chris",
+            "nachname": "von Rohr"
+        },
+        {
+            "id": 2,
+            "vorname": "Silvia",
+            "nachname": "Blocher"
+        },
+        {
+            "id": 3,
+            "vorname": "Eric",
+            "nachname": "Herren"
+        },
+        {
+            "id": 4,
+            "vorname": "Urs",
+            "nachname": "Martin"
+        },
+        {
+            "id": 5,
+            "vorname": "Roswitha",
+            "nachname": "Brunner"
+        },
+        {
+            "id": 6,
+            "vorname": "Marciana",
+            "nachname": "Chiari"
+        },
+        {
+            "id": 7,
+            "vorname": "Jo\u00ebl",
+            "nachname": "Th\u00fcring"
+        },
+        {
+            "id": 8,
+            "vorname": "Jean-Christophe",
+            "nachname": "Britt"
+        },
+        {
+            "id": 9,
+            "vorname": "Barbara",
+            "nachname": "K\u00fcttel"
+        },
+        {
+            "id": 10,
+            "vorname": "Rudolf",
+            "nachname": "Alther"
+        }
+    ]
+}
