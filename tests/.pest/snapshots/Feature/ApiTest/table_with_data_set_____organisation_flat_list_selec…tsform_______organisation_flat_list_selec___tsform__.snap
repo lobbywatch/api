@@ -1,0 +1,69 @@
+{
+    "success": true,
+    "count": 10,
+    "message": "10 record(s) found",
+    "sql": "\n    SELECT  organisation.id, uid,name_de,name_fr,rechtsform \n    \n    FROM v_organisation organisation\n    \n    WHERE 1   LIMIT 10 ;",
+    "source": "organisation",
+    "data": [
+        {
+            "id": 2,
+            "uid": "CHE-114.321.043",
+            "rechtsform": "AG",
+            "name": "ROBINVEST AG"
+        },
+        {
+            "id": 3,
+            "uid": "CHE-113.069.220",
+            "rechtsform": "Stiftung",
+            "name": "Albert B\u00e4chtold-Stiftung"
+        },
+        {
+            "id": 4,
+            "uid": "CHE-115.234.470",
+            "rechtsform": "Stiftung",
+            "name": "Schweizer Musikinsel Rheinau"
+        },
+        {
+            "id": 5,
+            "uid": "CHE-100.938.881",
+            "rechtsform": "AG",
+            "name": "fun & business AG"
+        },
+        {
+            "id": 6,
+            "uid": "CHE-109.104.853",
+            "rechtsform": "GmbH",
+            "name": "bosec consulting gmbh"
+        },
+        {
+            "id": 8,
+            "uid": "CHE-107.814.205",
+            "rechtsform": "Verein",
+            "name": "Automobil Club der Schweiz, ACS"
+        },
+        {
+            "id": 9,
+            "uid": null,
+            "rechtsform": "Verein",
+            "name": "Industrie- und Handelsverein Thal-G\u00e4u-Bipperamt"
+        },
+        {
+            "id": 11,
+            "uid": "CHE-112.423.922",
+            "rechtsform": "AG",
+            "name": "H\u00fcppi AG"
+        },
+        {
+            "id": 12,
+            "uid": "CHE-106.829.753",
+            "rechtsform": "AG",
+            "name": "comparis.ch AG"
+        },
+        {
+            "id": 13,
+            "uid": "CHE-110.384.702",
+            "rechtsform": "Stiftung",
+            "name": "Alfred Flury-Stiftung"
+        }
+    ]
+}
