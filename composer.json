@@ -28,7 +28,8 @@
       "src/routes/ws_uid.php",
       "src/settings.php",
       "src/sql.php",
-      "src/store/maria_db.php"
+      "src/store/maria_db.php",
+      "tests/TestCase.php"
     ]
   },
   "require": {
