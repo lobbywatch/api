@@ -1,0 +1,2757 @@
+{
+    "success": true,
+    "count": 458,
+    "message": "458 record(s) found",
+    "sql": "\n    SELECT  parlamentarier.id, parlament_number,vorname,nachname \n    \n    FROM v_parlamentarier parlamentarier\n    \n    WHERE 1  AND parlamentarier.freigabe_datum < NOW() ;",
+    "source": "parlamentarier",
+    "data": [
+        {
+            "id": 2,
+            "parlament_number": 2272,
+            "vorname": "Roland",
+            "nachname": "Borer"
+        },
+        {
+            "id": 3,
+            "parlament_number": 2274,
+            "vorname": "Toni",
+            "nachname": "Bortoluzzi"
+        },
+        {
+            "id": 4,
+            "parlament_number": 2666,
+            "vorname": "Marina",
+            "nachname": "Carobbio Guscetti"
+        },
+        {
+            "id": 5,
+            "parlament_number": 2664,
+            "vorname": "Ignazio",
+            "nachname": "Cassis"
+        },
+        {
+            "id": 6,
+            "parlament_number": 2757,
+            "vorname": "Thomas",
+            "nachname": "de Courten"
+        },
+        {
+            "id": 7,
+            "parlament_number": 2455,
+            "vorname": "Jacqueline",
+            "nachname": "Fehr"
+        },
+        {
+            "id": 8,
+            "parlament_number": 2750,
+            "vorname": "Sebastian",
+            "nachname": "Frehner"
+        },
+        {
+            "id": 9,
+            "parlament_number": 2684,
+            "vorname": "Yvonne",
+            "nachname": "Gilli"
+        },
+        {
+            "id": 10,
+            "parlament_number": 2601,
+            "vorname": "Bea",
+            "nachname": "Heim"
+        },
+        {
+            "id": 11,
+            "parlament_number": 2799,
+            "vorname": "Lorenz",
+            "nachname": "Hess"
+        },
+        {
+            "id": 12,
+            "parlament_number": 2580,
+            "vorname": "Ruth",
+            "nachname": "Humbel"
+        },
+        {
+            "id": 13,
+            "parlament_number": 2744,
+            "vorname": "Maja",
+            "nachname": "Ingold"
+        },
+        {
+            "id": 14,
+            "parlament_number": 3024,
+            "vorname": "Christian",
+            "nachname": "Lohr"
+        },
+        {
+            "id": 15,
+            "parlament_number": 2660,
+            "vorname": "Isabelle",
+            "nachname": "Moret"
+        },
+        {
+            "id": 16,
+            "parlament_number": 2621,
+            "vorname": "Guy",
+            "nachname": "Parmelin"
+        },
+        {
+            "id": 17,
+            "parlament_number": 2784,
+            "vorname": "Bruno",
+            "nachname": "Pezzatti"
+        },
+        {
+            "id": 18,
+            "parlament_number": 2527,
+            "vorname": "St\u00e9phane",
+            "nachname": "Rossini"
+        },
+        {
+            "id": 19,
+            "parlament_number": 2630,
+            "vorname": "Silvia",
+            "nachname": "Schenker"
+        },
+        {
+            "id": 20,
+            "parlament_number": 2707,
+            "vorname": "Barbara",
+            "nachname": "Schmid-Federer"
+        },
+        {
+            "id": 21,
+            "parlament_number": 2766,
+            "vorname": "Daniela",
+            "nachname": "Schneeberger"
+        },
+        {
+            "id": 22,
+            "parlament_number": 2536,
+            "vorname": "J\u00fcrg",
+            "nachname": "Stahl"
+        },
+        {
+            "id": 23,
+            "parlament_number": 2669,
+            "vorname": "Jean-Fran\u00e7ois",
+            "nachname": "Steiert"
+        },
+        {
+            "id": 24,
+            "parlament_number": 2727,
+            "vorname": "Christian",
+            "nachname": "van Singer"
+        },
+        {
+            "id": 25,
+            "parlament_number": 2728,
+            "vorname": "Thomas",
+            "nachname": "Weibel"
+        },
+        {
+            "id": 26,
+            "parlament_number": 2380,
+            "vorname": "Christine",
+            "nachname": "Egerszegi-Obrist"
+        },
+        {
+            "id": 27,
+            "parlament_number": 2667,
+            "vorname": "Ivo",
+            "nachname": "Bischofberger"
+        },
+        {
+            "id": 28,
+            "parlament_number": 2573,
+            "vorname": "Pascale",
+            "nachname": "Bruderer Wyss"
+        },
+        {
+            "id": 29,
+            "parlament_number": 2044,
+            "vorname": "Verena",
+            "nachname": "Diener Lenz"
+        },
+        {
+            "id": 30,
+            "parlament_number": 2774,
+            "vorname": "Roland",
+            "nachname": "Eberle"
+        },
+        {
+            "id": 31,
+            "parlament_number": 2724,
+            "vorname": "Konrad",
+            "nachname": "Graber"
+        },
+        {
+            "id": 32,
+            "parlament_number": 2495,
+            "vorname": "Felix",
+            "nachname": "Gutzwiller"
+        },
+        {
+            "id": 33,
+            "parlament_number": 2769,
+            "vorname": "Karin",
+            "nachname": "Keller-Sutter"
+        },
+        {
+            "id": 34,
+            "parlament_number": 2641,
+            "vorname": "Alex",
+            "nachname": "Kuprecht"
+        },
+        {
+            "id": 35,
+            "parlament_number": 2405,
+            "vorname": "Liliane",
+            "nachname": "Maury Pasquier"
+        },
+        {
+            "id": 36,
+            "parlament_number": 2143,
+            "vorname": "Paul",
+            "nachname": "Rechsteiner"
+        },
+        {
+            "id": 37,
+            "parlament_number": 2640,
+            "vorname": "Urs",
+            "nachname": "Schwaller"
+        },
+        {
+            "id": 38,
+            "parlament_number": 2647,
+            "vorname": "Hans",
+            "nachname": "St\u00f6ckli"
+        },
+        {
+            "id": 39,
+            "parlament_number": 2670,
+            "vorname": "Andreas",
+            "nachname": "Aebi"
+        },
+        {
+            "id": 40,
+            "parlament_number": 2760,
+            "vorname": "Matthias",
+            "nachname": "Aebischer"
+        },
+        {
+            "id": 41,
+            "parlament_number": 2758,
+            "vorname": "Thomas",
+            "nachname": "Aeschi"
+        },
+        {
+            "id": 42,
+            "parlament_number": 2583,
+            "vorname": "Evi",
+            "nachname": "Allemann"
+        },
+        {
+            "id": 43,
+            "parlament_number": 3014,
+            "vorname": "Cesla",
+            "nachname": "Amarelle"
+        },
+        {
+            "id": 44,
+            "parlament_number": 2796,
+            "vorname": "C\u00e9line",
+            "nachname": "Amaudruz"
+        },
+        {
+            "id": 45,
+            "parlament_number": 2646,
+            "vorname": "Viola",
+            "nachname": "Amherd"
+        },
+        {
+            "id": 46,
+            "parlament_number": 2584,
+            "vorname": "Adrian",
+            "nachname": "Amstutz"
+        },
+        {
+            "id": 49,
+            "parlament_number": 2762,
+            "vorname": "Jacqueline",
+            "nachname": "Badran"
+        },
+        {
+            "id": 50,
+            "parlament_number": 3040,
+            "vorname": "Guillaume",
+            "nachname": "Barazzone"
+        },
+        {
+            "id": 51,
+            "parlament_number": 2585,
+            "vorname": "Martin",
+            "nachname": "B\u00e4umle"
+        },
+        {
+            "id": 53,
+            "parlament_number": 3016,
+            "vorname": "Kathrin",
+            "nachname": "Bertschy"
+        },
+        {
+            "id": 55,
+            "parlament_number": 2743,
+            "vorname": "Prisca",
+            "nachname": "Birrer-Heimo"
+        },
+        {
+            "id": 57,
+            "parlament_number": 2675,
+            "vorname": "Jacques",
+            "nachname": "Bourgeois"
+        },
+        {
+            "id": 58,
+            "parlament_number": 2772,
+            "vorname": "Heinz",
+            "nachname": "Brand"
+        },
+        {
+            "id": 59,
+            "parlament_number": 2372,
+            "vorname": "Toni",
+            "nachname": "Brunner"
+        },
+        {
+            "id": 60,
+            "parlament_number": 2740,
+            "vorname": "Roland",
+            "nachname": "B\u00fcchel"
+        },
+        {
+            "id": 61,
+            "parlament_number": 2588,
+            "vorname": "Jakob",
+            "nachname": "B\u00fcchler"
+        },
+        {
+            "id": 63,
+            "parlament_number": 3017,
+            "vorname": "Christine",
+            "nachname": "Bulliard-Marbach"
+        },
+        {
+            "id": 64,
+            "parlament_number": 2790,
+            "vorname": "Yannick",
+            "nachname": "Buttet"
+        },
+        {
+            "id": 65,
+            "parlament_number": 2770,
+            "vorname": "Martin",
+            "nachname": "Candinas"
+        },
+        {
+            "id": 66,
+            "parlament_number": 2775,
+            "vorname": "Andrea",
+            "nachname": "Caroni"
+        },
+        {
+            "id": 67,
+            "parlament_number": 3604,
+            "vorname": "Isabelle",
+            "nachname": "Chevalley"
+        },
+        {
+            "id": 68,
+            "parlament_number": 2734,
+            "vorname": "Max",
+            "nachname": "Chopard-Acklin"
+        },
+        {
+            "id": 69,
+            "parlament_number": 3037,
+            "vorname": "Raymond",
+            "nachname": "Clottu"
+        },
+        {
+            "id": 70,
+            "parlament_number": 2592,
+            "vorname": "Christophe",
+            "nachname": "Darbellay"
+        },
+        {
+            "id": 71,
+            "parlament_number": 2593,
+            "vorname": "Dominique",
+            "nachname": "de Buman"
+        },
+        {
+            "id": 72,
+            "parlament_number": 2788,
+            "vorname": "Fathi",
+            "nachname": "Derder"
+        },
+        {
+            "id": 73,
+            "parlament_number": 3005,
+            "vorname": "Hans",
+            "nachname": "Egloff"
+        },
+        {
+            "id": 74,
+            "parlament_number": 2678,
+            "vorname": "Corina",
+            "nachname": "Eichenberger-Walther"
+        },
+        {
+            "id": 75,
+            "parlament_number": 2679,
+            "vorname": "Yvette",
+            "nachname": "Estermann"
+        },
+        {
+            "id": 76,
+            "parlament_number": 2767,
+            "vorname": "Daniel",
+            "nachname": "F\u00e4ssler"
+        },
+        {
+            "id": 77,
+            "parlament_number": 2725,
+            "vorname": "Laurent",
+            "nachname": "Favre"
+        },
+        {
+            "id": 78,
+            "parlament_number": 2383,
+            "vorname": "Hans",
+            "nachname": "Fehr"
+        },
+        {
+            "id": 79,
+            "parlament_number": 2789,
+            "vorname": "Olivier",
+            "nachname": "Feller"
+        },
+        {
+            "id": 80,
+            "parlament_number": 2777,
+            "vorname": "Yvonne",
+            "nachname": "Feri"
+        },
+        {
+            "id": 81,
+            "parlament_number": 2680,
+            "vorname": "Doris",
+            "nachname": "Fiala"
+        },
+        {
+            "id": 82,
+            "parlament_number": 2794,
+            "vorname": "Roland",
+            "nachname": "Fischer"
+        },
+        {
+            "id": 83,
+            "parlament_number": 2765,
+            "vorname": "Beat",
+            "nachname": "Flach"
+        },
+        {
+            "id": 84,
+            "parlament_number": 2681,
+            "vorname": "Sylvia",
+            "nachname": "Fl\u00fcckiger-B\u00e4ni"
+        },
+        {
+            "id": 85,
+            "parlament_number": 2594,
+            "vorname": "Kurt",
+            "nachname": "Fluri"
+        },
+        {
+            "id": 86,
+            "parlament_number": 2682,
+            "vorname": "Olivier",
+            "nachname": "Fran\u00e7ais"
+        },
+        {
+            "id": 88,
+            "parlament_number": 2778,
+            "vorname": "Pierre-Alain",
+            "nachname": "Fridez"
+        },
+        {
+            "id": 89,
+            "parlament_number": 3035,
+            "vorname": "Claudia",
+            "nachname": "Friedl"
+        },
+        {
+            "id": 90,
+            "parlament_number": 2597,
+            "vorname": "Chantal",
+            "nachname": "Gallad\u00e9"
+        },
+        {
+            "id": 91,
+            "parlament_number": 2764,
+            "vorname": "Urs",
+            "nachname": "Gasche"
+        },
+        {
+            "id": 93,
+            "parlament_number": 2683,
+            "vorname": "Andrea",
+            "nachname": "Geissb\u00fchler"
+        },
+        {
+            "id": 94,
+            "parlament_number": 2598,
+            "vorname": "Jean-Ren\u00e9",
+            "nachname": "Germanier"
+        },
+        {
+            "id": 95,
+            "parlament_number": 2292,
+            "vorname": "Ulrich",
+            "nachname": "Giezendanner"
+        },
+        {
+            "id": 96,
+            "parlament_number": 2685,
+            "vorname": "Bastien",
+            "nachname": "Girod"
+        },
+        {
+            "id": 97,
+            "parlament_number": 2657,
+            "vorname": "Ida",
+            "nachname": "Glanzmann-Hunkeler"
+        },
+        {
+            "id": 98,
+            "parlament_number": 3003,
+            "vorname": "Balthasar",
+            "nachname": "Gl\u00e4ttli"
+        },
+        {
+            "id": 99,
+            "parlament_number": 3001,
+            "vorname": "Alois",
+            "nachname": "Gm\u00fcr"
+        },
+        {
+            "id": 100,
+            "parlament_number": 3039,
+            "vorname": "Roger",
+            "nachname": "Golay"
+        },
+        {
+            "id": 101,
+            "parlament_number": 3023,
+            "vorname": "Petra",
+            "nachname": "G\u00f6ssi"
+        },
+        {
+            "id": 102,
+            "parlament_number": 2569,
+            "vorname": "Maya",
+            "nachname": "Graf"
+        },
+        {
+            "id": 103,
+            "parlament_number": 2652,
+            "vorname": "Edith",
+            "nachname": "Graf-Litscher"
+        },
+        {
+            "id": 104,
+            "parlament_number": 2688,
+            "vorname": "Jean-Pierre",
+            "nachname": "Grin"
+        },
+        {
+            "id": 106,
+            "parlament_number": 2786,
+            "vorname": "J\u00fcrg",
+            "nachname": "Grossen"
+        },
+        {
+            "id": 107,
+            "parlament_number": 2689,
+            "vorname": "Hans",
+            "nachname": "Grunder"
+        },
+        {
+            "id": 108,
+            "parlament_number": 2798,
+            "vorname": "Jean-Paul",
+            "nachname": "Gschwind"
+        },
+        {
+            "id": 109,
+            "parlament_number": 2785,
+            "vorname": "Bernhard",
+            "nachname": "Guhl"
+        },
+        {
+            "id": 110,
+            "parlament_number": 3026,
+            "vorname": "Barbara",
+            "nachname": "Gysi"
+        },
+        {
+            "id": 111,
+            "parlament_number": 2792,
+            "vorname": "Philipp",
+            "nachname": "Hadorn"
+        },
+        {
+            "id": 113,
+            "parlament_number": 2763,
+            "vorname": "Thomas",
+            "nachname": "Hardegger"
+        },
+        {
+            "id": 114,
+            "parlament_number": 2497,
+            "vorname": "Hansj\u00f6rg",
+            "nachname": "Hassler"
+        },
+        {
+            "id": 115,
+            "parlament_number": 3002,
+            "vorname": "Markus",
+            "nachname": "Hausammann"
+        },
+        {
+            "id": 116,
+            "parlament_number": 2690,
+            "vorname": "Alfred",
+            "nachname": "Heer"
+        },
+        {
+            "id": 117,
+            "parlament_number": 3033,
+            "vorname": "Verena",
+            "nachname": "Herzog"
+        },
+        {
+            "id": 118,
+            "parlament_number": 2691,
+            "vorname": "Hugues",
+            "nachname": "Hiltpold"
+        },
+        {
+            "id": 120,
+            "parlament_number": 2693,
+            "vorname": "Thomas",
+            "nachname": "Hurter"
+        },
+        {
+            "id": 122,
+            "parlament_number": 2745,
+            "vorname": "Beat",
+            "nachname": "Jans"
+        },
+        {
+            "id": 125,
+            "parlament_number": 2694,
+            "vorname": "Daniel",
+            "nachname": "Jositsch"
+        },
+        {
+            "id": 127,
+            "parlament_number": 3013,
+            "vorname": "Peter",
+            "nachname": "Keller"
+        },
+        {
+            "id": 129,
+            "parlament_number": 2608,
+            "vorname": "Margret",
+            "nachname": "Kiener Nellen"
+        },
+        {
+            "id": 130,
+            "parlament_number": 2695,
+            "vorname": "Hans",
+            "nachname": "Killer"
+        },
+        {
+            "id": 131,
+            "parlament_number": 3021,
+            "vorname": "Hansj\u00f6rg",
+            "nachname": "Knecht"
+        },
+        {
+            "id": 132,
+            "parlament_number": 2735,
+            "vorname": "Martin",
+            "nachname": "Landolt"
+        },
+        {
+            "id": 136,
+            "parlament_number": 2129,
+            "vorname": "Susanne",
+            "nachname": "Leutenegger Oberholzer"
+        },
+        {
+            "id": 137,
+            "parlament_number": 2698,
+            "vorname": "Christian",
+            "nachname": "L\u00fcscher"
+        },
+        {
+            "id": 140,
+            "parlament_number": 3022,
+            "vorname": "Thomas",
+            "nachname": "Maier"
+        },
+        {
+            "id": 141,
+            "parlament_number": 2738,
+            "vorname": "Jacques-Andr\u00e9",
+            "nachname": "Maire"
+        },
+        {
+            "id": 142,
+            "parlament_number": 2614,
+            "vorname": "Christa",
+            "nachname": "Markwalder"
+        },
+        {
+            "id": 143,
+            "parlament_number": 2726,
+            "vorname": "Ada",
+            "nachname": "Marra"
+        },
+        {
+            "id": 144,
+            "parlament_number": 3034,
+            "vorname": "Nadine",
+            "nachname": "Masshardt"
+        },
+        {
+            "id": 145,
+            "parlament_number": 2516,
+            "vorname": "Lucrezia",
+            "nachname": "Meier-Schatz"
+        },
+        {
+            "id": 147,
+            "parlament_number": 2700,
+            "vorname": "Tiana Angelina",
+            "nachname": "Moser"
+        },
+        {
+            "id": 149,
+            "parlament_number": 3012,
+            "vorname": "Leo",
+            "nachname": "M\u00fcller"
+        },
+        {
+            "id": 150,
+            "parlament_number": 2616,
+            "vorname": "Philipp",
+            "nachname": "M\u00fcller"
+        },
+        {
+            "id": 151,
+            "parlament_number": 2661,
+            "vorname": "Thomas",
+            "nachname": "M\u00fcller"
+        },
+        {
+            "id": 152,
+            "parlament_number": 2617,
+            "vorname": "Walter",
+            "nachname": "M\u00fcller"
+        },
+        {
+            "id": 153,
+            "parlament_number": 2771,
+            "vorname": "Stefan",
+            "nachname": "M\u00fcller-Altermatt"
+        },
+        {
+            "id": 154,
+            "parlament_number": 3036,
+            "vorname": "Martina",
+            "nachname": "Munz"
+        },
+        {
+            "id": 155,
+            "parlament_number": 2618,
+            "vorname": "Felix",
+            "nachname": "M\u00fcri"
+        },
+        {
+            "id": 156,
+            "parlament_number": 3018,
+            "vorname": "Martin",
+            "nachname": "Naef"
+        },
+        {
+            "id": 158,
+            "parlament_number": 2701,
+            "vorname": "Yves",
+            "nachname": "Nidegger"
+        },
+        {
+            "id": 159,
+            "parlament_number": 2648,
+            "vorname": "Roger",
+            "nachname": "Nordmann"
+        },
+        {
+            "id": 160,
+            "parlament_number": 2619,
+            "vorname": "Ruedi",
+            "nachname": "Noser"
+        },
+        {
+            "id": 161,
+            "parlament_number": 2702,
+            "vorname": "Eric",
+            "nachname": "Nussbaumer"
+        },
+        {
+            "id": 162,
+            "parlament_number": 2773,
+            "vorname": "Roberta",
+            "nachname": "Pantani"
+        },
+        {
+            "id": 163,
+            "parlament_number": 2751,
+            "vorname": "Corrado",
+            "nachname": "Pardini"
+        },
+        {
+            "id": 165,
+            "parlament_number": 2703,
+            "vorname": "Sylvie",
+            "nachname": "Perrinjaquet"
+        },
+        {
+            "id": 166,
+            "parlament_number": 2623,
+            "vorname": "Gerhard",
+            "nachname": "Pfister"
+        },
+        {
+            "id": 167,
+            "parlament_number": 2781,
+            "vorname": "Nadja",
+            "nachname": "Umbricht Pieren"
+        },
+        {
+            "id": 168,
+            "parlament_number": 3009,
+            "vorname": "Val\u00e9rie",
+            "nachname": "Piller Carrard"
+        },
+        {
+            "id": 169,
+            "parlament_number": 2779,
+            "vorname": "Rosmarie",
+            "nachname": "Quadranti"
+        },
+        {
+            "id": 170,
+            "parlament_number": 2752,
+            "vorname": "Lorenzo",
+            "nachname": "Quadri"
+        },
+        {
+            "id": 171,
+            "parlament_number": 2776,
+            "vorname": "Fabio",
+            "nachname": "Regazzi"
+        },
+        {
+            "id": 172,
+            "parlament_number": 2704,
+            "vorname": "Lukas",
+            "nachname": "Reimann"
+        },
+        {
+            "id": 173,
+            "parlament_number": 2147,
+            "vorname": "Maximilian",
+            "nachname": "Reimann"
+        },
+        {
+            "id": 174,
+            "parlament_number": 2795,
+            "vorname": "Mathias",
+            "nachname": "Reynard"
+        },
+        {
+            "id": 175,
+            "parlament_number": 2705,
+            "vorname": "Natalie",
+            "nachname": "Rickli"
+        },
+        {
+            "id": 176,
+            "parlament_number": 2525,
+            "vorname": "Katharina \"Kathy\"",
+            "nachname": "Riklin"
+        },
+        {
+            "id": 177,
+            "parlament_number": 2627,
+            "vorname": "Jean-Fran\u00e7ois",
+            "nachname": "Rime"
+        },
+        {
+            "id": 178,
+            "parlament_number": 2754,
+            "vorname": "Markus",
+            "nachname": "Ritter"
+        },
+        {
+            "id": 179,
+            "parlament_number": 3025,
+            "vorname": "Marco",
+            "nachname": "Romano"
+        },
+        {
+            "id": 180,
+            "parlament_number": 3010,
+            "vorname": "Albert",
+            "nachname": "R\u00f6sti"
+        },
+        {
+            "id": 182,
+            "parlament_number": 3030,
+            "vorname": "Gregor",
+            "nachname": "Rutz"
+        },
+        {
+            "id": 183,
+            "parlament_number": 3000,
+            "vorname": "Regula",
+            "nachname": "Rytz"
+        },
+        {
+            "id": 184,
+            "parlament_number": 2654,
+            "vorname": "Louis",
+            "nachname": "Schelbert"
+        },
+        {
+            "id": 185,
+            "parlament_number": 3029,
+            "vorname": "Peter",
+            "nachname": "Schilliger"
+        },
+        {
+            "id": 186,
+            "parlament_number": 3027,
+            "vorname": "Urs",
+            "nachname": "Schl\u00e4fli"
+        },
+        {
+            "id": 187,
+            "parlament_number": 3028,
+            "vorname": "Ursula",
+            "nachname": "Schneider Sch\u00fcttel"
+        },
+        {
+            "id": 188,
+            "parlament_number": 2748,
+            "vorname": "Elisabeth",
+            "nachname": "Schneider-Schneiter"
+        },
+        {
+            "id": 189,
+            "parlament_number": 3020,
+            "vorname": "Jean Christophe",
+            "nachname": "Schwaab"
+        },
+        {
+            "id": 190,
+            "parlament_number": 2631,
+            "vorname": "Pirmin",
+            "nachname": "Schwander"
+        },
+        {
+            "id": 191,
+            "parlament_number": 2417,
+            "vorname": "Silva",
+            "nachname": "Semadeni"
+        },
+        {
+            "id": 192,
+            "parlament_number": 2632,
+            "vorname": "Carlo",
+            "nachname": "Sommaruga"
+        },
+        {
+            "id": 193,
+            "parlament_number": 2323,
+            "vorname": "Luzi",
+            "nachname": "Stamm"
+        },
+        {
+            "id": 194,
+            "parlament_number": 3031,
+            "vorname": "Daniel",
+            "nachname": "Stolz"
+        },
+        {
+            "id": 195,
+            "parlament_number": 2747,
+            "vorname": "Marianne",
+            "nachname": "Streiff-Feller"
+        },
+        {
+            "id": 196,
+            "parlament_number": 2710,
+            "vorname": "Ad\u00e8le",
+            "nachname": "Thorens Goumaz"
+        },
+        {
+            "id": 197,
+            "parlament_number": 3007,
+            "vorname": "Manuel",
+            "nachname": "Tornare"
+        },
+        {
+            "id": 198,
+            "parlament_number": 3032,
+            "vorname": "Aline",
+            "nachname": "Trede"
+        },
+        {
+            "id": 199,
+            "parlament_number": 2328,
+            "vorname": "Alexander",
+            "nachname": "Tsch\u00e4pp\u00e4t"
+        },
+        {
+            "id": 203,
+            "parlament_number": 2761,
+            "vorname": "Albert",
+            "nachname": "Vitali"
+        },
+        {
+            "id": 204,
+            "parlament_number": 2787,
+            "vorname": "Karl",
+            "nachname": "Vogler"
+        },
+        {
+            "id": 206,
+            "parlament_number": 2713,
+            "vorname": "Erich",
+            "nachname": "von Siebenthal"
+        },
+        {
+            "id": 207,
+            "parlament_number": 2714,
+            "vorname": "Eric",
+            "nachname": "Voruz"
+        },
+        {
+            "id": 208,
+            "parlament_number": 2541,
+            "vorname": "Hansj\u00f6rg",
+            "nachname": "Walter"
+        },
+        {
+            "id": 210,
+            "parlament_number": 2715,
+            "vorname": "Christian",
+            "nachname": "Wasserfallen"
+        },
+        {
+            "id": 211,
+            "parlament_number": 2759,
+            "vorname": "C\u00e9dric",
+            "nachname": "Wermuth"
+        },
+        {
+            "id": 212,
+            "parlament_number": 2638,
+            "vorname": "Walter",
+            "nachname": "Wobmann"
+        },
+        {
+            "id": 214,
+            "parlament_number": 2565,
+            "vorname": "Fabio",
+            "nachname": "Abate"
+        },
+        {
+            "id": 215,
+            "parlament_number": 2645,
+            "vorname": "Hans",
+            "nachname": "Altherr"
+        },
+        {
+            "id": 216,
+            "parlament_number": 2793,
+            "vorname": "Isidor",
+            "nachname": "Baumann"
+        },
+        {
+            "id": 217,
+            "parlament_number": 2370,
+            "vorname": "Didier",
+            "nachname": "Berberat"
+        },
+        {
+            "id": 218,
+            "parlament_number": 2356,
+            "vorname": "Peter",
+            "nachname": "Bieri"
+        },
+        {
+            "id": 219,
+            "parlament_number": 2674,
+            "vorname": "Pirmin",
+            "nachname": "Bischof"
+        },
+        {
+            "id": 220,
+            "parlament_number": 2741,
+            "vorname": "Rapha\u00ebl",
+            "nachname": "Comte"
+        },
+        {
+            "id": 221,
+            "parlament_number": 2717,
+            "vorname": "Robert",
+            "nachname": "Cramer"
+        },
+        {
+            "id": 222,
+            "parlament_number": 2780,
+            "vorname": "Joachim",
+            "nachname": "Eder"
+        },
+        {
+            "id": 223,
+            "parlament_number": 2768,
+            "vorname": "Stefan",
+            "nachname": "Engler"
+        },
+        {
+            "id": 224,
+            "parlament_number": 2061,
+            "vorname": "Anita",
+            "nachname": "Fetz"
+        },
+        {
+            "id": 225,
+            "parlament_number": 2385,
+            "vorname": "Peter",
+            "nachname": "F\u00f6hn"
+        },
+        {
+            "id": 226,
+            "parlament_number": 2718,
+            "vorname": "Jean-Ren\u00e9 Marcel Lucien",
+            "nachname": "Fournier"
+        },
+        {
+            "id": 227,
+            "parlament_number": 2575,
+            "vorname": "Hannes",
+            "nachname": "Germann"
+        },
+        {
+            "id": 228,
+            "parlament_number": 2600,
+            "vorname": "Brigitte",
+            "nachname": "H\u00e4berli-Koller"
+        },
+        {
+            "id": 229,
+            "parlament_number": 2719,
+            "vorname": "Claude",
+            "nachname": "H\u00eache"
+        },
+        {
+            "id": 230,
+            "parlament_number": 3041,
+            "vorname": "Thomas",
+            "nachname": "Hefti"
+        },
+        {
+            "id": 231,
+            "parlament_number": 2459,
+            "vorname": "Hans",
+            "nachname": "Hess"
+        },
+        {
+            "id": 232,
+            "parlament_number": 2720,
+            "vorname": "Ren\u00e9",
+            "nachname": "Imoberdorf"
+        },
+        {
+            "id": 233,
+            "parlament_number": 2501,
+            "vorname": "Claude",
+            "nachname": "Janiak"
+        },
+        {
+            "id": 235,
+            "parlament_number": 2613,
+            "vorname": "Christian",
+            "nachname": "Levrat"
+        },
+        {
+            "id": 236,
+            "parlament_number": 2561,
+            "vorname": "Filippo",
+            "nachname": "Lombardi"
+        },
+        {
+            "id": 237,
+            "parlament_number": 2721,
+            "vorname": "Werner",
+            "nachname": "Luginb\u00fchl"
+        },
+        {
+            "id": 238,
+            "parlament_number": 3019,
+            "vorname": "Thomas",
+            "nachname": "Minder"
+        },
+        {
+            "id": 239,
+            "parlament_number": 2722,
+            "vorname": "Paul",
+            "nachname": "Niederberger"
+        },
+        {
+            "id": 240,
+            "parlament_number": 2624,
+            "vorname": "Luc",
+            "nachname": "Recordon"
+        },
+        {
+            "id": 241,
+            "parlament_number": 2629,
+            "vorname": "G\u00e9raldine",
+            "nachname": "Savary"
+        },
+        {
+            "id": 242,
+            "parlament_number": 2783,
+            "vorname": "Martin",
+            "nachname": "Schmid"
+        },
+        {
+            "id": 243,
+            "parlament_number": 2723,
+            "vorname": "Anne",
+            "nachname": "Seydoux-Christe"
+        },
+        {
+            "id": 245,
+            "parlament_number": 2424,
+            "vorname": "Georges",
+            "nachname": "Theiler"
+        },
+        {
+            "id": 246,
+            "parlament_number": 2546,
+            "vorname": "Roberto",
+            "nachname": "Zanetti"
+        },
+        {
+            "id": 247,
+            "parlament_number": 3042,
+            "vorname": "Giovanni",
+            "nachname": "Merlini"
+        },
+        {
+            "id": 248,
+            "parlament_number": 3043,
+            "vorname": "Hans-Peter",
+            "nachname": "Portmann"
+        },
+        {
+            "id": 250,
+            "parlament_number": 3046,
+            "vorname": "Thomas",
+            "nachname": "Matter"
+        },
+        {
+            "id": 251,
+            "parlament_number": 3044,
+            "vorname": "Beat",
+            "nachname": "Walti"
+        },
+        {
+            "id": 252,
+            "parlament_number": 3045,
+            "vorname": "Rebecca",
+            "nachname": "Ruiz"
+        },
+        {
+            "id": 253,
+            "parlament_number": 3047,
+            "vorname": "Werner",
+            "nachname": "H\u00f6sli"
+        },
+        {
+            "id": 255,
+            "parlament_number": 3049,
+            "vorname": "Pierre-Andr\u00e9",
+            "nachname": "Monnard"
+        },
+        {
+            "id": 256,
+            "parlament_number": 3048,
+            "vorname": "Heinz",
+            "nachname": "Siegenthaler"
+        },
+        {
+            "id": 257,
+            "parlament_number": 3050,
+            "vorname": "Rudolf",
+            "nachname": "Winkler"
+        },
+        {
+            "id": 259,
+            "parlament_number": 3051,
+            "vorname": "Christine",
+            "nachname": "H\u00e4sler"
+        },
+        {
+            "id": 261,
+            "parlament_number": 3055,
+            "vorname": "Jean-Luc",
+            "nachname": "Addor"
+        },
+        {
+            "id": 262,
+            "parlament_number": 3056,
+            "vorname": "Thomas",
+            "nachname": "Ammann"
+        },
+        {
+            "id": 263,
+            "parlament_number": 3057,
+            "vorname": "Beat",
+            "nachname": "Arnold"
+        },
+        {
+            "id": 264,
+            "parlament_number": 3058,
+            "vorname": "Sibel",
+            "nachname": "Arslan"
+        },
+        {
+            "id": 265,
+            "parlament_number": 3104,
+            "vorname": "Angelo",
+            "nachname": "Barrile"
+        },
+        {
+            "id": 266,
+            "parlament_number": 3059,
+            "vorname": "Philippe",
+            "nachname": "Bauer"
+        },
+        {
+            "id": 267,
+            "parlament_number": 3060,
+            "vorname": "Claude",
+            "nachname": "B\u00e9gl\u00e9"
+        },
+        {
+            "id": 268,
+            "parlament_number": 3061,
+            "vorname": "Fr\u00e9d\u00e9ric",
+            "nachname": "Borloz"
+        },
+        {
+            "id": 269,
+            "parlament_number": 2023,
+            "vorname": "Daniel",
+            "nachname": "Br\u00e9laz"
+        },
+        {
+            "id": 270,
+            "parlament_number": 3062,
+            "vorname": "Micha\u00ebl",
+            "nachname": "Buffat"
+        },
+        {
+            "id": 271,
+            "parlament_number": 3063,
+            "vorname": "Manfred",
+            "nachname": "B\u00fchler"
+        },
+        {
+            "id": 272,
+            "parlament_number": 3064,
+            "vorname": "Thomas",
+            "nachname": "Burgherr"
+        },
+        {
+            "id": 273,
+            "parlament_number": 3065,
+            "vorname": "Thierry",
+            "nachname": "Burkart"
+        },
+        {
+            "id": 274,
+            "parlament_number": 3066,
+            "vorname": "Duri",
+            "nachname": "Campell"
+        },
+        {
+            "id": 275,
+            "parlament_number": 3067,
+            "vorname": "Marco",
+            "nachname": "Chiesa"
+        },
+        {
+            "id": 276,
+            "parlament_number": 3068,
+            "vorname": "Denis",
+            "nachname": "de la Reussille"
+        },
+        {
+            "id": 277,
+            "parlament_number": 3069,
+            "vorname": "Marcel",
+            "nachname": "Dettling"
+        },
+        {
+            "id": 278,
+            "parlament_number": 3070,
+            "vorname": "Marcel",
+            "nachname": "Dobler"
+        },
+        {
+            "id": 279,
+            "parlament_number": 2287,
+            "vorname": "Christoph",
+            "nachname": "Eymann"
+        },
+        {
+            "id": 280,
+            "parlament_number": 3071,
+            "vorname": "Laurence",
+            "nachname": "Fehlmann Rielle"
+        },
+        {
+            "id": 281,
+            "parlament_number": 3072,
+            "vorname": "Jonas",
+            "nachname": "Fricker"
+        },
+        {
+            "id": 282,
+            "parlament_number": 3073,
+            "vorname": "Beno\u00eet",
+            "nachname": "Genecand"
+        },
+        {
+            "id": 283,
+            "parlament_number": 3074,
+            "vorname": "Andreas",
+            "nachname": "Glarner"
+        },
+        {
+            "id": 284,
+            "parlament_number": 3075,
+            "vorname": "Andrea",
+            "nachname": "Gm\u00fcr-Sch\u00f6nenberger"
+        },
+        {
+            "id": 285,
+            "parlament_number": 3076,
+            "vorname": "Franz",
+            "nachname": "Gr\u00fcter"
+        },
+        {
+            "id": 286,
+            "parlament_number": 3077,
+            "vorname": "Tim",
+            "nachname": "Guldimann"
+        },
+        {
+            "id": 287,
+            "parlament_number": 3078,
+            "vorname": "Erich",
+            "nachname": "Hess"
+        },
+        {
+            "id": 288,
+            "parlament_number": 3079,
+            "vorname": "Hermann",
+            "nachname": "Hess"
+        },
+        {
+            "id": 289,
+            "parlament_number": 3080,
+            "vorname": "Christian",
+            "nachname": "Imark"
+        },
+        {
+            "id": 290,
+            "parlament_number": 3081,
+            "vorname": "Barbara",
+            "nachname": "Keller-Inhelder"
+        },
+        {
+            "id": 291,
+            "parlament_number": 3082,
+            "vorname": "Roger",
+            "nachname": "K\u00f6ppel"
+        },
+        {
+            "id": 292,
+            "parlament_number": 3083,
+            "vorname": "G\u00e9raldine",
+            "nachname": "Marchand-Balet"
+        },
+        {
+            "id": 293,
+            "parlament_number": 3084,
+            "vorname": "Min Li",
+            "nachname": "Marti"
+        },
+        {
+            "id": 294,
+            "parlament_number": 3085,
+            "vorname": "Magdalena",
+            "nachname": "Martullo-Blocher"
+        },
+        {
+            "id": 295,
+            "parlament_number": 3086,
+            "vorname": "Lisa",
+            "nachname": "Mazzone"
+        },
+        {
+            "id": 296,
+            "parlament_number": 3087,
+            "vorname": "Mattea",
+            "nachname": "Meyer"
+        },
+        {
+            "id": 297,
+            "parlament_number": 3088,
+            "vorname": "Philippe",
+            "nachname": "Nantermod"
+        },
+        {
+            "id": 298,
+            "parlament_number": 3089,
+            "vorname": "Jacques",
+            "nachname": "Nicolet"
+        },
+        {
+            "id": 299,
+            "parlament_number": 3090,
+            "vorname": "Pierre-Andr\u00e9",
+            "nachname": "Page"
+        },
+        {
+            "id": 300,
+            "parlament_number": 3091,
+            "vorname": "Franz",
+            "nachname": "Ruppen"
+        },
+        {
+            "id": 301,
+            "parlament_number": 3092,
+            "vorname": "Werner",
+            "nachname": "Salzmann"
+        },
+        {
+            "id": 302,
+            "parlament_number": 3103,
+            "vorname": "Regine",
+            "nachname": "Sauter"
+        },
+        {
+            "id": 303,
+            "parlament_number": 2708,
+            "vorname": "Roberto",
+            "nachname": "Schmidt"
+        },
+        {
+            "id": 304,
+            "parlament_number": 3094,
+            "vorname": "Priska",
+            "nachname": "Seiler Graf"
+        },
+        {
+            "id": 305,
+            "parlament_number": 3095,
+            "vorname": "Sandra",
+            "nachname": "Sollberger"
+        },
+        {
+            "id": 306,
+            "parlament_number": 3096,
+            "vorname": "Barbara",
+            "nachname": "Steinemann"
+        },
+        {
+            "id": 307,
+            "parlament_number": 3097,
+            "vorname": "Mauro",
+            "nachname": "Tuena"
+        },
+        {
+            "id": 308,
+            "parlament_number": 3098,
+            "vorname": "Hans-Ueli",
+            "nachname": "Vogt"
+        },
+        {
+            "id": 309,
+            "parlament_number": 3099,
+            "vorname": "Bruno",
+            "nachname": "Walliser"
+        },
+        {
+            "id": 310,
+            "parlament_number": 3100,
+            "vorname": "Laurent",
+            "nachname": "Wehrli"
+        },
+        {
+            "id": 311,
+            "parlament_number": 3101,
+            "vorname": "Claudio",
+            "nachname": "Zanetti"
+        },
+        {
+            "id": 312,
+            "parlament_number": 3102,
+            "vorname": "David",
+            "nachname": "Zuberb\u00fchler"
+        },
+        {
+            "id": 313,
+            "parlament_number": 3110,
+            "vorname": "Hans-Ulrich",
+            "nachname": "Bigler"
+        },
+        {
+            "id": 314,
+            "parlament_number": 3109,
+            "vorname": "Matthias Samuel",
+            "nachname": "Jauslin"
+        },
+        {
+            "id": 315,
+            "parlament_number": 3052,
+            "vorname": "Josef",
+            "nachname": "Dittli"
+        },
+        {
+            "id": 316,
+            "parlament_number": 3107,
+            "vorname": "Erich",
+            "nachname": "Ettlin"
+        },
+        {
+            "id": 317,
+            "parlament_number": 3053,
+            "vorname": "Peter",
+            "nachname": "Hegglin"
+        },
+        {
+            "id": 318,
+            "parlament_number": 3108,
+            "vorname": "Damian",
+            "nachname": "M\u00fcller"
+        },
+        {
+            "id": 319,
+            "parlament_number": 3105,
+            "vorname": "Beat",
+            "nachname": "Rieder"
+        },
+        {
+            "id": 320,
+            "parlament_number": 3106,
+            "vorname": "Beat",
+            "nachname": "Vonlanthen"
+        },
+        {
+            "id": 321,
+            "parlament_number": 3054,
+            "vorname": "Hans",
+            "nachname": "Wicki"
+        },
+        {
+            "id": 322,
+            "parlament_number": 2686,
+            "vorname": "Alice",
+            "nachname": "Glauser-Zufferey"
+        },
+        {
+            "id": 323,
+            "parlament_number": 3114,
+            "vorname": "Samuel",
+            "nachname": "Bendahan"
+        },
+        {
+            "id": 324,
+            "parlament_number": 3113,
+            "vorname": "Thomas",
+            "nachname": "Egger"
+        },
+        {
+            "id": 325,
+            "parlament_number": 3116,
+            "vorname": "Hansj\u00f6rg",
+            "nachname": "Brunner"
+        },
+        {
+            "id": 326,
+            "parlament_number": 3118,
+            "vorname": "Rocco",
+            "nachname": "Cattaneo"
+        },
+        {
+            "id": 327,
+            "parlament_number": 3115,
+            "vorname": "Niklaus-Samuel",
+            "nachname": "Gugger"
+        },
+        {
+            "id": 328,
+            "parlament_number": 3117,
+            "vorname": "Diana",
+            "nachname": "Gutjahr"
+        },
+        {
+            "id": 329,
+            "parlament_number": 3119,
+            "vorname": "Ir\u00e8ne",
+            "nachname": "K\u00e4lin"
+        },
+        {
+            "id": 330,
+            "parlament_number": 3120,
+            "vorname": "Brigitte",
+            "nachname": "Crottaz"
+        },
+        {
+            "id": 331,
+            "parlament_number": 3121,
+            "vorname": "Benjamin",
+            "nachname": "Roduit"
+        },
+        {
+            "id": 332,
+            "parlament_number": 3124,
+            "vorname": "Fabian",
+            "nachname": "Molina"
+        },
+        {
+            "id": 333,
+            "parlament_number": 3123,
+            "vorname": "Nicol\u00f2",
+            "nachname": "Paganini"
+        },
+        {
+            "id": 334,
+            "parlament_number": 3122,
+            "vorname": "Michael",
+            "nachname": "T\u00f6ngi"
+        },
+        {
+            "id": 335,
+            "parlament_number": 3125,
+            "vorname": "Flavia",
+            "nachname": "Wasserfallen"
+        },
+        {
+            "id": 336,
+            "parlament_number": 3127,
+            "vorname": "Adrian",
+            "nachname": "W\u00fcthrich"
+        },
+        {
+            "id": 337,
+            "parlament_number": 3126,
+            "vorname": "Philipp",
+            "nachname": "Kutter"
+        },
+        {
+            "id": 338,
+            "parlament_number": 3128,
+            "vorname": "Daniel",
+            "nachname": "Frei"
+        },
+        {
+            "id": 339,
+            "parlament_number": 3129,
+            "vorname": "Samira",
+            "nachname": "Marti"
+        },
+        {
+            "id": 340,
+            "parlament_number": 3131,
+            "vorname": "Philipp Matthias",
+            "nachname": "Bregy"
+        },
+        {
+            "id": 341,
+            "parlament_number": 3130,
+            "vorname": "Mike",
+            "nachname": "Egger"
+        },
+        {
+            "id": 342,
+            "parlament_number": 3133,
+            "vorname": "Nicolas",
+            "nachname": "Rochat Fernandez"
+        },
+        {
+            "id": 343,
+            "parlament_number": 3134,
+            "vorname": "Martin",
+            "nachname": "Haab"
+        },
+        {
+            "id": 344,
+            "parlament_number": 3135,
+            "vorname": "Therese",
+            "nachname": "Schl\u00e4pfer"
+        },
+        {
+            "id": 345,
+            "parlament_number": 3136,
+            "vorname": "Benedikt",
+            "nachname": "W\u00fcrth"
+        },
+        {
+            "id": 346,
+            "parlament_number": 3178,
+            "vorname": "Franziska",
+            "nachname": "Ryser"
+        },
+        {
+            "id": 347,
+            "parlament_number": 3154,
+            "vorname": "Tamara",
+            "nachname": "Funiciello"
+        },
+        {
+            "id": 348,
+            "parlament_number": 3159,
+            "vorname": "Corina",
+            "nachname": "Gredig"
+        },
+        {
+            "id": 349,
+            "parlament_number": 3180,
+            "vorname": "Marionna",
+            "nachname": "Schlatter"
+        },
+        {
+            "id": 350,
+            "parlament_number": 3181,
+            "vorname": "Meret",
+            "nachname": "Schneider"
+        },
+        {
+            "id": 351,
+            "parlament_number": 2513,
+            "vorname": "Pierre-Yves",
+            "nachname": "Maillard"
+        },
+        {
+            "id": 352,
+            "parlament_number": 3198,
+            "vorname": "Heidi",
+            "nachname": "Z'graggen"
+        },
+        {
+            "id": 353,
+            "parlament_number": 3182,
+            "vorname": "Andri",
+            "nachname": "Silberschmidt"
+        },
+        {
+            "id": 354,
+            "parlament_number": 3191,
+            "vorname": "Felix",
+            "nachname": "Wettstein"
+        },
+        {
+            "id": 355,
+            "parlament_number": 3138,
+            "vorname": "Christine",
+            "nachname": "Badertscher"
+        },
+        {
+            "id": 356,
+            "parlament_number": 3153,
+            "vorname": "Esther",
+            "nachname": "Friedli"
+        },
+        {
+            "id": 357,
+            "parlament_number": 3169,
+            "vorname": "Melanie",
+            "nachname": "Mettler"
+        },
+        {
+            "id": 358,
+            "parlament_number": 3139,
+            "vorname": "Kilian",
+            "nachname": "Baumann"
+        },
+        {
+            "id": 359,
+            "parlament_number": 3166,
+            "vorname": "J\u00f6rg",
+            "nachname": "M\u00e4der"
+        },
+        {
+            "id": 360,
+            "parlament_number": 3158,
+            "vorname": "Benjamin",
+            "nachname": "Giezendanner"
+        },
+        {
+            "id": 361,
+            "parlament_number": 3188,
+            "vorname": "Susanne",
+            "nachname": "Vincenz-Stauffacher"
+        },
+        {
+            "id": 362,
+            "parlament_number": 3140,
+            "vorname": "Judith",
+            "nachname": "Bellaiche"
+        },
+        {
+            "id": 363,
+            "parlament_number": 3202,
+            "vorname": "Priska",
+            "nachname": "Wismer-Felder"
+        },
+        {
+            "id": 364,
+            "parlament_number": 3141,
+            "vorname": "Marianne",
+            "nachname": "Binder-Keller"
+        },
+        {
+            "id": 365,
+            "parlament_number": 3143,
+            "vorname": "Thomas",
+            "nachname": "Brunner"
+        },
+        {
+            "id": 366,
+            "parlament_number": 3192,
+            "vorname": "C\u00e9line",
+            "nachname": "Widmer"
+        },
+        {
+            "id": 367,
+            "parlament_number": 3170,
+            "vorname": "Sophie",
+            "nachname": "Michaud Gigon"
+        },
+        {
+            "id": 368,
+            "parlament_number": 3201,
+            "vorname": "Mustafa",
+            "nachname": "Atici"
+        },
+        {
+            "id": 369,
+            "parlament_number": 3144,
+            "vorname": "Katja",
+            "nachname": "Christ"
+        },
+        {
+            "id": 370,
+            "parlament_number": 3187,
+            "vorname": "Gabriela",
+            "nachname": "Suter"
+        },
+        {
+            "id": 371,
+            "parlament_number": 3137,
+            "vorname": "Gerhard",
+            "nachname": "Andrey"
+        },
+        {
+            "id": 372,
+            "parlament_number": 3186,
+            "vorname": "Lilian",
+            "nachname": "Studer"
+        },
+        {
+            "id": 373,
+            "parlament_number": 3142,
+            "vorname": "Martina",
+            "nachname": "Bircher"
+        },
+        {
+            "id": 374,
+            "parlament_number": 3157,
+            "vorname": "Anna",
+            "nachname": "Giacometti"
+        },
+        {
+            "id": 375,
+            "parlament_number": 3150,
+            "vorname": "Kurt",
+            "nachname": "Egger"
+        },
+        {
+            "id": 376,
+            "parlament_number": 3155,
+            "vorname": "Andreas",
+            "nachname": "Gafner"
+        },
+        {
+            "id": 377,
+            "parlament_number": 3156,
+            "vorname": "Jean-Pierre",
+            "nachname": "Gallati"
+        },
+        {
+            "id": 378,
+            "parlament_number": 3173,
+            "vorname": "Jon",
+            "nachname": "Pult"
+        },
+        {
+            "id": 379,
+            "parlament_number": 3177,
+            "vorname": "Monika",
+            "nachname": "R\u00fcegger"
+        },
+        {
+            "id": 380,
+            "parlament_number": 3199,
+            "vorname": "Mathias",
+            "nachname": "Zopfi"
+        },
+        {
+            "id": 381,
+            "parlament_number": 3183,
+            "vorname": "Johanna",
+            "nachname": "Gapany"
+        },
+        {
+            "id": 382,
+            "parlament_number": 3194,
+            "vorname": "Eva",
+            "nachname": "Herzog"
+        },
+        {
+            "id": 383,
+            "parlament_number": 3145,
+            "vorname": "Christophe",
+            "nachname": "Clivaz"
+        },
+        {
+            "id": 384,
+            "parlament_number": 3196,
+            "vorname": "Jakob",
+            "nachname": "Stark"
+        },
+        {
+            "id": 386,
+            "parlament_number": 3190,
+            "vorname": "Manuela",
+            "nachname": "Weichelt"
+        },
+        {
+            "id": 387,
+            "parlament_number": 3185,
+            "vorname": "Manuel",
+            "nachname": "Strupler"
+        },
+        {
+            "id": 388,
+            "parlament_number": 3146,
+            "vorname": "Damien",
+            "nachname": "Cottier"
+        },
+        {
+            "id": 389,
+            "parlament_number": 3147,
+            "vorname": "Christian",
+            "nachname": "Dandr\u00e8s"
+        },
+        {
+            "id": 390,
+            "parlament_number": 3148,
+            "vorname": "Simone",
+            "nachname": "de Montmollin"
+        },
+        {
+            "id": 391,
+            "parlament_number": 3206,
+            "vorname": "Lars",
+            "nachname": "Guggisberg"
+        },
+        {
+            "id": 392,
+            "parlament_number": 3149,
+            "vorname": "Jacqueline",
+            "nachname": "de Quattro"
+        },
+        {
+            "id": 393,
+            "parlament_number": 3151,
+            "vorname": "Alex",
+            "nachname": "Farinelli"
+        },
+        {
+            "id": 394,
+            "parlament_number": 3210,
+            "vorname": "Stefanie",
+            "nachname": "Heimgartner"
+        },
+        {
+            "id": 395,
+            "parlament_number": 3152,
+            "vorname": "Fabien",
+            "nachname": "Fivaz"
+        },
+        {
+            "id": 396,
+            "parlament_number": 3160,
+            "vorname": "Greta",
+            "nachname": "Gysin"
+        },
+        {
+            "id": 397,
+            "parlament_number": 3165,
+            "vorname": "Sandra",
+            "nachname": "Locher Benguerel"
+        },
+        {
+            "id": 398,
+            "parlament_number": 3162,
+            "vorname": "Baptiste",
+            "nachname": "Hurni"
+        },
+        {
+            "id": 399,
+            "parlament_number": 3163,
+            "vorname": "Sidney",
+            "nachname": "Kamerzin"
+        },
+        {
+            "id": 400,
+            "parlament_number": 3205,
+            "vorname": "Matthias",
+            "nachname": "Michel"
+        },
+        {
+            "id": 401,
+            "parlament_number": 3193,
+            "vorname": "Elisabeth",
+            "nachname": "Baume-Schneider"
+        },
+        {
+            "id": 402,
+            "parlament_number": 3195,
+            "vorname": "Charles",
+            "nachname": "Juillard"
+        },
+        {
+            "id": 403,
+            "parlament_number": 3164,
+            "vorname": "Delphine",
+            "nachname": "Klopfenstein Broggini"
+        },
+        {
+            "id": 404,
+            "parlament_number": 3167,
+            "vorname": "Vincent",
+            "nachname": "Maitre"
+        },
+        {
+            "id": 405,
+            "parlament_number": 3207,
+            "vorname": "Piero",
+            "nachname": "Marchesi"
+        },
+        {
+            "id": 406,
+            "parlament_number": 3200,
+            "vorname": "Marianne",
+            "nachname": "Maret"
+        },
+        {
+            "id": 407,
+            "parlament_number": 3168,
+            "vorname": "Michel",
+            "nachname": "Matter"
+        },
+        {
+            "id": 408,
+            "parlament_number": 3204,
+            "vorname": "Isabelle",
+            "nachname": "Pasquier-Eichenberger"
+        },
+        {
+            "id": 409,
+            "parlament_number": 3171,
+            "vorname": "Fran\u00e7ois",
+            "nachname": "Pointet"
+        },
+        {
+            "id": 410,
+            "parlament_number": 3172,
+            "vorname": "L\u00e9onore",
+            "nachname": "Porchet"
+        },
+        {
+            "id": 411,
+            "parlament_number": 2732,
+            "vorname": "Katharina",
+            "nachname": "Prelicz-Huber"
+        },
+        {
+            "id": 412,
+            "parlament_number": 3161,
+            "vorname": "Stefania",
+            "nachname": "Prezioso Batou"
+        },
+        {
+            "id": 413,
+            "parlament_number": 3203,
+            "vorname": "Valentine",
+            "nachname": "Python"
+        },
+        {
+            "id": 414,
+            "parlament_number": 3174,
+            "vorname": "Thomas",
+            "nachname": "Rechsteiner"
+        },
+        {
+            "id": 415,
+            "parlament_number": 3209,
+            "vorname": "Maja",
+            "nachname": "Riniker"
+        },
+        {
+            "id": 416,
+            "parlament_number": 3175,
+            "vorname": "Franziska",
+            "nachname": "Roth"
+        },
+        {
+            "id": 417,
+            "parlament_number": 3176,
+            "vorname": "Marie-France",
+            "nachname": "Roth Pasquier"
+        },
+        {
+            "id": 418,
+            "parlament_number": 3179,
+            "vorname": "Barbara",
+            "nachname": "Schaffner"
+        },
+        {
+            "id": 419,
+            "parlament_number": 3184,
+            "vorname": "Simon",
+            "nachname": "Stadler"
+        },
+        {
+            "id": 420,
+            "parlament_number": 3208,
+            "vorname": "Bruno",
+            "nachname": "Storni"
+        },
+        {
+            "id": 421,
+            "parlament_number": 3197,
+            "vorname": "C\u00e9line",
+            "nachname": "Vara"
+        },
+        {
+            "id": 422,
+            "parlament_number": 3189,
+            "vorname": "Nicolas",
+            "nachname": "Walder"
+        },
+        {
+            "id": 423,
+            "parlament_number": 3212,
+            "vorname": "Othmar",
+            "nachname": "Reichmuth"
+        },
+        {
+            "id": 424,
+            "parlament_number": 3211,
+            "vorname": "Florence",
+            "nachname": "Brenzikofer"
+        },
+        {
+            "id": 425,
+            "parlament_number": 3213,
+            "vorname": "Alois",
+            "nachname": "Huber"
+        },
+        {
+            "id": 426,
+            "parlament_number": 3214,
+            "vorname": "Sarah",
+            "nachname": "Wyss"
+        },
+        {
+            "id": 427,
+            "parlament_number": 3216,
+            "vorname": "Michael",
+            "nachname": "Graber"
+        },
+        {
+            "id": 428,
+            "parlament_number": 3217,
+            "vorname": "Emmanuel",
+            "nachname": "Amoos"
+        },
+        {
+            "id": 429,
+            "parlament_number": 3220,
+            "vorname": "Isabelle",
+            "nachname": "Chassot"
+        },
+        {
+            "id": 430,
+            "parlament_number": 3219,
+            "vorname": "Patricia",
+            "nachname": "von Falkenstein"
+        },
+        {
+            "id": 431,
+            "parlament_number": 3218,
+            "vorname": "C\u00e9line",
+            "nachname": "Weber"
+        },
+        {
+            "id": 432,
+            "parlament_number": 3221,
+            "vorname": "Benjamin",
+            "nachname": "Fischer"
+        },
+        {
+            "id": 433,
+            "parlament_number": 3222,
+            "vorname": "Rapha\u00ebl",
+            "nachname": "Mahaim"
+        },
+        {
+            "id": 434,
+            "parlament_number": 3223,
+            "vorname": "Natalie",
+            "nachname": "Imboden"
+        },
+        {
+            "id": 435,
+            "parlament_number": 3225,
+            "vorname": "Alexandre",
+            "nachname": "Berthoud"
+        },
+        {
+            "id": 436,
+            "parlament_number": 3224,
+            "vorname": "Daniel",
+            "nachname": "Ruch"
+        },
+        {
+            "id": 437,
+            "parlament_number": 3226,
+            "vorname": "Marc",
+            "nachname": "Jost"
+        },
+        {
+            "id": 438,
+            "parlament_number": 3227,
+            "vorname": "Mathilde",
+            "nachname": "Crevoisier Crelier"
+        },
+        {
+            "id": 439,
+            "parlament_number": 3228,
+            "vorname": "Andreas",
+            "nachname": "Meier"
+        },
+        {
+            "id": 440,
+            "parlament_number": 3229,
+            "vorname": "Thomas",
+            "nachname": "Bl\u00e4si"
+        },
+        {
+            "id": 441,
+            "parlament_number": 3230,
+            "vorname": "Michael",
+            "nachname": "G\u00f6tte"
+        },
+        {
+            "id": 442,
+            "parlament_number": 10810,
+            "vorname": "Simon",
+            "nachname": "Michel"
+        },
+        {
+            "id": 443,
+            "parlament_number": 10812,
+            "vorname": "Islam",
+            "nachname": "Alijaj"
+        },
+        {
+            "id": 444,
+            "parlament_number": 10830,
+            "vorname": "Katja",
+            "nachname": "Riem"
+        },
+        {
+            "id": 445,
+            "parlament_number": 10816,
+            "vorname": "Dominik",
+            "nachname": "Blunschy"
+        },
+        {
+            "id": 446,
+            "parlament_number": 10811,
+            "vorname": "Reto",
+            "nachname": "Nause"
+        },
+        {
+            "id": 447,
+            "parlament_number": 10824,
+            "vorname": "Anna",
+            "nachname": "Rosenwasser"
+        },
+        {
+            "id": 448,
+            "parlament_number": 10833,
+            "vorname": "Nina",
+            "nachname": "Fehr D\u00fcsel"
+        },
+        {
+            "id": 449,
+            "parlament_number": 10828,
+            "vorname": "Hasan",
+            "nachname": "Candan"
+        },
+        {
+            "id": 450,
+            "parlament_number": 10823,
+            "vorname": "Estelle",
+            "nachname": "Revaz"
+        },
+        {
+            "id": 451,
+            "parlament_number": 10831,
+            "vorname": "Martin",
+            "nachname": "H\u00fcbscher"
+        },
+        {
+            "id": 452,
+            "parlament_number": 10832,
+            "vorname": "Thomas",
+            "nachname": "Knutti"
+        },
+        {
+            "id": 453,
+            "parlament_number": 10834,
+            "vorname": "Ernst",
+            "nachname": "Wandfluh"
+        },
+        {
+            "id": 454,
+            "parlament_number": 10801,
+            "vorname": "Christoph",
+            "nachname": "Riner"
+        },
+        {
+            "id": 455,
+            "parlament_number": 10804,
+            "vorname": "Bettina",
+            "nachname": "Balmer"
+        },
+        {
+            "id": 456,
+            "parlament_number": 10805,
+            "vorname": "Pascal",
+            "nachname": "Broulis"
+        },
+        {
+            "id": 457,
+            "parlament_number": 10822,
+            "vorname": "Ursula",
+            "nachname": "Zybach"
+        },
+        {
+            "id": 458,
+            "parlament_number": 10848,
+            "vorname": "Walter",
+            "nachname": "Gartmann"
+        },
+        {
+            "id": 459,
+            "parlament_number": 10827,
+            "vorname": "Jean",
+            "nachname": "Tschopp"
+        },
+        {
+            "id": 460,
+            "parlament_number": 10820,
+            "vorname": "Jessica",
+            "nachname": "Jaccoud"
+        },
+        {
+            "id": 461,
+            "parlament_number": 10818,
+            "vorname": "Nicole",
+            "nachname": "Barandun"
+        },
+        {
+            "id": 462,
+            "parlament_number": 10849,
+            "vorname": "Veronika",
+            "nachname": "Thalmann-Bieri"
+        },
+        {
+            "id": 463,
+            "parlament_number": 10803,
+            "vorname": "Cyril",
+            "nachname": "Aellen"
+        },
+        {
+            "id": 464,
+            "parlament_number": 11508,
+            "vorname": "Maya",
+            "nachname": "Bally"
+        },
+        {
+            "id": 465,
+            "parlament_number": 10813,
+            "vorname": "Simona",
+            "nachname": "Brizzi"
+        },
+        {
+            "id": 466,
+            "parlament_number": 10845,
+            "vorname": "Roman",
+            "nachname": "B\u00fcrgi"
+        },
+        {
+            "id": 467,
+            "parlament_number": 10819,
+            "vorname": "Yvonne",
+            "nachname": "B\u00fcrgin"
+        },
+        {
+            "id": 468,
+            "parlament_number": 10850,
+            "vorname": "Didier",
+            "nachname": "Calame"
+        },
+        {
+            "id": 469,
+            "parlament_number": 10817,
+            "vorname": "Isabelle",
+            "nachname": "Chappuis"
+        },
+        {
+            "id": 470,
+            "parlament_number": 10829,
+            "vorname": "Martine",
+            "nachname": "Docourt"
+        },
+        {
+            "id": 471,
+            "parlament_number": 10815,
+            "vorname": "Regina",
+            "nachname": "Durrer"
+        },
+        {
+            "id": 472,
+            "parlament_number": 11505,
+            "vorname": "Giorgio",
+            "nachname": "Fonio"
+        },
+        {
+            "id": 473,
+            "parlament_number": 10835,
+            "vorname": "Sylvain",
+            "nachname": "Freymond"
+        },
+        {
+            "id": 474,
+            "parlament_number": 10807,
+            "vorname": "Simone",
+            "nachname": "Gianini"
+        },
+        {
+            "id": 475,
+            "parlament_number": 10809,
+            "vorname": "Nadine",
+            "nachname": "Gobet"
+        },
+        {
+            "id": 476,
+            "parlament_number": 11507,
+            "vorname": "Patrick",
+            "nachname": "H\u00e4ssig"
+        },
+        {
+            "id": 477,
+            "parlament_number": 10844,
+            "vorname": "Roman",
+            "nachname": "Hug"
+        },
+        {
+            "id": 478,
+            "parlament_number": 10814,
+            "vorname": "Pius",
+            "nachname": "Kaufmann"
+        },
+        {
+            "id": 479,
+            "parlament_number": 10836,
+            "vorname": "Nicolas",
+            "nachname": "Kolly"
+        },
+        {
+            "id": 480,
+            "parlament_number": 10802,
+            "vorname": "Benjamin",
+            "nachname": "M\u00fchlemann"
+        },
+        {
+            "id": 481,
+            "parlament_number": 10840,
+            "vorname": "Yvan",
+            "nachname": "Pahud"
+        },
+        {
+            "id": 482,
+            "parlament_number": 10842,
+            "vorname": "Paolo",
+            "nachname": "Pamini"
+        },
+        {
+            "id": 483,
+            "parlament_number": 10839,
+            "vorname": "Mauro",
+            "nachname": "Poggia"
+        },
+        {
+            "id": 484,
+            "parlament_number": 10821,
+            "vorname": "David",
+            "nachname": "Roth"
+        },
+        {
+            "id": 485,
+            "parlament_number": 10852,
+            "vorname": "Hans J\u00f6rg",
+            "nachname": "R\u00fcegsegger"
+        },
+        {
+            "id": 486,
+            "parlament_number": 11506,
+            "vorname": "Farah",
+            "nachname": "Rumy"
+        },
+        {
+            "id": 487,
+            "parlament_number": 10826,
+            "vorname": "Nina",
+            "nachname": "Schl\u00e4fli"
+        },
+        {
+            "id": 488,
+            "parlament_number": 10843,
+            "vorname": "Pascal",
+            "nachname": "Schmid"
+        },
+        {
+            "id": 489,
+            "parlament_number": 10841,
+            "vorname": "Markus",
+            "nachname": "Schnyder"
+        },
+        {
+            "id": 490,
+            "parlament_number": 11404,
+            "vorname": "Daniel",
+            "nachname": "Sormanni"
+        },
+        {
+            "id": 491,
+            "parlament_number": 10847,
+            "vorname": "Thomas",
+            "nachname": "Stettler"
+        },
+        {
+            "id": 492,
+            "parlament_number": 11504,
+            "vorname": "Simon",
+            "nachname": "Stocker"
+        },
+        {
+            "id": 493,
+            "parlament_number": 10808,
+            "vorname": "Heinz",
+            "nachname": "Theiler"
+        },
+        {
+            "id": 494,
+            "parlament_number": 10825,
+            "vorname": "Brenda",
+            "nachname": "Tuosto"
+        },
+        {
+            "id": 495,
+            "parlament_number": 10806,
+            "vorname": "Kristiane",
+            "nachname": "Vietze"
+        },
+        {
+            "id": 496,
+            "parlament_number": 10838,
+            "vorname": "Erich",
+            "nachname": "Vontobel"
+        },
+        {
+            "id": 497,
+            "parlament_number": 10846,
+            "vorname": "R\u00e9my",
+            "nachname": "Wyssmann"
+        },
+        {
+            "id": 498,
+            "parlament_number": 10851,
+            "vorname": "Andrea",
+            "nachname": "Zryd"
+        }
+    ]
+}

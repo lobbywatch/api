@@ -7,17 +7,17 @@ use Exception;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase {
-  public function get($path): array {
+  public function get($path, $query = []): array {
     $lang = 'de';
     $baseUrl = "http://127.0.0.1:8000";
     $curl = curl_init();
     curl_setopt_array($curl, [
-      CURLOPT_URL => $baseUrl . '/data.php?' . http_build_query([
+      CURLOPT_URL => $baseUrl . '/data.php?' . http_build_query(array_merge([
           'q' => $lang . $path,
           'includeMetaData' => 1,
           'limit' => 'none',
           'lang' => $lang
-        ]),
+        ], $query)),
       CURLOPT_RETURNTRANSFER => true
     ]);
     try {
