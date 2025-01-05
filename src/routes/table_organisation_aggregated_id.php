@@ -55,7 +55,7 @@ function route_data_table_organisation_aggregated_id(string $id): never {
         $verguetungen = table_list('interessenbindung_jahr', "interessenbindung_jahr.interessenbindung_id = {$value['id']}", 'ORDER BY jahr DESC');
         $message .= ' | ' . $verguetungen['message'];
         $sql .= ' | ' . $verguetungen['sql'];
-        add_verguetungen($aggregated['parlamentarier'][$key], $verguetungen, $value['von'], $parlamentarier['data']['im_rat_seit']);
+        add_verguetungen($aggregated['parlamentarier'][$key], $verguetungen, $value['von'], $parlamentarier['data']['im_rat_seit'] ?? null);
       }
 
       $zutrittsberechtigung = table_list('organisation_zutrittsberechtigung', "organisation_zutrittsberechtigung.organisation_id = $id");
