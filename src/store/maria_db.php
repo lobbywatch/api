@@ -20,7 +20,10 @@ function db_query(string $sql, array $args = array()): array {
       $db = new PDO(
         "mysql:host=$host;port=$port;charset=utf8mb4;dbname=$name",
         $user,
-        $pass
+        $pass,
+        [
+          PDO::ATTR_STRINGIFY_FETCHES => true
+        ]
       );
     } catch (PDOException $e) {
       exit($e->getMessage());
