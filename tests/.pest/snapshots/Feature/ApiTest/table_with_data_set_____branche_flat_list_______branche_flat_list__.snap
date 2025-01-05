@@ -2,7 +2,7 @@
     "success": true,
     "count": 14,
     "message": "14 record(s) found",
-    "sql": "\n    SELECT branche.*\n    \n    FROM v_branche branche\n    \n    WHERE 1  ;",
+    "sql": "\n    SELECT branche.*\n    \n    FROM v_branche branche\n    \n    WHERE 1  AND branche.freigabe_datum < NOW() ;",
     "source": "branche",
     "data": [
         {

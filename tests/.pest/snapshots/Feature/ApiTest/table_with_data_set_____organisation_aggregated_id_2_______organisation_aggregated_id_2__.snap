@@ -2,7 +2,7 @@
     "success": true,
     "count": 1,
     "message": "1 record(s) found",
-    "sql": " |  | \n    SELECT organisation_beziehung.*\n    \n    FROM v_organisation_beziehung organisation_beziehung\n    \n    WHERE organisation_beziehung.organisation_id = 2 OR organisation_beziehung.ziel_organisation_id = 2  ; | \n    SELECT organisation_parlamentarier.*\n    \n    FROM v_organisation_parlamentarier organisation_parlamentarier\n    \n    WHERE organisation_parlamentarier.organisation_id = 2  ; | \n    SELECT organisation_zutrittsberechtigung.*\n    \n    FROM v_organisation_zutrittsberechtigung organisation_zutrittsberechtigung\n    \n    WHERE organisation_zutrittsberechtigung.organisation_id = 2  ;",
+    "sql": " |  | \n    SELECT organisation_beziehung.*\n    \n    FROM v_organisation_beziehung organisation_beziehung\n    \n    WHERE organisation_beziehung.organisation_id = 2 OR organisation_beziehung.ziel_organisation_id = 2  AND organisation_beziehung.freigabe_datum < NOW() ; | \n    SELECT organisation_parlamentarier.*\n    \n    FROM v_organisation_parlamentarier organisation_parlamentarier\n    \n    WHERE organisation_parlamentarier.organisation_id = 2  AND organisation_parlamentarier.freigabe_datum < NOW() ; | \n    SELECT organisation_zutrittsberechtigung.*\n    \n    FROM v_organisation_zutrittsberechtigung organisation_zutrittsberechtigung\n    \n    WHERE organisation_zutrittsberechtigung.organisation_id = 2  AND organisation_zutrittsberechtigung.freigabe_datum < NOW() ;",
     "source": "organisation",
     "data": {
         "anzeige_name": "ROBINVEST AG",

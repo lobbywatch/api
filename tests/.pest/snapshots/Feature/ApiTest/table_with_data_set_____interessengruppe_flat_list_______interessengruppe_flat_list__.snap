@@ -1,8 +1,8 @@
 {
     "success": true,
-    "count": 140,
-    "message": "140 record(s) found",
-    "sql": "\n    SELECT interessengruppe.*\n    \n    FROM v_interessengruppe interessengruppe\n    \n    WHERE 1  ;",
+    "count": 139,
+    "message": "139 record(s) found",
+    "sql": "\n    SELECT interessengruppe.*\n    \n    FROM v_interessengruppe interessengruppe\n    \n    WHERE 1  AND interessengruppe.freigabe_datum < NOW() ;",
     "source": "interessengruppe",
     "data": [
         {
@@ -3757,33 +3757,6 @@
             "kommission2": "Aussenpolitische Kommission SR (APK-SR)",
             "kommission2_name": "Aussenpolitische Kommission SR",
             "kommission2_abkuerzung": "APK-SR"
-        },
-        {
-            "anzeige_name": "Systemkritik",
-            "anzeige_name_mixed": "Systemkritik \/ Critique du syst\u00e8me",
-            "id": 149,
-            "name": "Systemkritik",
-            "branche_id": 14,
-            "beschreibung": "Systemkritische Bewegungen.",
-            "alias_namen": "Verschw\u00f6rungstheoretiker, Massnahmengegner, Coronaleugner",
-            "isicv4": null,
-            "wikipedia": null,
-            "wikidata_qid": null,
-            "freigabe_datum": null,
-            "updated_date": "2024-07-22 16:45:11",
-            "published": 0,
-            "updated_date_unix": 1721659511,
-            "freigabe_datum_unix": null,
-            "branche": "Staatspolitik\/Staatswirtschaft",
-            "kommission_id": 13,
-            "kommission1_id": 13,
-            "kommission2_id": 53,
-            "kommission1": "Staatspolitische Kommission NR (SPK-NR)",
-            "kommission1_name": "Staatspolitische Kommission NR",
-            "kommission1_abkuerzung": "SPK-NR",
-            "kommission2": "Staatspolitische Kommission SR (SPK-SR)",
-            "kommission2_name": "Staatspolitische Kommission SR",
-            "kommission2_abkuerzung": "SPK-SR"
         }
     ]
 }

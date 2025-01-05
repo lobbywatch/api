@@ -2,7 +2,7 @@
     "success": true,
     "count": 370,
     "message": "370 record(s) found",
-    "sql": "\n    SELECT zutrittsberechtigung.*\n    \n    FROM v_zutrittsberechtigung zutrittsberechtigung\n    \n    WHERE 1  ;",
+    "sql": "\n    SELECT zutrittsberechtigung.*\n    \n    FROM v_zutrittsberechtigung zutrittsberechtigung\n    \n    WHERE 1  AND zutrittsberechtigung.freigabe_datum < NOW() ;",
     "source": "zutrittsberechtigung",
     "data": [
         {

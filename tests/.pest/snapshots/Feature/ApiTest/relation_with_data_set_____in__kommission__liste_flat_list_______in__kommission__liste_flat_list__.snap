@@ -2,7 +2,7 @@
     "success": true,
     "count": 659,
     "message": "659 record(s) found",
-    "sql": "\n    SELECT in_kommission_liste.*\n    FROM v_in_kommission_liste in_kommission_liste\n    WHERE 1 ;",
+    "sql": "\n    SELECT in_kommission_liste.*\n    FROM v_in_kommission_liste in_kommission_liste\n    WHERE 1  AND in_kommission_liste.freigabe_datum < NOW();",
     "source": "in_kommission_liste",
     "data": [
         {
