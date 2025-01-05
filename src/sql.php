@@ -184,7 +184,7 @@ function data_clean_fields($input_record) {
     if (preg_match('/_(BAD|OLD|ALT)$/i', $key)) {
       unset($record[$key]);
     } else if (preg_match('/_json$/i', $key)) {
-      $record[$key] = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+      $record[$key] = is_string($value) ? json_decode($value, true, 512, JSON_THROW_ON_ERROR) : $value;
     } else if (is_string($value)) {
       $clean = clean_str($value);
       // TODO move list of strip_tags exception to general location
