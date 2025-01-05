@@ -9,6 +9,7 @@
       "src/application/table_list.php",
       "src/application/zutrittsberechtigte_aggregated_by_id.php",
       "src/domain/ApiResponse.php",
+      "src/domain/IdentityAccess.php",
       "src/lib/array.php",
       "src/lib/http.php",
       "src/lib/localization.php",

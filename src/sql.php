@@ -6,8 +6,7 @@ namespace App\Sql;
 use App\Constants;
 use function App\Domain\IdentityAccess\user_access;
 use function App\Lib\Http\base_root;
-use function App\Lib\Localization\get_current_lang;
-use function App\Lib\Localization\translate_record_field;
+use function App\Lib\Localization\{get_current_lang, translate_record_field};
 use function App\Lib\String\{clean_db_value, clean_str};
 use function App\Settings\getRechercheJahrFromSettings;
 use const App\Lib\String\{SUPPORTED_DB_CHARS};
@@ -23,8 +22,7 @@ function select_fields_SQL(string $table): string {
 
 /** Filters out unpublished data if not privileged or includeUnpublished == 0 */
 function filter_unpublished_SQL(string $table): string {
-//    return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) || !user_access('access lobbywatch data unpublished content') ? " AND $table.freigabe_datum < NOW()" : '');
-  return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) ? " AND $table.freigabe_datum < NOW()" : '');
+  return ((isset($_GET['includeUnpublished']) && $_GET['includeUnpublished'] != 1) || !user_access('access lobbywatch data unpublished content') ? " AND $table.freigabe_datum < NOW()" : '');
 }
 
 function filter_fields_SQL(string $table): string {
@@ -66,8 +64,7 @@ function filter_field_SQL(string $table, string $field): string {
 }
 
 function is_internal_field(string $field): bool {
-//    return !user_access('access lobbywatch data confidential content') && in_array($field, Constants::$intern_fields);
-  return in_array($field, Constants::$internal_fields);
+  return !user_access('access lobbywatch data confidential content') && in_array($field, Constants::$internal_fields);
 }
 
 /**
@@ -161,7 +158,7 @@ function data_clean_fields($input_record) {
   $record = $input_record;
 
   $updated_fields = array('updated_date', 'updated_date_unix', 'refreshed_date');
-  if (!isset($_GET['includeConfidentialData']) || $_GET['includeConfidentialData'] != 1 /* || !user_access('access lobbywatch data confidential content') */) {
+  if (!isset($_GET['includeConfidentialData']) || $_GET['includeConfidentialData'] != 1 || !user_access('access lobbywatch data confidential content')) {
     foreach ($record as $key => $value) {
       // Clean intern fields
       if (is_internal_field($key)) {
