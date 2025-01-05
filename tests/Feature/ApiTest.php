@@ -25,7 +25,7 @@ test('table', function (string $path, array $query = []) {
   '/parlamentarier/aggregated/id/6',
   '/parlamentarier/flat/list',
   ['/parlamentarier/flat/list', ['select_fields' => 'parlament_number,vorname,nachname']],
-//  '/zutrittsberechtigung/aggregated/id/1',
+  '/zutrittsberechtigung/aggregated/id/1566',
   '/zutrittsberechtigung/flat/list',
   ['/zutrittsberechtigung/flat/list', ['select_fields' => 'id,vorname,nachname']],
 ]);
