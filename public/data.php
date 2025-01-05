@@ -20,10 +20,16 @@ use function App\Routes\{route_data_table_organisation_aggregated_id,
   route_ws_uid,
   route_zutrittsberechtigte_aggregated};
 
-// Parse the URL in the same way as Drupal v7
-$segments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-if (sizeof($segments) < 9) json_response(not_found_response());
-[, , $path, $version, $data_type, $call_type, $object, $response_type, $response_object, $parameter] = array_merge($segments, [10 => null /* Fallback for $parameter */]);
+$segments = explode('/', $_GET['q']);
+
+// Validate if there is a language prefix in the path.
+if (!empty($segments[0]) && !empty($segments[1]) && $segments[1] == 'data') {
+  // Language string detected, strip off the language code.
+  array_shift($segments);
+}
+
+if (sizeof($segments) < 8) json_response(not_found_response());
+[, , $version, $data_type, $call_type, $object, $response_type, $response_object, $parameter] = array_merge($segments, [9 => null /* Fallback for $parameter */]);
 
 if ($version !== 'v1' || $data_type !== 'json') {
   json_response(not_found_response());

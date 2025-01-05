@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace App\Routes;
 
+use Exception;
 use function App\Application\{table_by_id, table_list, zutrittsberechtigte_aggregated_by_id};
 use function App\domain\ApiResponse\api_response;
 use function App\Lib\{Array\max_attribute_in_array, Http\add_exception, Http\json_response};
