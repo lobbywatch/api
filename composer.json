@@ -29,7 +29,11 @@
       "src/routes/ws_uid.php",
       "src/settings.php",
       "src/sql.php",
-      "src/store/maria_db.php",
+      "src/store/maria_db.php"
+    ]
+  },
+  "autoload-dev": {
+    "files": [
       "tests/TestCase.php"
     ]
   },

@@ -3,7 +3,7 @@ all: dev
 
 .PHONY: install
 install:
-	composer install
+	php composer.phar install
 
 .PHONY: dev
 dev: install
@@ -16,3 +16,13 @@ test:
 .PHONY: test-rebuild
 test-rebuild:
 	./vendor/bin/pest --update-snapshots
+
+.PHONY: build
+build:
+	php composer.phar install --no-dev
+	rm -rf ./build
+	mkdir build
+	cp bootstrap.php build
+	cp -R public build
+	cp -R src build
+	cp -R vendor build
