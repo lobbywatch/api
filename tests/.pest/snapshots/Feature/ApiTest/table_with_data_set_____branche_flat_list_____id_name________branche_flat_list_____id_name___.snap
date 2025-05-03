@@ -1,0 +1,65 @@
+{
+    "success": true,
+    "count": 14,
+    "message": "14 record(s) found",
+    "sql": "\n    SELECT  branche.id, id,name \n    \n    FROM v_branche branche\n    \n    WHERE 1  AND branche.freigabe_datum < NOW() ;",
+    "source": "branche",
+    "data": [
+        {
+            "id": "1",
+            "name": "Gesundheit"
+        },
+        {
+            "id": "2",
+            "name": "Soziale Sicherheit"
+        },
+        {
+            "id": "3",
+            "name": "Energie"
+        },
+        {
+            "id": "4",
+            "name": "Umwelt"
+        },
+        {
+            "id": "5",
+            "name": "Verkehr"
+        },
+        {
+            "id": "7",
+            "name": "Bildung"
+        },
+        {
+            "id": "8",
+            "name": "Kultur"
+        },
+        {
+            "id": "9",
+            "name": "Wirtschaft"
+        },
+        {
+            "id": "13",
+            "name": "Aussenpolitik\/Aussenwirtschaft"
+        },
+        {
+            "id": "14",
+            "name": "Staatspolitik\/Staatswirtschaft"
+        },
+        {
+            "id": "15",
+            "name": "Landwirtschaft"
+        },
+        {
+            "id": "16",
+            "name": "Sicherheit"
+        },
+        {
+            "id": "17",
+            "name": "Sport"
+        },
+        {
+            "id": "18",
+            "name": "Kommunikation"
+        }
+    ]
+}

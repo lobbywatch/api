@@ -1,0 +1,565 @@
+{
+    "success": true,
+    "count": 139,
+    "message": "139 record(s) found",
+    "sql": "\n    SELECT  interessengruppe.id, id,name \n    \n    FROM v_interessengruppe interessengruppe\n    \n    WHERE 1  AND interessengruppe.freigabe_datum < NOW() ;",
+    "source": "interessengruppe",
+    "data": [
+        {
+            "id": "1",
+            "name": "Pharma"
+        },
+        {
+            "id": "2",
+            "name": "Krankenkassen"
+        },
+        {
+            "id": "3",
+            "name": "Gesundheit"
+        },
+        {
+            "id": "4",
+            "name": "Arztmedizin"
+        },
+        {
+            "id": "5",
+            "name": "Spit\u00e4ler"
+        },
+        {
+            "id": "6",
+            "name": "Patient:innen"
+        },
+        {
+            "id": "7",
+            "name": "Spitex"
+        },
+        {
+            "id": "8",
+            "name": "\u00d6ffentliches Gesundheitswesen"
+        },
+        {
+            "id": "9",
+            "name": "Medizinaltechniken"
+        },
+        {
+            "id": "10",
+            "name": "Musik"
+        },
+        {
+            "id": "12",
+            "name": "Gemeinwohl\/Gesellschaft"
+        },
+        {
+            "id": "13",
+            "name": "Kantone\/Regionen"
+        },
+        {
+            "id": "14",
+            "name": "St\u00e4dte"
+        },
+        {
+            "id": "15",
+            "name": "Behinderung"
+        },
+        {
+            "id": "16",
+            "name": "Banken"
+        },
+        {
+            "id": "17",
+            "name": "Rohstoffhandel"
+        },
+        {
+            "id": "18",
+            "name": "Consulting\/PR"
+        },
+        {
+            "id": "19",
+            "name": "Immobilien\/Hauseigent\u00fcmer:innen"
+        },
+        {
+            "id": "20",
+            "name": "Parteien"
+        },
+        {
+            "id": "21",
+            "name": "Milit\u00e4rgeschichte"
+        },
+        {
+            "id": "23",
+            "name": "Wirtschaft allgemein"
+        },
+        {
+            "id": "24",
+            "name": "Migration"
+        },
+        {
+            "id": "25",
+            "name": "Hilfswerke"
+        },
+        {
+            "id": "26",
+            "name": "Individualverkehr"
+        },
+        {
+            "id": "27",
+            "name": "Bildungsf\u00f6rderung"
+        },
+        {
+            "id": "28",
+            "name": "Privatschulen"
+        },
+        {
+            "id": "29",
+            "name": "Energieversorgung"
+        },
+        {
+            "id": "30",
+            "name": "Atomenergie"
+        },
+        {
+            "id": "31",
+            "name": "Energie allgemein"
+        },
+        {
+            "id": "32",
+            "name": "Erneuerbare Energien"
+        },
+        {
+            "id": "33",
+            "name": "\u00d6ffentlicher Verkehr"
+        },
+        {
+            "id": "34",
+            "name": "Kunsthandwerk"
+        },
+        {
+            "id": "35",
+            "name": "Staatspolitik allgemein"
+        },
+        {
+            "id": "36",
+            "name": "Logistik\/Transport"
+        },
+        {
+            "id": "38",
+            "name": "Nahrungsmittel"
+        },
+        {
+            "id": "39",
+            "name": "Milchwirtschaft"
+        },
+        {
+            "id": "40",
+            "name": "Handelsbeziehungen international"
+        },
+        {
+            "id": "41",
+            "name": "Bildung\/Wissenschaft"
+        },
+        {
+            "id": "42",
+            "name": "Pensionskassen"
+        },
+        {
+            "id": "43",
+            "name": "Langsamverkehr"
+        },
+        {
+            "id": "44",
+            "name": "Kulturinstitutionen"
+        },
+        {
+            "id": "45",
+            "name": "Think Tanks"
+        },
+        {
+            "id": "46",
+            "name": "Oel-\/Gasindustrie"
+        },
+        {
+            "id": "47",
+            "name": "Komunikationsdienstleistungen"
+        },
+        {
+            "id": "48",
+            "name": "Printmedien"
+        },
+        {
+            "id": "49",
+            "name": "Elektronische Medien"
+        },
+        {
+            "id": "50",
+            "name": "Cleantech"
+        },
+        {
+            "id": "51",
+            "name": "Bauhauptgewerbe"
+        },
+        {
+            "id": "52",
+            "name": "Baunebengewerbe"
+        },
+        {
+            "id": "53",
+            "name": "Arbeitnehmer:innenorganisationen"
+        },
+        {
+            "id": "54",
+            "name": "Umwelt & Natur"
+        },
+        {
+            "id": "55",
+            "name": "Tierschutz"
+        },
+        {
+            "id": "56",
+            "name": "Sozialversicherungen"
+        },
+        {
+            "id": "57",
+            "name": "Versicherungen"
+        },
+        {
+            "id": "58",
+            "name": "Advokaturen\/Treuhand"
+        },
+        {
+            "id": "59",
+            "name": "KMU\/Gewerbe\/Arbeitgeber:innen"
+        },
+        {
+            "id": "60",
+            "name": "Tourismus\/Gastronomie"
+        },
+        {
+            "id": "61",
+            "name": "Industrie"
+        },
+        {
+            "id": "62",
+            "name": "Medien allgemein"
+        },
+        {
+            "id": "63",
+            "name": "Kulturf\u00f6rderung"
+        },
+        {
+            "id": "64",
+            "name": "Reinigungsgewerbe"
+        },
+        {
+            "id": "65",
+            "name": "Spitzensport"
+        },
+        {
+            "id": "66",
+            "name": "Breitensport"
+        },
+        {
+            "id": "67",
+            "name": "Gleichstellung"
+        },
+        {
+            "id": "68",
+            "name": "Hilfswerke international"
+        },
+        {
+            "id": "69",
+            "name": "Kosmetika\/pharmazeutische Produkte"
+        },
+        {
+            "id": "70",
+            "name": "Aussenpolitik allgemein"
+        },
+        {
+            "id": "71",
+            "name": "Friedensf\u00f6rderung\/Menschenrechte"
+        },
+        {
+            "id": "72",
+            "name": "Sicherheit allgemein"
+        },
+        {
+            "id": "73",
+            "name": "Pflege"
+        },
+        {
+            "id": "74",
+            "name": "Dienstleistungen allg."
+        },
+        {
+            "id": "75",
+            "name": "Pro EU"
+        },
+        {
+            "id": "76",
+            "name": "Anti-EU"
+        },
+        {
+            "id": "77",
+            "name": "Futtermittel\/Pflanzenbau"
+        },
+        {
+            "id": "78",
+            "name": "IT"
+        },
+        {
+            "id": "79",
+            "name": "Heime\/Institutionen"
+        },
+        {
+            "id": "80",
+            "name": "\u00d6kologie"
+        },
+        {
+            "id": "81",
+            "name": "Konsument:innenenschutz"
+        },
+        {
+            "id": "82",
+            "name": "Weinbau, Bier und Spirituosen"
+        },
+        {
+            "id": "83",
+            "name": "Promotion\/Label"
+        },
+        {
+            "id": "84",
+            "name": "Obstwirtschaft"
+        },
+        {
+            "id": "85",
+            "name": "Landwirtschaft allgemein"
+        },
+        {
+            "id": "86",
+            "name": "Viehwirtschaft"
+        },
+        {
+            "id": "87",
+            "name": "Maschinenindustrie"
+        },
+        {
+            "id": "88",
+            "name": "Dienstleistungen Gesundheit"
+        },
+        {
+            "id": "89",
+            "name": "Sport allgemein"
+        },
+        {
+            "id": "90",
+            "name": "Verkehrssicherheit"
+        },
+        {
+            "id": "91",
+            "name": "Klima"
+        },
+        {
+            "id": "92",
+            "name": "Detailhandel"
+        },
+        {
+            "id": "93",
+            "name": "Umwelt allgemein"
+        },
+        {
+            "id": "94",
+            "name": "Raumplanung"
+        },
+        {
+            "id": "95",
+            "name": "R\u00fcstungsindustrie"
+        },
+        {
+            "id": "96",
+            "name": "Produktion\/Handel Landwirtschaft"
+        },
+        {
+            "id": "97",
+            "name": "Biotech"
+        },
+        {
+            "id": "98",
+            "name": "Mieter:innen"
+        },
+        {
+            "id": "99",
+            "name": "Abgaben und Steuern"
+        },
+        {
+            "id": "100",
+            "name": "Berggebiete"
+        },
+        {
+            "id": "101",
+            "name": "Textilindustrie"
+        },
+        {
+            "id": "102",
+            "name": "Kinder\/Jugend"
+        },
+        {
+            "id": "103",
+            "name": "Religion"
+        },
+        {
+            "id": "104",
+            "name": "Innere Sicherheit"
+        },
+        {
+            "id": "105",
+            "name": "Polizei"
+        },
+        {
+            "id": "106",
+            "name": "Gemeinden"
+        },
+        {
+            "id": "107",
+            "name": "Investmentgesellschaften"
+        },
+        {
+            "id": "108",
+            "name": "Handel"
+        },
+        {
+            "id": "111",
+            "name": "Milit\u00e4r"
+        },
+        {
+            "id": "115",
+            "name": "Chemie\/Biotech"
+        },
+        {
+            "id": "116",
+            "name": "Luftfahrt"
+        },
+        {
+            "id": "117",
+            "name": "Aufsichtsgremien"
+        },
+        {
+            "id": "118",
+            "name": "Globalisierungskritik"
+        },
+        {
+            "id": "119",
+            "name": "Grafik"
+        },
+        {
+            "id": "120",
+            "name": "Rettungswesen"
+        },
+        {
+            "id": "121",
+            "name": "Verm\u00f6gensverwaltung"
+        },
+        {
+            "id": "122",
+            "name": "Wasser"
+        },
+        {
+            "id": "123",
+            "name": "Wasserkraft"
+        },
+        {
+            "id": "124",
+            "name": "Landwirtschaftstechnik"
+        },
+        {
+            "id": "125",
+            "name": "Werbung"
+        },
+        {
+            "id": "126",
+            "name": "Abfallwirtschaft"
+        },
+        {
+            "id": "127",
+            "name": "Zuwanderungskritik"
+        },
+        {
+            "id": "128",
+            "name": "Bildende K\u00fcnste"
+        },
+        {
+            "id": "129",
+            "name": "Buchhandel"
+        },
+        {
+            "id": "130",
+            "name": "Uhrenindustrie"
+        },
+        {
+            "id": "131",
+            "name": "Anti-AKW"
+        },
+        {
+            "id": "132",
+            "name": "Schifffahrt"
+        },
+        {
+            "id": "133",
+            "name": "Tabak"
+        },
+        {
+            "id": "134",
+            "name": "Gentechnik-Kritik"
+        },
+        {
+            "id": "135",
+            "name": "Holz- und Waldwirtschaft"
+        },
+        {
+            "id": "136",
+            "name": "Gl\u00fccksspiel"
+        },
+        {
+            "id": "137",
+            "name": "Gefl\u00fcgelzucht"
+        },
+        {
+            "id": "138",
+            "name": "Architektur"
+        },
+        {
+            "id": "139",
+            "name": "Film\/Theater"
+        },
+        {
+            "id": "140",
+            "name": "Literatur"
+        },
+        {
+            "id": "141",
+            "name": "Zivilschutz"
+        },
+        {
+            "id": "143",
+            "name": "Justiz"
+        },
+        {
+            "id": "144",
+            "name": "L\u00e4rmschutz"
+        },
+        {
+            "id": "145",
+            "name": "Fischerei"
+        },
+        {
+            "id": "146",
+            "name": "Z\u00fcnfte, Verbindungen und Serviceclubs"
+        },
+        {
+            "id": "147",
+            "name": "Kleintierzucht"
+        },
+        {
+            "id": "148",
+            "name": "Internationale Institutionen"
+        }
+    ]
+}
