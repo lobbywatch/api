@@ -5,8 +5,6 @@ require "../bootstrap.php";
 use App\Constants;
 use function App\domain\ApiResponse\not_found_response;
 use function App\Lib\Http\json_response;
-use function App\Lib\Localization\get_lang;
-use function App\Lib\Localization\lobbywatch_set_lang;
 use function App\Routes\{route_data_table_organisation_aggregated_id,
   route_query_parlament_partei_aggregated_list,
   route_relation_flat_list,
@@ -34,8 +32,6 @@ if (sizeof($segments) < 8) json_response(not_found_response());
 if ($version !== 'v1' || $data_type !== 'json') {
   json_response(not_found_response());
 }
-
-lobbywatch_set_lang(get_lang());
 
 if ($call_type === 'table' && array_key_exists($object, Constants::$workflow_tables) && $response_type === 'flat' && $response_object === 'id' && $parameter) {
   route_table_flat_id($object, $parameter);

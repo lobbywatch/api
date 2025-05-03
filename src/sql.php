@@ -78,10 +78,6 @@ function is_internal_field(string $field): bool {
  * for lang=fr anzeige_name set with the value of anzeige_name_fr.
  */
 function handle_lang_fields(&$items) {
-  $lang = get_current_lang();
-  $fr_suffix = '_fr';
-  $de_suffix = '_de';
-
   $fields = [];
 
   foreach ($items as &$fields) {
