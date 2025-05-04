@@ -38,15 +38,15 @@
     ]
   },
   "require": {
-    "phpdevcommunity/php-dotenv": "^3.0",
-    "ext-pdo": "*",
+    "ext-curl": "*",
     "ext-mbstring": "*",
-    "ext-soap": "*",
-    "ext-curl": "*"
+    "ext-pdo": "*",
+    "ext-soap": "*"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "3.11.2",
-    "pestphp/pest": "^3.7"
+    "pestphp/pest": "^3.7",
+    "phpdevcommunity/php-dotenv": "^3.0",
+    "squizlabs/php_codesniffer": "3.11.2"
   },
   "config": {
     "allow-plugins": {
