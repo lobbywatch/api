@@ -1,7 +1,7 @@
 <?php
 require 'vendor/autoload.php';
 
-use PhpDevCommunity\DotEnv;
+use Michel\Env\DotEnv;
 
 (new DotEnv(__DIR__ . '/.env'))->load();
 
